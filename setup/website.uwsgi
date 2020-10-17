@@ -1,0 +1,11 @@
+[uwsgi]
+module = rainbow_shop.__init__:app
+
+master = true
+processes = 5
+
+socket = website.sock
+chmod-socket = 660
+vacuum = true
+
+die-on-term = true
