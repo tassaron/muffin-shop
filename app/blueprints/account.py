@@ -51,7 +51,7 @@ def login():
 @blueprint.route("/profile")
 def user_dashboard():
     """ Let the user manage their shipping address, change password """
-    pass
+    return ""
 
 
 @blueprint.route("/profile/edit")
