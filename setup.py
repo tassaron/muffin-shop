@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="the rainbow shop",
-    version="20.10.17",  # year.month.day
+    version="20.10.18",  # year.month.day
     packages=["rainbow_shop", "rainbow_shop.blueprints"],
     package_dir={"rainbow_shop": "app", "rainbow_shop.blueprints": "app/blueprints"},
     include_package_data=True,
@@ -15,5 +15,6 @@ setup(
         "flask_wtf",
         "email_validator",
         "is_safe_url",
+        "mistune==2.0.0a5",
     ],
 )

@@ -1,4 +1,6 @@
-from .__init__ import db, bcrypt
+from .__init__ import create_plugins
+
+db, bcrypt, _ = create_plugins()
 
 
 class User(db.Model):

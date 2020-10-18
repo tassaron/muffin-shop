@@ -1,7 +1,11 @@
 from flask import Blueprint, current_app
+from mistune import create_markdown
 
 
 blueprint = Blueprint("inventory", __name__, template_folder="../templates/inventory")
+
+
+md_to_html = create_markdown(escape=True, renderer="html", plugins=["strikethrough"])
 
 
 @blueprint.route("/add")

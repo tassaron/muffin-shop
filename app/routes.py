@@ -1,4 +1,4 @@
-from .__init__ import app, login_manager
+from .__main__ import app, login_manager
 from .models import User
 
 # now load each blueprint
