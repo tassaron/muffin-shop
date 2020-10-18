@@ -1,7 +1,9 @@
+"""
+Entrypoint for initial import of the package in any context
+Creates routes/blueprints without creating the app
+Home to factories for creating the app and its plugins
+"""
 from flask import Flask
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 import os
 
 
@@ -19,12 +21,11 @@ def create_app():
 
 
 def create_plugins():
+    from flask_login import LoginManager
+    from flask_sqlalchemy import SQLAlchemy
+    from flask_bcrypt import Bcrypt
+
     return SQLAlchemy(), Bcrypt(), LoginManager()
-
-
-def init_plugins(plugins, app):
-    for plugin in plugins:
-        plugin.init_app(app)
 
 
 from . import routes

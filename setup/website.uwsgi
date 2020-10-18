@@ -1,5 +1,5 @@
 [uwsgi]
-module = rainbow_shop.__main__:app
+module = rainbow_shop.run:app
 
 master = true
 processes = 5

@@ -1,7 +1,7 @@
 from flask import *
 import flask_login
 from werkzeug.utils import secure_filename
-from rainbow_shop.__main__ import bcrypt, db
+from rainbow_shop.plugins import bcrypt, db
 from rainbow_shop.models import Product
 
 

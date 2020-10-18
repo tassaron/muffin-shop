@@ -12,7 +12,7 @@ from flask import (
 )
 import flask_login
 from is_safe_url import is_safe_url
-from rainbow_shop.__main__ import db
+from rainbow_shop.plugins import db
 from rainbow_shop.forms import ShortRegistrationForm, LoginForm
 from rainbow_shop.models import User, ShippingAddress
 
