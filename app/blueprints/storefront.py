@@ -6,13 +6,20 @@ from rainbow_shop.models import Product
 
 
 blueprint = Blueprint(
-    "", __name__, static_folder="../static", template_folder="../templates/storefront"
+    "storefront",
+    __name__,
+    static_folder="../static",
+    template_folder="../templates/storefront",
 )
 
 
-@blueprint.route("")
+@blueprint.route("/")
 def index():
-    return render_template("storefront_index.html")
+    return render_template(
+        "storefront_index.html",
+        logged_in=flask_login.current_user.is_authenticated,
+        no_of_items=0,
+    )
 
 
 @blueprint.route("/product/<product_id>")
@@ -27,6 +34,11 @@ def add_to_cart():
 
 @blueprint.route("/product/removefromcart", methods=["POST"])
 def remove_from_cart():
+    pass
+
+
+@blueprint.route("/shoppingcart")
+def view_cart():
     pass
 
 

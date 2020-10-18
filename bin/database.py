@@ -4,15 +4,35 @@ Database management script for a shop application. Use during initial setup or u
 """
 from rainbow_shop.models import *
 import os
+import string
+import random
+from email_validator import validate_email, EmailNotValidError
 
 
-def create_new_db():
+def random_password(length):
+    password_characters = string.ascii_letters + string.digits + string.punctuation
+    return "".join(random.choice(password_characters) for i in range(length))
+
+
+def create_new_db(email=None):
     db.create_all()
+    while not email:
+        try:
+            email = validate_email(
+                input("Email address for admin: ").strip()
+            ).ascii_email
+        except EmailNotValidError:
+            pass
+    password = random_password(16)
+    db.session.add(User(email=email, password=password, is_admin=True))
+    db.session.commit()
+    print(f"Admin's temporary password is {password}")
 
 
 def create_test_db():
-    create_new_db()
-    db.session.add(User(email="test@example.com", password="test", is_admin=False))
+    db.create_all()
+    db.session.add(User(email="admin@example.com", password="test", is_admin=True))
+    db.session.add(User(email="user@example.com", password="test", is_admin=False))
     db.session.add(ProductCategory(name="Fruits"))
     db.session.add(ProductCategory(name="Roots"))
     db.session.add(
@@ -72,6 +92,7 @@ if __name__ == "__main__":
 
     if args.new == "new":
         prompt_deletion(create_new_db, args.db)
+
     elif args.new == "test":
         prompt_deletion(create_test_db, args.db)
     else:

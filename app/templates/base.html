@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!--<link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">-->
+    <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
     <title>{% block title %}{% endblock %}</title>
@@ -63,20 +63,23 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <span class="icon-bar">
-                            <a href="https://github.com/tassaron2">
-                                <img src="{{ url_for('static', filename='img/github32.png') }}" title="GitHub"
-                                    alt="GitHub badge">
-                            </a>
-                            <a href="https://tassaron.com/@brianna">
-                                <img src="{{ url_for('static', filename='img/mastodon32.png') }}" title="Mastodon"
-                                    alt="Mastodon badge">
-                            </a>
-                            <a href="https://twitter.com/tassaron">
-                                <img src="{{ url_for('static', filename='img/twitter32.png') }}" title="Twitter"
-                                    alt="Twitter badge">
-                            </a>
-                        </span>
+                        {% if not logged_in %}
+                        <a class="nav-link" href="/account/register">Sign Up</a>
+                        {% else %}
+                        <div class="dropright ml-2 mr-2">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/account/profile">Edit</a>
+                                <a class="dropdown-item" href="/account/logout">Sign Out</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a href={{ url_for('storefront.view_cart') }}>
+                            <img src={{url_for('static', filename='img/cart.png')}} id="cart_icon"> {{no_of_items}}
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -84,28 +87,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
-        {% if not loggedIn %}
-        <div id="login_button">
-            <a class="link" href="/loginForm">Sign In</a>
-        </div>
-        {% else %}
-        <div class="dropdown">
-            <button class="dropbtn">Hello, <br>{{email}}</button>
-            <div class="dropdown-content">
-                <a href="/account/orders">Your orders</a>
-                <a href="/account/profile">Your profile</a>
-                <hr>
-                <a href="/logout">Sign Out</a>
-            </div>
-        </div>
-        {% endif %}
-        <div id="shopping_cart">
-            <a class="link" href="/cart">
-                <img src={{url_for('static', filename='img/cart.png')}} id="cart_icon" />
-                CART {{noOfItems}}
-            </a>
-        </div>
+    <div class="my-5 py-5 container">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -114,7 +96,6 @@
         {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
-
     </div>
     <!-- /.container -->
 
@@ -122,13 +103,12 @@
     <footer class="footer bg-dark">
         <div class="container">
             <p class="row-sm-6 text-center text-white">
-                <small>&copy; The Rainbow Farm 2020 &bullet;
-                    <a href="https://rainey.tech">
+                <small>&copy; The Rainbow Farm 2020 &nbsp;&bullet;&nbsp;
+                    <a style="color:white;" href="https://rainey.tech">
                         Website made by Brianna Rainey
                     </a>
                 </small></p>
         </div>
-        <!-- /.container -->
     </footer>
 
     <!-- Optional JavaScript -->
