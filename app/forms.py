@@ -24,6 +24,6 @@ class ShortRegistrationForm(FlaskForm):
         "password", validators=[Length(min=8, max=64), DataRequired()]
     )
     confirmp = PasswordField(
-        "confirmp", validators=[DataRequired(), EqualTo("password")]
+        "confirm password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Sign Up")
