@@ -1,24 +1,39 @@
 from .__init__ import db, bcrypt
-from flask_login import UserMixin
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    email = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(40), nullable=True)
+    password = db.Column(db.String(64), nullable=True)
     is_admin = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, **kwargs):
-        kwargs["password"] = bcrypt.generate_password_hash(kwargs["password"]).decode(
-            "utf-8"
-        )
+        if kwargs["password"] is not None:
+            kwargs["password"] = bcrypt.generate_password_hash(
+                kwargs["password"]
+            ).decode("utf-8")
         super().__init__(**kwargs)
 
     def __repr__(self):
         return str(self.email)
 
-    def check_password_hash(self, actual_password, alleged_password):
-        return bcrypt.check_password_hash(actual_password, alleged_password)
+    def check_password_hash(self, alleged_password):
+        return bcrypt.check_password_hash(self.password, alleged_password)
+
+    @property
+    def is_anonymous(self):
+        return False if self.email and self.password else True
+
+    @property
+    def is_authenticated(self):
+        return False if self.is_anonymous else True
+
+    @property
+    def is_active(self):
+        return False if self.is_anonymous else True
+
+    def get_id(self):
+        return str(self.id)
 
 
 class ShippingAddress(db.Model):

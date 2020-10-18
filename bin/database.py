@@ -31,8 +31,8 @@ def create_new_db(email=None):
 
 def create_test_db():
     db.create_all()
-    db.session.add(User(email="admin@example.com", password="test", is_admin=True))
-    db.session.add(User(email="user@example.com", password="test", is_admin=False))
+    db.session.add(User(email="admin@example.com", password="password", is_admin=True))
+    db.session.add(User(email="user@example.com", password="password", is_admin=False))
     db.session.add(ProductCategory(name="Fruits"))
     db.session.add(ProductCategory(name="Roots"))
     db.session.add(

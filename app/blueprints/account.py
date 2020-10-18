@@ -14,7 +14,7 @@ import flask_login
 from is_safe_url import is_safe_url
 from rainbow_shop.__init__ import db
 from rainbow_shop.forms import ShortRegistrationForm, LoginForm
-from rainbow_shop.models import User
+from rainbow_shop.models import User, ShippingAddress
 
 
 blueprint = Blueprint(
@@ -33,12 +33,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.check_password_hash(user.password, form.password.data):
+        if user and user.check_password_hash(form.password.data):
             flask_login.login_user(user, remember=form.rememberme.data)
             next_page = request.args.get("next")
             return (
                 redirect(next_page)
-                if next_page and is_safe_url(next_page)
+                if next_page and is_safe_url(next_page, url_for("storefront.index"))
                 else redirect(url_for("storefront.index"))
             )
         else:
@@ -47,11 +47,14 @@ def login():
     return render_template("login.html", form=form)
 
 
-@flask_login.login_required
 @blueprint.route("/profile")
+@flask_login.login_required
 def user_dashboard():
     """ Let the user manage their shipping address, change password """
-    return ""
+    shipping = ShippingAddress.query.filter_by(
+        id=int(flask_login.current_user.get_id())
+    ).first()
+    return str(shipping)
 
 
 @blueprint.route("/profile/edit")
