@@ -5,6 +5,7 @@ Home to factories for creating the app and its plugins
 """
 from flask import Flask
 import os
+from .routes import main_routes
 
 
 def create_app():
@@ -18,6 +19,7 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         WTF_CSRF_ENABLED=True,
     )
+    app.register_blueprint(main_routes)
     return app
 
 

@@ -10,6 +10,13 @@ app = init_app(app)
 db, bcrypt, login_manager = plugins
 
 
+def nav_selected_bytes(route):
+    return bytes(
+        f'<li class="nav-item active">\n                        <a class="nav-link" href="{route}">',
+        "utf-8",
+    )
+
+
 @pytest.fixture
 def client():
     db_fd, db_path = tempfile.mkstemp()
@@ -25,7 +32,19 @@ def client():
 
 def test_index(client):
     resp = client.get("/")
+    assert nav_selected_bytes("/") in resp.data
     assert resp.status_code == 200
+
+
+def test_about_page(client):
+    resp = client.get("/about")
+    assert nav_selected_bytes("/about") in resp.data
+
+
+def test_404_page(client):
+    resp = client.get("/invalid")
+    assert nav_selected_bytes("/") in resp.data
+    assert resp.status_code == 404
 
 
 def test_login_success(client):
