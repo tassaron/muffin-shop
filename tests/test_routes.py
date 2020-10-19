@@ -99,3 +99,37 @@ def test_registration_failure(client):
         follow_redirects=True,
     )
     assert User.query.filter_by(email="test@example.com").first() is None
+    resp = client.post(
+        "/account/register",
+        data={
+            "email": "nodomainname",
+            "password": "password",
+            "confirmp": "password",
+        },
+        follow_redirects=True,
+    )
+    assert User.query.filter_by(email="nodomainname").first() is None
+
+
+def test_anonymous_user(client):
+    db.create_all()
+    anon1 = login_manager.anonymous_user()
+    anon2 = login_manager.anonymous_user()
+    db.session.add(anon1)
+    db.session.add(anon2)
+    db.session.commit()
+    assert len(User.query.filter_by(email=None).all()) == 2
+
+
+def test_reregistration_failure(client):
+    test_registration_success(client)
+    resp = client.post(
+        "/account/register",
+        data={
+            "email": "test@example.com",
+            "password": "password",
+            "confirmp": "password",
+        },
+        follow_redirects=True,
+    )
+    assert len(User.query.filter_by(email="test@example.com").all()) == 1

@@ -11,6 +11,7 @@ from flask import (
     url_for,
 )
 import flask_login
+from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
 from rainbow_shop.plugins import db
 from rainbow_shop.forms import ShortRegistrationForm, LoginForm
@@ -80,11 +81,16 @@ def register():
 
     form = ShortRegistrationForm()
     if form.validate_on_submit():
-        db.session.add(
-            User(email=form.email.data, password=form.password.data, is_admin=False)
-        )
-        db.session.commit()
-        flash("Successly signed up! Now you can log in", "success")
+        try:
+            db.session.add(
+                User(email=form.email.data, password=form.password.data, is_admin=False)
+            )
+            db.session.commit()
+        except IntegrityError:
+            flash("That email is already taken. Log in below", "danger")
+            db.session.rollback()
+        else:
+            flash("Successly signed up! Now you can log in", "success")
         return redirect(url_for("account.login"))
 
     return render_template("register.html", form=form)
