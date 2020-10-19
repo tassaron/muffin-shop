@@ -1,6 +1,7 @@
 import os
 import tempfile
 import pytest
+import flask_login
 from rainbow_shop.__init__ import create_app
 from rainbow_shop.app import init_app, plugins
 from rainbow_shop.models import User
@@ -133,3 +134,14 @@ def test_reregistration_failure(client):
         follow_redirects=True,
     )
     assert len(User.query.filter_by(email="test@example.com").all()) == 1
+
+
+def test_admin_privilege(client):
+    db.create_all()
+    user = User(email="test@example.com", password="password", is_admin=True)
+    db.session.add(user)
+    db.session.commit()
+    with app.test_request_context():
+        flask_login.login_user(user)
+    resp = client.get("/inventory/add")
+    assert resp.status_code == 200

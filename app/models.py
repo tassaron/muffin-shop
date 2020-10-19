@@ -35,6 +35,10 @@ class User(db.Model):
     def is_active(self):
         return False if self.is_anonymous else True
 
+    @property
+    def is_admin_authenticated(self):
+        return self.email and self.password and self.is_admin
+
     def get_id(self):
         return str(self.id)
 

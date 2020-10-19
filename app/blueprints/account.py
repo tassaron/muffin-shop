@@ -59,16 +59,19 @@ def user_dashboard():
 
 
 @blueprint.route("/profile/edit")
+@flask_login.login_required
 def edit_user():
     pass
 
 
 @blueprint.route("/changepassword", methods=["GET", "POST"])
+@flask_login.login_required
 def change_password():
     pass
 
 
 @blueprint.route("/logout")
+@flask_login.login_required
 def logout():
     flask_login.logout_user()
     return redirect(url_for("storefront.index"))
