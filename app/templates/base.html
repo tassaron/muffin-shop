@@ -18,11 +18,13 @@
 </head>
 
 <body>
-
     <!-- Navigation -->
     <nav class="nav navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-left navbar-brand" href="/">The Rainbow Farm</a>
+            <a class="navbar-left navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" style="max-width: 100px; max-height: 100%;"
+                    alt="Logo">
+                The Rainbow Farm</a>
 
             <button class="navbar-toggler px-1 ml-auto mr-1" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
