@@ -16,6 +16,7 @@ def create_app():
         MAX_CONTENT_LENGTH=2 * 1024 * 1024,  # 2MB
         SQLALCHEMY_DATABASE_URI="sqlite+pysqlite:///db/database.db",
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        WTF_CSRF_ENABLED=True,
     )
     return app
 

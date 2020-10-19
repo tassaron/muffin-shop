@@ -34,6 +34,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password_hash(form.password.data):
+            flash("Logged in! ✔️", "success")
             flask_login.login_user(user, remember=form.rememberme.data)
             next_page = request.args.get("next")
             return (
@@ -51,10 +52,9 @@ def login():
 @flask_login.login_required
 def user_dashboard():
     """ Let the user manage their shipping address, change password """
-    shipping = ShippingAddress.query.filter_by(
-        id=int(flask_login.current_user.get_id())
-    ).first()
-    return str(shipping)
+    user_id = int(flask_login.current_user.get_id())
+    # shipping = ShippingAddress.query.filter_by(id=user_id).first()
+    return f"{email} {str(user_id)}"
 
 
 @blueprint.route("/profile/edit")
