@@ -56,8 +56,7 @@ def test_login_success(client):
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
     )
-    with app.test_request_context():
-        assert bytes("Logged in! ✔️", "utf-8") in resp.data
+    assert bytes("Logged in! ✔️", "utf-8") in resp.data
 
 
 def test_login_failure(client):
@@ -69,5 +68,34 @@ def test_login_failure(client):
         data={"email": "test@example.com", "password": "wordpass"},
         follow_redirects=True,
     )
-    with app.test_request_context():
-        assert b"Wrong email or password" in resp.data
+    assert b"Wrong email or password" in resp.data
+
+
+def test_registration_success(client):
+    db.create_all()
+    assert User.query.filter_by(email="test@example.com").first() is None
+    resp = client.post(
+        "/account/register",
+        data={
+            "email": "test@example.com",
+            "password": "password",
+            "confirmp": "password",
+        },
+        follow_redirects=True,
+    )
+    assert User.query.filter_by(email="test@example.com").first() is not None
+
+
+def test_registration_failure(client):
+    db.create_all()
+    assert User.query.filter_by(email="test@example.com").first() is None
+    resp = client.post(
+        "/account/register",
+        data={
+            "email": "test@example.com",
+            "password": "password",
+            "confirmp": "",
+        },
+        follow_redirects=True,
+    )
+    assert User.query.filter_by(email="test@example.com").first() is None

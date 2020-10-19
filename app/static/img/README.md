@@ -1,2 +1,2 @@
 # Image Credits
-The rainbow emoji (logo.png) is from [OpenMoji](https://openmoji.org/about/)
+`logo.png` is a remixed version of the rainbow emoji (🌈) from [OpenMoji](https://openmoji.org/about/). It is distributed under the [CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) license
