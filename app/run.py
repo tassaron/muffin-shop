@@ -1,9 +1,8 @@
 """
 Entrypoint for uWSGI
-Simply initializes the app
 """
-from .app import app
-from .plugins import plugins
+from .__init__ import create_app
+from .app import init_app
 
-for plugin in plugins:
-    plugin.init_app(app)
+app = create_app()
+app = init_app(app)

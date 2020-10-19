@@ -1,6 +1,7 @@
-from .__init__ import create_plugins
+from .plugins import plugins
 
-db, bcrypt, _ = create_plugins()
+# plugins = create_plugins()
+db, bcrypt, login_manager = plugins
 
 
 class User(db.Model):

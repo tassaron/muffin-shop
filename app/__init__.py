@@ -26,6 +26,3 @@ def create_plugins():
     from flask_bcrypt import Bcrypt
 
     return SQLAlchemy(), Bcrypt(), LoginManager()
-
-
-from . import routes
