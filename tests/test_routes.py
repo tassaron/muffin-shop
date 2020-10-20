@@ -6,10 +6,6 @@ from rainbow_shop.__init__ import create_app
 from rainbow_shop.app import init_app, plugins
 from rainbow_shop.models import User
 
-app = create_app()
-app = init_app(app)
-db, bcrypt, login_manager = plugins
-
 
 def nav_selected_bytes(route):
     return bytes(
@@ -20,13 +16,18 @@ def nav_selected_bytes(route):
 
 @pytest.fixture
 def client():
+    global app, db, bcrypt, login_manager
+    app = create_app()
+    db, bcrypt, login_manager = plugins
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
+    app = init_app(app)
     client = app.test_client()
     with app.app_context():
-        yield client
+        with client:
+            yield client
     os.close(db_fd)
     os.unlink(db_path)
 
@@ -50,7 +51,8 @@ def test_404_page(client):
 
 def test_login_success(client):
     db.create_all()
-    db.session.add(User(email="test@example.com", password="password", is_admin=False))
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
     db.session.commit()
     resp = client.post(
         "/account/login",
@@ -58,11 +60,13 @@ def test_login_success(client):
         follow_redirects=True,
     )
     assert bytes("Logged in! ✔️", "utf-8") in resp.data
+    assert flask_login.current_user == user
 
 
 def test_login_failure(client):
     db.create_all()
-    db.session.add(User(email="test@example.com", password="password", is_admin=False))
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
     db.session.commit()
     resp = client.post(
         "/account/login",
@@ -70,6 +74,7 @@ def test_login_failure(client):
         follow_redirects=True,
     )
     assert b"Wrong email or password" in resp.data
+    assert flask_login.current_user != user
 
 
 def test_registration_success(client):
@@ -141,7 +146,32 @@ def test_admin_privilege(client):
     user = User(email="test@example.com", password="password", is_admin=True)
     db.session.add(user)
     db.session.commit()
-    with app.test_request_context():
-        flask_login.login_user(user)
+    client.post(
+        "/account/login",
+        data={"email": "test@example.com", "password": "password"},
+        follow_redirects=True,
+    )
+    assert flask_login.current_user == user
     resp = client.get("/inventory/add")
     assert resp.status_code == 200
+
+
+def test_user_privilege(client):
+    db.create_all()
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
+    db.session.commit()
+    resp = client.get("/account/profile")
+    assert resp.status_code == 302
+    resp = client.get("/inventory/add")
+    assert resp.status_code == 302
+    client.post(
+        "/account/login",
+        data={"email": "test@example.com", "password": "password"},
+        follow_redirects=True,
+    )
+    assert flask_login.current_user == user
+    resp = client.get("/account/profile")
+    assert resp.status_code == 200
+    resp = client.get("/inventory/add")
+    assert resp.status_code == 403

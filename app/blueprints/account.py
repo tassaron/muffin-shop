@@ -55,7 +55,7 @@ def user_dashboard():
     """ Let the user manage their shipping address, change password """
     user_id = int(flask_login.current_user.get_id())
     # shipping = ShippingAddress.query.filter_by(id=user_id).first()
-    return f"{email} {str(user_id)}"
+    return f"{str(user_id)}"
 
 
 @blueprint.route("/profile/edit")

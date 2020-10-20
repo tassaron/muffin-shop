@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, render_template, flash
 from flask_login import current_user
 from mistune import create_markdown
 
@@ -13,8 +13,11 @@ md_to_html = create_markdown(escape=True, renderer="html", plugins=["strikethrou
 def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
-        if not current_user.is_admin_authenticated:
+        if not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
+        elif not current_user.is_admin_authenticated:
+            flash("Unauthorized", "danger")
+            return render_template("index.html"), 403
         return func(*args, **kwargs)
 
     return decorated_view
@@ -26,7 +29,7 @@ def add_inventory_item():
     def allowed_file(filename):
         return os.path.splitext(filename) in current_app.config["ALLOWED_EXTENSIONS"]
 
-    pass
+    return ""
 
 
 @blueprint.route("/remove")
