@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from werkzeug.exceptions import NotFound, Forbidden
+from werkzeug.exceptions import NotFound, Forbidden, InternalServerError
 
 
 main_routes = Blueprint("main", __name__)
@@ -20,3 +20,9 @@ def page_not_found(error):
 def page_forbidden(error):
     flash("Unauthorized", "danger")
     return render_template("index.html"), 403
+
+
+@main_routes.app_errorhandler(InternalServerError)
+def critical_error(error):
+    flash("The server experienced an error", "danger")
+    return render_template("index.html"), 500
