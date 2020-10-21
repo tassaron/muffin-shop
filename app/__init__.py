@@ -18,6 +18,11 @@ def create_app():
         SQLALCHEMY_DATABASE_URI="sqlite+pysqlite:///db/database.db",
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         WTF_CSRF_ENABLED=True,
+        WTF_CSRF_TIME_LIMIT=1800,
+        SESSION_COOKIE_SECURE=True,
+        REMEMBER_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        REMEMBER_COOKIE_HTTPONLY=True,
     )
     app.register_blueprint(main_routes)
     return app
