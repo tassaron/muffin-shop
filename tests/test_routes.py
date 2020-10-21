@@ -173,5 +173,7 @@ def test_user_privilege(client):
     assert flask_login.current_user == user
     resp = client.get("/account/profile")
     assert resp.status_code == 200
+    assert nav_selected_bytes("/") not in resp.data
     resp = client.get("/inventory/add")
     assert resp.status_code == 403
+    assert nav_selected_bytes("/") in resp.data

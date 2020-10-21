@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Blueprint, current_app, render_template, flash
+from flask import Blueprint, current_app, render_template, flash, abort
 from flask_login import current_user
 from mistune import create_markdown
 
@@ -16,8 +16,7 @@ def admin_required(func):
         if not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
         elif not current_user.is_admin_authenticated:
-            flash("Unauthorized", "danger")
-            return render_template("index.html"), 403
+            abort(403)
         return func(*args, **kwargs)
 
     return decorated_view
