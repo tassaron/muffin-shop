@@ -6,6 +6,9 @@ Home to factories for creating the app and its plugins
 from flask import Flask
 import os
 from .routes import main_routes
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def create_app():
@@ -14,8 +17,8 @@ def create_app():
         SECRET_KEY=os.urandom(16),
         UPLOAD_FOLDER="static/uploads",
         ALLOWED_EXTENSIONS={"jpeg", "jpg", "png", "gif"},
-        MAX_CONTENT_LENGTH=2 * 1024 * 1024,  # 2MB
-        SQLALCHEMY_DATABASE_URI="sqlite+pysqlite:///db/database.db",
+        MAX_CONTENT_LENGTH=int(os.environ["FILESIZE_LIMIT_MB"]) * 1024 * 1024,
+        SQLALCHEMY_DATABASE_URI=os.environ["DATABASE_URI"],
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
