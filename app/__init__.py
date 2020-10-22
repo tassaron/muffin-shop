@@ -6,19 +6,25 @@ Home to factories for creating the app and its plugins
 from flask import Flask
 from dotenv import load_dotenv
 import os
+import logging
 from .routes import main_routes
 
-if not os.path.exists(".env"):
-    with open(".env", "w") as f:
-        f.write(f"SECRET_KEY={os.urandom(16)}\n")
 
 load_dotenv()
+LOG = logging.getLogger(__package__)
+logging.basicConfig(filename=os.environ.get("LOG_FILE", "debug.log"))
+LOG.setLevel(logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING")))
 
 
 def create_app():
+    LOG.info("Creating app")
+    if "SECRET_KEY" not in os.environ:
+        LOG.warning("Creating new SECRET_KEY")
+        with open("website.env", "a") as f:
+            f.write(f"\nSECRET_KEY={os.urandom(24)}\n")
     app = Flask("rainbow_shop")
     app.config.update(
-        SECRET_KEY=os.environ["SECRET_KEY"],
+        SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(16)),
         UPLOAD_FOLDER="static/uploads",
         ALLOWED_EXTENSIONS={"jpeg", "jpg", "png", "gif"},
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
@@ -38,6 +44,7 @@ def create_app():
 
 
 def create_plugins():
+    LOG.info("Creating plugins")
     from flask_login import LoginManager
     from flask_sqlalchemy import SQLAlchemy
     from flask_bcrypt import Bcrypt
