@@ -16,5 +16,6 @@ setup(
         "email_validator",
         "is_safe_url",
         "mistune==2.0.0a5",
+        "python-dotenv",
     ],
 )
