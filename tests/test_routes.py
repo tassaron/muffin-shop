@@ -18,7 +18,7 @@ def nav_selected_bytes(route):
 def client():
     global app, db, bcrypt, login_manager
     app = create_app()
-    db, bcrypt, login_manager = plugins
+    db, migrate, bcrypt, login_manager = plugins
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False

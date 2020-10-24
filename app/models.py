@@ -1,7 +1,7 @@
 from .plugins import plugins
 
 # plugins = create_plugins()
-db, bcrypt, login_manager = plugins
+db, migrate, bcrypt, login_manager = plugins
 
 
 class User(db.Model):

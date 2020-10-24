@@ -10,7 +10,7 @@ import logging
 from .routes import main_routes
 
 
-load_dotenv()
+load_dotenv(".env")
 LOG = logging.getLogger(__package__)
 logging.basicConfig(filename=os.environ.get("LOG_FILE", "debug.log"))
 LOG.setLevel(logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING")))
@@ -20,8 +20,8 @@ def create_app():
     LOG.info("Creating app")
     if "SECRET_KEY" not in os.environ:
         LOG.warning("Creating new SECRET_KEY")
-        with open("website.env", "a") as f:
-            f.write(f"\nSECRET_KEY={os.urandom(24)}\n")
+        with open(".env", "a") as f:
+            f.write(f"\nFLASK_APP=rainbow_shop.run:app\nSECRET_KEY={os.urandom(24)}\n")
     app = Flask("rainbow_shop")
     app.config.update(
         SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(16)),
@@ -48,5 +48,6 @@ def create_plugins():
     from flask_login import LoginManager
     from flask_sqlalchemy import SQLAlchemy
     from flask_bcrypt import Bcrypt
+    from flask_migrate import Migrate
 
-    return SQLAlchemy(), Bcrypt(), LoginManager()
+    return SQLAlchemy(), Migrate(), Bcrypt(), LoginManager()

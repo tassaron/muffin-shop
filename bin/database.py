@@ -77,7 +77,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.description = "Database management script for this shop application"
+    parser.description = "Database creation script for this shop application"
     actions = parser.add_mutually_exclusive_group()
     actions.add_argument("new", help="create a blank db file", nargs="?")
     actions.add_argument(
