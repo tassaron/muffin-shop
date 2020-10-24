@@ -13,6 +13,7 @@ setup(
         "flask-login",
         "flask-sqlalchemy",
         "flask_wtf",
+        "flask_migrate",
         "email_validator",
         "is_safe_url",
         "mistune==2.0.0a5",
