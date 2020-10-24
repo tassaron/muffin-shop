@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database management script for a shop application. Use during initial setup or upgrade.
+Database management script for a shop application. Use during initial setup or testing.
 """
 from rainbow_shop.__init__ import create_app
 from rainbow_shop.models import *

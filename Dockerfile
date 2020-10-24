@@ -13,11 +13,11 @@ WORKDIR /srv/website
 
 COPY /app ./app
 
-COPY /bin ./bin
-
 COPY /tests ./tests
 
 COPY /setup/website.uwsgi ./uwsgi.ini
+
+COPY /setup/database.py ./database.py
 
 COPY setup.py .
 
@@ -31,7 +31,7 @@ RUN /srv/website/env/bin/pip3 install pytest pytest-randomly pytest-xdist
 
 RUN /srv/website/env/bin/python3 -m pytest -n 2
 
-RUN /srv/website/env/bin/python3 bin/database.py test
+RUN /srv/website/env/bin/python3 database.py test
 
 EXPOSE 5000
 
