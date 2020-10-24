@@ -13,12 +13,21 @@ blueprint = Blueprint(
 )
 
 
+@blueprint.app_template_filter("currency")
+def float_to_str_currency(num):
+    maj, min = str(num).split(".")
+    return str(num) if len(min) == 2 else ".".join((maj, f"{min}0"))
+
+
 @blueprint.route("/")
 def index():
     return render_template(
         "storefront_index.html",
         logged_in=flask_login.current_user.is_authenticated,
         no_of_items=0,
+        products=[]
+        if not db.engine.dialect.has_table(db.engine, "Product")
+        else Product.query.all(),
     )
 
 

@@ -2,11 +2,16 @@
 """
 Database management script for a shop application. Use during initial setup or upgrade.
 """
+from rainbow_shop.__init__ import create_app
 from rainbow_shop.models import *
 import os
 import string
 import random
 from email_validator import validate_email, EmailNotValidError
+
+
+app = create_app()
+db.init_app(app)
 
 
 def random_password(length):
@@ -86,14 +91,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "--db",
         help="URI to the database",
-        default=db.app.config["SQLALCHEMY_DATABASE_URI"],
+        default=app.config["SQLALCHEMY_DATABASE_URI"],
     )
     args = parser.parse_args()
 
     if args.new == "new":
-        prompt_deletion(create_new_db, args.db)
+        with app.app_context():
+            prompt_deletion(create_new_db, args.db)
 
     elif args.new == "test":
-        prompt_deletion(create_test_db, args.db)
+        with app.app_context():
+            prompt_deletion(create_test_db, args.db)
     else:
         parser.print_help()
