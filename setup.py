@@ -14,6 +14,7 @@ setup(
         "flask-sqlalchemy",
         "flask_wtf",
         "flask_migrate",
+        "flask_monitoringdashboard",
         "email_validator",
         "is_safe_url",
         "mistune==2.0.0a5",
