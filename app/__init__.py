@@ -24,7 +24,7 @@ def create_app():
             f.write(f"\nFLASK_APP=rainbow_shop.run:app\nSECRET_KEY={os.urandom(24)}\n")
     app = Flask("rainbow_shop")
     app.config.update(
-        SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(16)),
+        SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(24)),
         UPLOAD_FOLDER="static/uploads",
         ALLOWED_EXTENSIONS={"jpeg", "jpg", "png", "gif"},
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,

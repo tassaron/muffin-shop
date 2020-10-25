@@ -17,9 +17,7 @@ class LoginForm(FlaskForm):
 class ShortRegistrationForm(FlaskForm):
     """A user registration form with just the email and password fields"""
 
-    email = StringField(
-        "email", validators=[DataRequired(), Email(), Length(min=5, max=32)]
-    )
+    email = StringField("email", validators=[DataRequired(), Email()])
     password = PasswordField(
         "password", validators=[Length(min=8, max=64), DataRequired()]
     )
@@ -27,3 +25,27 @@ class ShortRegistrationForm(FlaskForm):
         "confirm password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Sign Up")
+
+
+class RequestPasswordResetForm(FlaskForm):
+    """User requests that their password be reset"""
+
+    email = StringField("email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Reset Your Password")
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError("There is no account with that email.")
+
+
+class PasswordResetForm(FlaskForm):
+    """User submits a new password after verifying email"""
+
+    password = PasswordField(
+        "Password", validators=[DataRequired(), Length(min=8, max=64)]
+    )
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Reset Password")

@@ -1,4 +1,6 @@
 from .plugins import plugins
+from itsdangerous import TimedJSONWebSignatureSerializer
+import os
 
 # plugins = create_plugins()
 db, migrate, bcrypt, login_manager = plugins
@@ -19,6 +21,19 @@ class User(db.Model):
 
     def __repr__(self):
         return str(self.email)
+
+    def create_password_reset_token(self):
+        serializer = TimedJSONWebSignatureSerializer(os.environ("SECRET_KEY"), 1800)
+        return serializer.dumps({"user_id": self.id}).decode("utf-8")
+
+    @staticmethod
+    def verify_password_reset_token(token):
+        serializer = TimedJSONWebSignatureSerializer(os.environ("SECRET_KEY"))
+        try:
+            user_id = serializer.loads(token)["user_id"]
+        except KeyError:
+            return None
+        return User.query.get(user_id)
 
     def check_password_hash(self, alleged_password):
         return bcrypt.check_password_hash(self.password, alleged_password)
