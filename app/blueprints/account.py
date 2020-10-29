@@ -13,9 +13,9 @@ from flask import (
 import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
-from rainbow_shop.plugins import db
-from rainbow_shop.forms import ShortRegistrationForm, LoginForm
-from rainbow_shop.models import User, ShippingAddress
+from tassaron_flask_template.plugins import db
+from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm
+from tassaron_flask_template.models import User, ShippingAddress
 
 
 blueprint = Blueprint(

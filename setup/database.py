@@ -2,8 +2,8 @@
 """
 Database management script for a shop application. Use during initial setup or testing.
 """
-from rainbow_shop.__init__ import create_app
-from rainbow_shop.models import *
+from tassaron_flask_template.__init__ import create_app
+from tassaron_flask_template.models import *
 import os
 import string
 import random
@@ -38,28 +38,6 @@ def create_test_db():
     db.create_all()
     db.session.add(User(email="admin@example.com", password="password", is_admin=True))
     db.session.add(User(email="user@example.com", password="password", is_admin=False))
-    db.session.add(ProductCategory(name="Fruits"))
-    db.session.add(ProductCategory(name="Roots"))
-    db.session.add(
-        Product(
-            name="Tomato",
-            description="Vine-ripened and delicious!",
-            price=4.50,
-            category_id=1,
-            stock=10,
-            image="tomato.jpg",
-        )
-    )
-    db.session.add(
-        Product(
-            name="Potato",
-            description="A real tuber from the ground",
-            price=3.70,
-            category_id=2,
-            stock=1,
-            image="potato.jpg",
-        )
-    )
     db.session.commit()
 
 

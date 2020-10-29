@@ -21,8 +21,8 @@ def create_app():
     if "SECRET_KEY" not in os.environ:
         LOG.warning("Creating new SECRET_KEY")
         with open(".env", "a") as f:
-            f.write(f"\nFLASK_APP=rainbow_shop.run:app\nSECRET_KEY={os.urandom(24)}\n")
-    app = Flask("rainbow_shop")
+            f.write(f"\nFLASK_APP=tassaron_flask_template.run:app\nSECRET_KEY={os.urandom(24)}\n")
+    app = Flask("tassaron_flask_template")
     app.config.update(
         SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(24)),
         UPLOAD_FOLDER="static/uploads",

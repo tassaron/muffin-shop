@@ -1,8 +1,8 @@
 from flask import *
 import flask_login
 from werkzeug.utils import secure_filename
-from rainbow_shop.plugins import bcrypt, db
-from rainbow_shop.models import Product
+from tassaron_flask_template.plugins import bcrypt, db
+from tassaron_flask_template.models import Product
 
 
 blueprint = Blueprint(

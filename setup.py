@@ -1,10 +1,10 @@
 from setuptools import setup
 
 setup(
-    name="the rainbow shop",
-    version="20.10.22",  # year.month.day
-    packages=["rainbow_shop", "rainbow_shop.blueprints"],
-    package_dir={"rainbow_shop": "app", "rainbow_shop.blueprints": "app/blueprints"},
+    name="tassaron's flask template",
+    version="20.10.29",  # year.month.day
+    packages=["tassaron_flask_template", "tassaron_flask_template.blueprints"],
+    package_dir={"tassaron_flask_template": "app", "tassaron_flask_template.blueprints": "app/blueprints"},
     include_package_data=True,
     install_requires=[
         "uwsgi",

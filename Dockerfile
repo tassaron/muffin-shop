@@ -38,4 +38,4 @@ EXPOSE 5000
 CMD ["/srv/website/env/bin/uwsgi", "--ini", "/srv/website/uwsgi.ini"]
 
 # Test server without Nginx
-# CMD ["/srv/website/env/bin/uwsgi", "--socket", "0.0.0.0:5000", "--protocol=http", "-w", "rainbow_shop.run:app"]
+# CMD ["/srv/website/env/bin/uwsgi", "--socket", "0.0.0.0:5000", "--protocol=http", "-w", "tassaron_flask_template.run:app"]

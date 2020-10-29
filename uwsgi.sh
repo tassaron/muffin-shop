@@ -6,4 +6,4 @@ else
     port="$1"
 fi
 
-uwsgi --socket 0.0.0.0:$port --protocol=http -w rainbow_shop.run:app
+uwsgi --socket 0.0.0.0:$port --protocol=http -w tassaron_flask_template.run:app

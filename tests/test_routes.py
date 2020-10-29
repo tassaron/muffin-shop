@@ -2,9 +2,9 @@ import os
 import tempfile
 import pytest
 import flask_login
-from rainbow_shop.__init__ import create_app
-from rainbow_shop.app import init_app, plugins
-from rainbow_shop.models import User
+from tassaron_flask_template.__init__ import create_app
+from tassaron_flask_template.app import init_app, plugins
+from tassaron_flask_template.models import User
 
 
 def nav_selected_bytes(route):

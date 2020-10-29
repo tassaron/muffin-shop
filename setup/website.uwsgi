@@ -1,5 +1,5 @@
 [uwsgi]
-module = rainbow_shop.run:app
+module = tassaron_flask_template.run:app
 
 master = true
 processes = 5
