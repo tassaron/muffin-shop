@@ -1,6 +1,7 @@
 """
 Simply initializes the app and registers all blueprints
 """
+import os
 from .blueprints import register_blueprints
 from .plugins import plugins
 
@@ -12,17 +13,17 @@ def init_app(app):
     migrate.init_app(app, db)
     register_blueprints(app)
 
-    import flask_monitoringdashboard as monitor
-    import os
-
-    monitor.config.init_from(file="monitor.cfg")
-    try:
-        monitor.config.username = os.environ["MONITOR_USERNAME"]
-        monitor.config.password = os.environ["MONITOR_PASSWORD"]
-    except KeyError:
-        raise KeyError("MONITOR_USERNAME and MONITOR_PASSWORD must be added to .env")
-    monitor.config.security_token = os.urandom(24)
-    monitor.bind(app)
+    if os.environ["FLASK_ENV"] == "production":
+        # Enable Monitoring Dashboard only in production
+        import flask_monitoringdashboard as monitor
+        monitor.config.init_from(file="monitor.cfg")
+        try:
+            monitor.config.username = os.environ["MONITOR_USERNAME"]
+            monitor.config.password = os.environ["MONITOR_PASSWORD"]
+        except KeyError:
+            raise KeyError("MONITOR_USERNAME and MONITOR_PASSWORD must be added to .env")
+        monitor.config.security_token = os.urandom(24)
+        monitor.bind(app)
 
     from .models import User
 

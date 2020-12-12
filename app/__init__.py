@@ -17,11 +17,29 @@ LOG.setLevel(logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING")))
 
 
 def create_app():
+    def create_ensure_env_var_func():
+        default_values = {
+            "FLASK_APP": "tassaron_flask_template.run:app",
+            "FLASK_ENV": "development",
+            "SECRET_KEY": os.urandom(24),
+        }
+        def ensure_env_var(token):
+            nonlocal default_values
+            if token not in os.environ:
+                LOG.warning(f"Creating new {str(token)}")
+                with open(".env", "a") as f:
+                    f.write(
+                        f"\n{str(token)}={default_values[token]}"
+                    )
+        return ensure_env_var
+    
     LOG.info("Creating app")
-    if "SECRET_KEY" not in os.environ:
-        LOG.warning("Creating new SECRET_KEY")
-        with open(".env", "a") as f:
-            f.write(f"\nFLASK_APP=tassaron_flask_template.run:app\nSECRET_KEY={os.urandom(24)}\n")
+    ensure_env_var = create_ensure_env_var_func()
+    ensure_env_var("FLASK_APP")
+    ensure_env_var("FLASK_ENV")
+    ensure_env_var("SECRET_KEY")
+    load_dotenv(".env")
+
     app = Flask("tassaron_flask_template")
     app.config.update(
         SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(24)),
@@ -39,6 +57,19 @@ def create_app():
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
     )
+
+    if os.environ["FLASK_ENV"] == "production":
+        # Configure email
+        try:
+            app.config["EMAIL_API_KEY"] = os.environ["EMAIL_API_KEY"]
+            app.config["EMAIL_API_URL"] = os.environ["EMAIL_API_URL"]
+            app.config["EMAIL_SENDER_NAME"] = os.environ["EMAIL_SENDER_NAME"]
+            app.config["EMAIL_SENDER_ADDRESS"] = os.environ["EMAIL_SENDER_ADDRESS"]
+        except KeyError as e:
+            raise KeyError(f"{e} is missing from .env")
+    else:
+        LOG.warning("Email is disabled because FLASK_ENV != production")
+
     app.register_blueprint(main_routes)
     return app
 
