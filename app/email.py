@@ -3,7 +3,7 @@ import requests
 from flask import current_app
 
 def send_email(subject, body, send_to):
-    if current.config["FLASK_ENV"] != "production":
+    if current_app.config["FLASK_ENV"] != "production":
         return
     return requests.post(
         current_app.config["EMAIL_API_URL"],
@@ -18,7 +18,7 @@ def send_email(subject, body, send_to):
 
 
 def send_password_reset_email(user):
-    if current.config["FLASK_ENV"] != "production":
+    if current_app.config["FLASK_ENV"] != "production":
         return
     token = user.get_reset_token()
     send_email(

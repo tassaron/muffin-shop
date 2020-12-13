@@ -33,16 +33,18 @@ def create_app():
                     )
         return ensure_env_var
     
-    LOG.info("Creating app")
+    # FLASK_ENV must be set in the environment before the Flask instance is created
+    LOG.info("Loading environment variables")
     ensure_env_var = create_ensure_env_var_func()
     ensure_env_var("FLASK_APP")
     ensure_env_var("FLASK_ENV")
     ensure_env_var("SECRET_KEY")
     load_dotenv(".env")
 
+    LOG.info("Creating Flask instance")
     app = Flask("tassaron_flask_template")
     app.config.update(
-        SECRET_KEY=os.environ.get("SECRET_KEY", os.urandom(24)),
+        SECRET_KEY=os.environ["SECRET_KEY"],
         UPLOAD_FOLDER="static/uploads",
         ALLOWED_EXTENSIONS={"jpeg", "jpg", "png", "gif"},
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
@@ -56,9 +58,12 @@ def create_app():
         REMEMBER_COOKIE_SECURE=True,
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
+        # Flask only respects FLASK_ENV if it's set in the environment before instance creation
+        # but for consistency and ease of access, we store it in app.config too
+        FLASK_ENV=os.environ["FLASK_ENV"],
     )
 
-    if os.environ["FLASK_ENV"] == "production":
+    if app.config["FLASK_ENV"] == "production":
         # Configure email
         try:
             app.config["EMAIL_API_KEY"] = os.environ["EMAIL_API_KEY"]
@@ -69,6 +74,8 @@ def create_app():
             raise KeyError(f"{e} is missing from .env")
     else:
         LOG.warning("Email is disabled because FLASK_ENV != production")
+    if app.config["DEBUG"] == True:
+        LOG.critical("DEBUGGER IS ACTIVE because FLASK_ENV == development")
 
     app.register_blueprint(main_routes)
     return app
