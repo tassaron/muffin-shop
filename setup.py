@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="tassaron's flask template",
-    version="20.10.29",  # year.month.day
+    version="20.12.12",  # year.month.day
     packages=["tassaron_flask_template", "tassaron_flask_template.blueprints"],
     package_dir={"tassaron_flask_template": "app", "tassaron_flask_template.blueprints": "app/blueprints"},
     include_package_data=True,
@@ -19,5 +19,6 @@ setup(
         "is_safe_url",
         "mistune==2.0.0a5",
         "python-dotenv",
+        "requests",
     ],
 )

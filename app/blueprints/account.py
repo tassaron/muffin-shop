@@ -14,8 +14,9 @@ import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
 from tassaron_flask_template.plugins import db
-from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm
+from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm, RequestPasswordResetForm, PasswordResetForm
 from tassaron_flask_template.models import User, ShippingAddress
+from tassaron_flask_template.email import send_password_reset_email
 
 
 blueprint = Blueprint(
@@ -49,6 +50,44 @@ def login():
     return render_template("login.html", form=form)
 
 
+@blueprint.route("/resetpassword", methods=["GET", "POST"])
+def reset_password():
+    if flask_login.current_user.is_authenticated:
+        return redirect(url_for("storefront.index"))
+    
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_password_reset_email(user)
+        flash("An email was sent with instructions to reset your password", "info")
+        return redirect(url_for(".login"))
+    return render_template("reset_password.html", form=form)
+
+
+@blueprint.route("/resetpassword/<token>", methods=["GET", "POST"])
+def change_password(token):
+    if flask_login.current_user.is_authenticated:
+        return redirect(url_for("storefront.index"))
+
+    user = User.verify_password_reset_token(token)
+    if user is None:
+        flash("That is an invalid or expired token", "warning")
+        return redirect(url_for(".reset_password"))
+    
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        user.password = form.password.data
+        db.session.commit()
+        flash("Your password has been updated! Now you can log in")
+        return redirect((url_for(".login")))
+
+    return render_template("change_password.html", form=form)
+
+
+# Everything below this point is for logged-in users
+#---------------------------------------------------
+
+
 @blueprint.route("/profile")
 @flask_login.login_required
 def user_dashboard():
@@ -61,12 +100,6 @@ def user_dashboard():
 @blueprint.route("/profile/edit")
 @flask_login.login_required
 def edit_user():
-    pass
-
-
-@blueprint.route("/changepassword", methods=["GET", "POST"])
-@flask_login.login_required
-def change_password():
     pass
 
 

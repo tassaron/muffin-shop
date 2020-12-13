@@ -1,6 +1,7 @@
 from .plugins import plugins
 from itsdangerous import TimedJSONWebSignatureSerializer
 import os
+from flask import current_app
 
 # plugins = create_plugins()
 db, migrate, bcrypt, login_manager = plugins
@@ -14,21 +15,22 @@ class User(db.Model):
 
     def __init__(self, **kwargs):
         if kwargs["password"] is not None:
-            kwargs["password"] = bcrypt.generate_password_hash(
-                kwargs["password"]
-            ).decode("utf-8")
+            self.update_password(kwargs["password"])
         super().__init__(**kwargs)
 
     def __repr__(self):
         return str(self.email)
 
+    def update_password(new_password):
+        self.password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+
     def create_password_reset_token(self):
-        serializer = TimedJSONWebSignatureSerializer(os.environ("SECRET_KEY"), 1800)
+        serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"], 1800)
         return serializer.dumps({"user_id": self.id}).decode("utf-8")
 
     @staticmethod
     def verify_password_reset_token(token):
-        serializer = TimedJSONWebSignatureSerializer(os.environ("SECRET_KEY"))
+        serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"])
         try:
             user_id = serializer.loads(token)["user_id"]
         except KeyError:
