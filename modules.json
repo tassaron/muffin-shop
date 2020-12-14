@@ -1,0 +1,13 @@
+{
+    "main": {
+        "name": "Home",
+        "module": "shop"
+    },
+    "shop": {
+        "name": "Shop",
+        "env": ["STRIPE_PUBLISHABLE_KEY", "STRIPE_SECRET", "STRIPE_WEBHOOK"],
+        "blueprints": ["inventory:blueprint", "storefront:blueprint"],
+        "root": "storefront",
+        "index": "storefront.index"
+    }
+}
