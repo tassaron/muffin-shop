@@ -21,7 +21,7 @@ class User(db.Model):
     def __repr__(self):
         return str(self.email)
 
-    def update_password(new_password):
+    def update_password(self, new_password):
         self.password = bcrypt.generate_password_hash(new_password).decode("utf-8")
 
     def create_password_reset_token(self):
@@ -60,8 +60,11 @@ class User(db.Model):
         return str(self.id)
 
 
+# Shop Module
+#---------------------------------------------------
+
 class ShippingAddress(db.Model):
-    id = db.Column(
+    user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )
     first_name = db.Column(db.String(40), nullable=False)

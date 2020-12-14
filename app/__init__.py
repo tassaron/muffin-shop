@@ -6,6 +6,7 @@ Home to factories for creating the app and its plugins
 from flask import Flask
 from dotenv import load_dotenv
 import os
+import datetime
 import logging
 from .routes import main_routes
 
@@ -58,6 +59,8 @@ def create_app():
         REMEMBER_COOKIE_SECURE=True,
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
+        SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
+        FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         # Flask only respects FLASK_ENV if it's set in the environment before instance creation
         # but for consistency and ease of access, we store it in app.config too
         FLASK_ENV=os.environ["FLASK_ENV"],

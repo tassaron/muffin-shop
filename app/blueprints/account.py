@@ -15,8 +15,9 @@ from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
 from tassaron_flask_template.plugins import db
 from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm, RequestPasswordResetForm, PasswordResetForm
-from tassaron_flask_template.models import User, ShippingAddress
 from tassaron_flask_template.email import send_password_reset_email
+
+import tassaron_flask_template.models as Models
 
 
 blueprint = Blueprint(
@@ -76,7 +77,7 @@ def change_password(token):
     
     form = PasswordResetForm()
     if form.validate_on_submit():
-        user.password = form.password.data
+        user.update_password(form.password.data)
         db.session.commit()
         flash("Your password has been updated! Now you can log in")
         return redirect((url_for(".login")))
@@ -93,8 +94,19 @@ def change_password(token):
 def user_dashboard():
     """ Let the user manage their shipping address, change password """
     user_id = int(flask_login.current_user.get_id())
-    # shipping = ShippingAddress.query.filter_by(id=user_id).first()
-    return f"{str(user_id)}"
+    sections = {}
+    for module in current_app.modules.values():
+        for section_name, model in module["profile_models"].items():
+            model = Models.__dict__[model]
+            model_dict = model.query.filter_by(user_id=user_id).first()
+            sections[model.__name__.lower()] = (
+                section_name,
+                render_template(
+                    "view_profile_section.html",
+                    items=model_dict if model_dict is not None else model.__dict__,
+                )
+            )
+    return render_template("view_profile.html", profile_sections=sections)
 
 
 @blueprint.route("/profile/edit")

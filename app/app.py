@@ -34,4 +34,15 @@ def init_app(app):
     login_manager.anonymous_user = lambda: User(
         email=None, password=None, is_admin=False
     )
+
+    def inject_vars():
+        import flask_login
+        nonlocal app
+        return {
+            "logged_in": flask_login.current_user.is_authenticated,
+            "site_name": app.config["SITE_NAME"],
+            "footer_year": app.config["FOOTER_YEAR"],
+        }
+    app.context_processor(inject_vars)
+
     return app

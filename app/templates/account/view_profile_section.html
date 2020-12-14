@@ -1,0 +1,10 @@
+{% for key, value in items.items() %}
+<div class="row profile-row">
+    <div class="col-md-6">
+        <label>{{ key }}</label>
+    </div>
+    <div class="col-md-6">
+        <p>{{ value }}</p>
+    </div>
+</div>
+{% endfor %}

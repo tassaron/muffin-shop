@@ -23,7 +23,6 @@ def float_to_str_currency(num):
 def index():
     return render_template(
         "storefront_index.html",
-        logged_in=flask_login.current_user.is_authenticated,
         no_of_items=0,
         products=[]
         if not db.engine.dialect.has_table(db.engine, "Product")

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h2>Your Account</h2>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab"
+                            aria-controls="account" aria-selected="true">Account</a>
+                    </li>
+                    {% for section_id, section in profile_sections.items() %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="{{ section_id }}-tab" data-toggle="tab" href="#{{ section_id }}"
+                            role="tab" aria-controls="{{ section_id }}" aria-selected="false">{{ section[0] }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">
+                <style>
+                    label {
+                        font-weight: 600;
+                    }
+
+                    .profile-row {
+                        margin-top: 1rem;
+                        border-bottom: 0.2rem dashed grey;
+                    }
+                </style>
+                <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                    <div class="row profile-row">
+                        <div class="col-md-6">
+                            <label>Email Address</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p>kshitighelani@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="row profile-row">
+                        <div class="col-md-6">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-md-6">
+                            <p><a href="#" class="btn btn-outline-primary">Reset Password</a></p>
+                        </div>
+                    </div>
+                </div>
+                {% for section_id, section in profile_sections.items() %}
+                <div class="tab-pane fade" id="{{ section_id }}" role="tabpanel" aria-labelledby="{{ section_id }}-tab">
+                {{ section[1]|safe }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

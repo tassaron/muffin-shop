@@ -44,6 +44,8 @@ def import_modules(app):
         for env_var in module["env"]:
             ensure_env_var(env_var)
 
+    app.modules = data
+
     return (root_blueprint, blueprints)
 
 
