@@ -12,6 +12,7 @@
 *.ini text
 *.sh text
 *.mako text
+*.json text
 Dockerfile text
 LICENSE text
 setup/* text
