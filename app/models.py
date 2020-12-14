@@ -13,16 +13,20 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=True)
     is_admin = db.Column(db.Boolean, nullable=False)
 
+    @classmethod
+    def create_password_hash(cls, new_password):
+        return bcrypt.generate_password_hash(new_password).decode("utf-8")
+
     def __init__(self, **kwargs):
         if kwargs["password"] is not None:
-            self.update_password(kwargs["password"])
+            kwargs["password"] = User.create_password_hash(kwargs["password"])
         super().__init__(**kwargs)
 
     def __repr__(self):
         return str(self.email)
 
     def update_password(self, new_password):
-        self.password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+        self.password = User.create_password_hash(new_password)
 
     def create_password_reset_token(self):
         serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"], 1800)

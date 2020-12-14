@@ -17,7 +17,9 @@ from tassaron_flask_template.plugins import db
 from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm, RequestPasswordResetForm, PasswordResetForm
 from tassaron_flask_template.email import send_password_reset_email
 
+
 import tassaron_flask_template.models as Models
+User = Models.User
 
 
 blueprint = Blueprint(
@@ -97,15 +99,12 @@ def user_dashboard():
     sections = {}
     for module in current_app.modules.values():
         for section_name, model in module["profile_models"].items():
-            model = Models.__dict__[model]
-            model_dict = model.query.filter_by(user_id=user_id).first()
-            sections[model.__name__.lower()] = (
-                section_name,
-                render_template(
-                    "view_profile_section.html",
-                    items=model_dict if model_dict is not None else model.__dict__,
-                )
-            )
+            model_name = model
+            model = Models.__dict__[model_name]
+            section_data = model.query.filter_by(user_id=user_id).first()
+            # section_data could be None and the target could respond with defaults
+            html = current_app.view_functions[module["model_views"][model_name]](section_data)
+            sections[model.__name__.lower()] = (section_name, html)
     return render_template("view_profile.html", profile_sections=sections)
 
 

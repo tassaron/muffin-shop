@@ -9,6 +9,14 @@
             "Shipping Address": "ShippingAddress",
             "Your Cart": "ShoppingCart"
         },
+        "model_views": {
+            "ShippingAddress": "storefront.view_shipping_address",
+            "ShoppingCart": "storefront.view_cart"
+        },
+        "model_forms": {
+            "ShippingAddress": "storefront.edit_shipping_address",
+            "ShoppingCart": "storefront.edit_cart"
+        },
         "env": [
             "STRIPE_PUBLISHABLE_KEY",
             "STRIPE_SECRET",

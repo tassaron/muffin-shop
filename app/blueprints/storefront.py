@@ -45,9 +45,20 @@ def remove_from_cart():
     pass
 
 
-@blueprint.route("/shoppingcart")
-def view_cart():
-    pass
+@blueprint.route("/view_cart")
+def view_cart(cart):
+    return render_template(
+        "view_profile_section.html",
+        items={},
+    )
+
+
+@blueprint.route("/view_shipping_address")
+def view_shipping_address(address):
+    return render_template(
+        "view_profile_section.html",
+        items={},
+    )
 
 
 @blueprint.route("/category/<category_id>")
