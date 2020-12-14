@@ -30,7 +30,7 @@ blueprint = Blueprint(
 @blueprint.route("/login", methods=["POST", "GET"])
 def login():
     if flask_login.current_user.is_authenticated:
-        return redirect(url_for("storefront.index"))
+        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -41,8 +41,8 @@ def login():
             next_page = request.args.get("next")
             return (
                 redirect(next_page)
-                if next_page and is_safe_url(next_page, url_for("storefront.index"))
-                else redirect(url_for("storefront.index"))
+                if next_page and is_safe_url(next_page, url_for(current_app.config["INDEX_ROUTE"]))
+                else redirect(url_for(current_app.config["INDEX_ROUTE"]))
             )
         else:
             flash("Wrong email or password.", "danger")
@@ -53,7 +53,7 @@ def login():
 @blueprint.route("/resetpassword", methods=["GET", "POST"])
 def reset_password():
     if flask_login.current_user.is_authenticated:
-        return redirect(url_for("storefront.index"))
+        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
     
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
@@ -67,7 +67,7 @@ def reset_password():
 @blueprint.route("/resetpassword/<token>", methods=["GET", "POST"])
 def change_password(token):
     if flask_login.current_user.is_authenticated:
-        return redirect(url_for("storefront.index"))
+        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
     user = User.verify_password_reset_token(token)
     if user is None:
@@ -107,13 +107,13 @@ def edit_user():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    return redirect(url_for("storefront.index"))
+    return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 
 @blueprint.route("/register", methods=["GET", "POST"])
 def register():
     if flask_login.current_user.is_authenticated:
-        return redirect(url_for("storefront.index"))
+        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
     form = ShortRegistrationForm()
     if form.validate_on_submit():
