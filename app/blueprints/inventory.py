@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, render_template, flash
 from flask_login import current_user
 from mistune import create_markdown
 from tassaron_flask_template.decorators import admin_required
+import os
 
 
 blueprint = Blueprint("inventory", __name__, template_folder="../templates/inventory")

@@ -1,7 +1,8 @@
 {
     "main": {
         "name": "Home",
-        "module": "shop"
+        "module": "shop",
+        "navigation": []
     },
     "shop": {
         "name": "Shop",
