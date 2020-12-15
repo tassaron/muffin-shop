@@ -1,0 +1,16 @@
+{% if cart == None %}
+<div class="row profile-row">
+    Your shopping cart is empty
+</div>
+{% else %}
+{% for item in cart %}
+<div class="row profile-row">
+    <div class="col-md-6">
+        <label>{{ item.name }}</label>
+    </div>
+    <div class="col-md-6">
+        <p>{{ item.quantity }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endif %}

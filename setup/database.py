@@ -41,6 +41,14 @@ def create_test_db():
     db.session.commit()
 
 
+def create_test_db_shop():
+    db.create_all()
+    db.session.add(User(email="admin@example.com", password="password", is_admin=True))
+    db.session.add(User(email="user@example.com", password="password", is_admin=False))
+    db.session.add(ShippingAddress(user_id=2, first_name="Bri", last_name="Rainey", phone="5550005555", address1="123 Fake St", address2="Apt 9", postal_code="A0B1C2", city="Anytown", province="ON"))
+    db.session.commit()
+
+
 def prompt_deletion(func, uri):
     dirname = os.path.abspath(os.path.dirname(uri).split(":///", 1)[1])
     basename = os.path.basename(uri)
@@ -67,18 +75,24 @@ if __name__ == "__main__":
         "test", help="create a new db with filler data for testing", nargs="?"
     )
     parser.add_argument(
+        "--shop", help="create a new db with filler data for testing the shop",
+        default=False, action="store_true"
+    )
+    parser.add_argument(
         "--db",
         help="URI to the database",
         default=app.config["SQLALCHEMY_DATABASE_URI"],
     )
     args = parser.parse_args()
 
-    if args.new == "new":
-        with app.app_context():
+    with app.app_context():
+        if args.new == "new":
             prompt_deletion(create_new_db, args.db)
 
-    elif args.new == "test":
-        with app.app_context():
-            prompt_deletion(create_test_db, args.db)
-    else:
-        parser.print_help()
+        elif args.new == "test":
+            if args.shop:
+                prompt_deletion(create_test_db_shop, args.db)
+            else:
+                prompt_deletion(create_test_db, args.db)
+        else:
+            parser.print_help()

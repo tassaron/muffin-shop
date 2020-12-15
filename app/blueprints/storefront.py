@@ -2,7 +2,12 @@ from flask import *
 import flask_login
 from werkzeug.utils import secure_filename
 from tassaron_flask_template.plugins import bcrypt, db
-from tassaron_flask_template.models import Product
+from tassaron_flask_template.models import Product, ShippingAddress
+from tassaron_flask_template.decorators import hidden_route
+import logging
+
+
+LOG = logging.getLogger(__package__)
 
 
 blueprint = Blueprint(
@@ -46,18 +51,36 @@ def remove_from_cart():
 
 
 @blueprint.route("/view_cart")
+@hidden_route
 def view_cart(cart):
     return render_template(
-        "view_profile_section.html",
-        items={},
+        "view_cart.html",
+        cart=cart,
     )
 
 
 @blueprint.route("/view_shipping_address")
+@hidden_route
 def view_shipping_address(address):
+    field_names = ShippingAddress.names()
+    if address is None:
+        data = ShippingAddress.default()
+    else:
+        data_ = {}
+        for prop in address.__dict__:
+            if prop in field_names:
+                data_[prop] = address.__dict__[prop]
+        data = {}
+        desired_order = list(field_names.keys())
+        for prop_id in desired_order:
+            data[prop_id] = data_[prop_id]
+
     return render_template(
         "view_profile_section.html",
-        items={},
+        items={
+            field_names[prop_id]: prop_value 
+            for prop_id, prop_value in data.items()
+        },
     )
 
 

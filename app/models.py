@@ -68,6 +68,30 @@ class User(db.Model):
 #---------------------------------------------------
 
 class ShippingAddress(db.Model):
+    @staticmethod
+    def default():
+        return {
+            "first_name": "",
+            "last_name": "",
+            "phone": "",
+            "address1": "",
+            "address2": "",
+            "postal_code": "",
+            "city": "",
+            "province": "",
+        }
+    @staticmethod
+    def names():
+        return {
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "phone": "Phone Number",
+            "address1": "Address 1",
+            "address2": "Address 2",
+            "postal_code": "Postal Code",
+            "city": "City",
+            "province": "Province",
+        }
     user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )
