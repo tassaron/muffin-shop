@@ -13,6 +13,7 @@ setup(
         "flask-login",
         "flask-sqlalchemy",
         "flask_wtf",
+        "flask_reuploaded",
         "flask_migrate",
         "flask_monitoringdashboard",
         "email_validator",

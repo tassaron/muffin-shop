@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Upload Image{% endblock %}
+{% block content %}
+<nav><strong>Upload</strong> | <a href="{{ url_for('main.manage_images') }}">Manage</a></nav>
+
+<form action="" enctype="multipart/form-data" method="POST">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-top border-bottom mb-4">Upload Image</legend>
+        <div class="form-group">
+            {% if form.image.errors %}
+            {{ form.image(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.image.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.image(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-success") }}
+    </div>
+</form>
+
+{% if success %}
+<br>
+<p>Upload Success!</p>
+{% endif %}
+{% endblock %}

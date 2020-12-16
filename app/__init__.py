@@ -23,6 +23,7 @@ def create_app():
             "FLASK_APP": "tassaron_flask_template.run:app",
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
+            "DOMAIN_NAME": "localhost",
         }
         def ensure_env_var(token):
             nonlocal default_values
@@ -40,14 +41,15 @@ def create_app():
     ensure_env_var("FLASK_APP")
     ensure_env_var("FLASK_ENV")
     ensure_env_var("SECRET_KEY")
+    ensure_env_var("DOMAIN_NAME")
     load_dotenv(".env")
 
     LOG.info("Creating Flask instance")
     app = Flask("tassaron_flask_template")
     app.config.update(
         SECRET_KEY=os.environ["SECRET_KEY"],
-        UPLOAD_FOLDER="static/uploads",
-        ALLOWED_EXTENSIONS={"jpeg", "jpg", "png", "gif"},
+        DOMAIN_NAME=os.environ["DOMAIN_NAME"],
+        UPLOADS_DEFAULT_DEST="app/static/uploads",
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"

@@ -164,7 +164,7 @@ def test_user_privilege(client):
     resp = client.get("/account/profile")
     assert resp.status_code == 302
     resp = client.get("/inventory/add")
-    assert resp.status_code == 302
+    assert resp.status_code == 404
     client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "password"},
@@ -175,5 +175,5 @@ def test_user_privilege(client):
     assert resp.status_code == 200
     assert nav_selected_bytes("/") not in resp.data
     resp = client.get("/inventory/add")
-    assert resp.status_code == 403
+    assert resp.status_code == 404
     assert nav_selected_bytes("/") in resp.data

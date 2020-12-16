@@ -6,10 +6,9 @@ from flask import current_app, abort
 def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
-        if not current_user.is_authenticated:
-            return current_app.login_manager.unauthorized()
-        elif not current_user.is_admin_authenticated:
-            abort(403)
+        if not current_user.is_admin_authenticated:
+            # pretend it doesn't exist
+            abort(404)
         return func(*args, **kwargs)
 
     return decorated_view

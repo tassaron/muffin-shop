@@ -35,6 +35,10 @@ def init_app(app):
         email=None, password=None, is_admin=False
     )
 
+    from flask_uploads import configure_uploads
+    from .images import Images
+    configure_uploads(app, Images)
+
     def inject_vars():
         import flask_login
         nonlocal app

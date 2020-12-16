@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
-from werkzeug.exceptions import NotFound, Forbidden, InternalServerError
+from flask import Blueprint, render_template, flash, redirect, url_for, current_app
+from werkzeug.exceptions import NotFound, Forbidden, InternalServerError, RequestEntityTooLarge
 
 
 main_routes = Blueprint("main", __name__)
@@ -20,6 +20,12 @@ def page_not_found(error):
 def page_forbidden(error):
     flash("Unauthorized", "danger")
     return render_template("index.html"), 403
+
+
+@main_routes.app_errorhandler(RequestEntityTooLarge)
+def too_large_upload_error(error):
+    flash(f"That file was rejected because it is more than {current_app.config['MAX_CONTENT_LENGTH']} bytes", "danger")
+    return render_template("index.html"), 413
 
 
 @main_routes.app_errorhandler(InternalServerError)

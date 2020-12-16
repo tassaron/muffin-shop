@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Manage Images{% endblock %}
+{% block content %}
+<nav><a href="{{ url_for('main.upload_images') }}">Upload</a> | <strong>Manage</strong></nav>
+
+{% for image in files_list %}
+    - {{ image }}
+    <a href="{{ url_for('main.view_image', filename=image) }}">open</a>
+    <a href="{{ url_for('main.delete_image', filename=image) }}">delete</a><br>
+{% endfor %}
+{% endblock %}
