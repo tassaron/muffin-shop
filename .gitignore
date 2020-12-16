@@ -9,3 +9,4 @@ build/
 .vscode/
 *.log
 *.egg-info
+app/static/uploads/*
