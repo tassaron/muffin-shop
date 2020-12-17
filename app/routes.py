@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, current_app
-from werkzeug.exceptions import NotFound, Forbidden, InternalServerError, RequestEntityTooLarge
+from werkzeug.exceptions import NotFound, Forbidden, InternalServerError, RequestEntityTooLarge, BadRequest
 
 
 main_routes = Blueprint("main", __name__)
@@ -8,6 +8,14 @@ main_routes = Blueprint("main", __name__)
 @main_routes.route("/about")
 def about_page():
     return render_template("about.html")
+
+
+@main_routes.app_errorhandler(BadRequest)
+def client_request_error(error):
+    flash("Your request was invalid", "danger")
+    return (
+        render_template("index.html"), 400,
+    )
 
 
 @main_routes.app_errorhandler(NotFound)
