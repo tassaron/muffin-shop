@@ -39,12 +39,12 @@ def upload_images():
         name = uuid.uuid4().hex
         file_ext = os.path.splitext(form.image.data.filename)[1]
         if file_ext.lower() not in (".png", ".jpg", ".gif"):
-            abort(400)
+            abort(415)
         try:
             if file_ext != validate_image(form.image.data.stream):
-                abort(400)
+                abort(415)
         except:
-            abort(400)
+            abort(415)
         Images.save(form.image.data, name=f"{name}.")
         success = True
     else:

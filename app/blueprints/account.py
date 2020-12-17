@@ -137,7 +137,7 @@ def register():
             flash("That email is already taken. Log in below", "danger")
             db.session.rollback()
         else:
-            flash("Successly signed up! Now you can log in", "success")
+            flash("Successfully signed up! Log in below", "success")
         return redirect(url_for("account.login"))
 
     return render_template("register.html", form=form)
