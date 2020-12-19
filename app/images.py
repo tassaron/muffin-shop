@@ -31,6 +31,11 @@ def validate_image(stream):
     return '.' + (format if format != 'jpeg' else 'jpg')
 
 
+def get_files():
+    """Returns list of files in the uploads/images directory"""
+    return os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
+
+
 @main_routes.route('/images/upload', methods=['GET', 'POST'])
 @admin_required
 def upload_images():
@@ -55,19 +60,28 @@ def upload_images():
 @main_routes.route('/images')
 @admin_required
 def manage_images():
-    files_list = os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
+    files_list = get_files()
     return render_template('manage_images.html', files_list=files_list)
 
 
-@main_routes.route('/images/<filename>')
+@main_routes.route('/images/<string:filename>')
 @admin_required
 def view_image(filename):
+    files_list = get_files()
+    if filename not in files_list:
+        abort(404)
+    file_path = Images.path(filename)
     return render_template('view_image.html', file_url=url_for("static", filename=f"uploads/images/{filename}"))
 
 
-@main_routes.route('/images/<filename>/delete')
+@main_routes.route('/images/<string:filename>/delete')
 @admin_required
 def delete_image(filename):
+    if filename not in get_files():
+        abort(404)
     file_path = Images.path(filename)
-    os.remove(file_path)
+    try:
+        os.remove(file_path)
+    except FileNotFoundError:
+        abort(404)
     return redirect(url_for('main.manage_images'))
