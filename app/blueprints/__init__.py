@@ -3,6 +3,7 @@ import json
 import importlib
 import os
 import logging
+from flask import url_for
 
 
 LOG = logging.getLogger(__package__)
@@ -22,12 +23,17 @@ def import_modules(app):
         data = json.load(f)
     main_module = data["main"]["module"]
 
-    blueprints = {}
-    for blueprint in data[main_module]["blueprints"]:
-        module_name, blueprint_name = blueprint.split(":")
-        module = importlib.import_module(f".{module_name}", "tassaron_flask_template.blueprints")
-        blueprints[module_name] = module.__dict__[blueprint_name]
+    def import_python_modules(lst):
+        nonlocal blueprints
+        for blueprint in lst:
+            module_name, blueprint_name = blueprint.split(":")
+            module = importlib.import_module(f".{module_name}", "tassaron_flask_template.blueprints")
+            blueprints[module_name] = module.__dict__[blueprint_name]
 
+    blueprints = {}
+    import_python_modules(data[main_module]["blueprints"])
+    for module_name in data["main"]["navigation"]:
+        import_python_modules(data[module_name]["blueprints"])
     root_blueprint = blueprints.pop(data[main_module]["root"])
     app.config["INDEX_ROUTE"] = data[main_module]["index"]
 
@@ -39,9 +45,8 @@ def import_modules(app):
             else:
                 LOG.warning(f"Missing {token} from environment vars")
 
-    data.pop("main")
     for module in data.values():
-        for env_var in module["env"]:
+        for env_var in module.get("env", []):
             ensure_env_var(env_var)
 
     app.modules = data
@@ -57,3 +62,7 @@ def register_blueprints(app):
         *list(others.values()),
     ):
         app.register_blueprint(blueprint, url_prefix=f"/{blueprint.name}")
+    for blueprint_index, tup in app.blueprint_index.items():
+        endpoint, f, options = tup
+        app.add_url_rule(f"/{blueprint_index}", endpoint, f, **options)
+    app.blueprint_index = {}

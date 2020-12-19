@@ -98,12 +98,18 @@ def user_dashboard():
     user_id = int(flask_login.current_user.get_id())
     sections = {}
     for module in current_app.modules.values():
-        for section_name, model in module["profile_models"].items():
+        for section_name, model in module.get("profile_models", {}).items():
             model_name = model
             model = Models.__dict__[model_name]
             section_data = model.query.filter_by(user_id=user_id).first()
             # section_data could be None and the target could respond with defaults
-            html = current_app.view_functions[module["model_views"][model_name]](section_data)
+            try:
+                html = current_app.view_functions[module["model_views"][model_name]](section_data)
+            except KeyError:
+                current_app.logger.critical(
+                    "module %s has profile_model %s but no corresponding model view.", (module["name"], model_name)
+                )
+                html = ""
             sections[model.__name__.lower()] = (section_name, html)
     return render_template("view_profile.html", profile_sections=sections)
 

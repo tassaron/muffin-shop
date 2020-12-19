@@ -9,11 +9,6 @@ main_routes = Blueprint("main", __name__)
 from .images import *
 
 
-@main_routes.route("/about")
-def about_page():
-    return render_template("about.html")
-
-
 @main_routes.app_errorhandler(BadRequest)
 def client_request_error(error):
     flash("Your request was invalid", "danger")

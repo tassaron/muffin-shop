@@ -1,10 +1,16 @@
 {
     "main": {
         "name": "Home",
-        "module": "shop",
-        "navigation": []
+        "module": "storefront",
+        "navigation": ["about"]
     },
-    "shop": {
+    "about": {
+        "name": "About",
+        "blueprints": ["about:blueprint"],
+        "root": "about",
+        "index": "about.about_page"
+    },
+    "storefront": {
         "name": "Shop",
         "profile_models": {
             "Shipping Address": "ShippingAddress",

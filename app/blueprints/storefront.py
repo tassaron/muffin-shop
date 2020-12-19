@@ -1,4 +1,5 @@
 from flask import *
+from tassaron_flask_template.blueprint import Blueprint
 import flask_login
 from werkzeug.utils import secure_filename
 from tassaron_flask_template.plugins import bcrypt, db
@@ -24,7 +25,7 @@ def float_to_str_currency(num):
     return str(num) if len(min) == 2 else ".".join((maj, f"{min}0"))
 
 
-@blueprint.route("/")
+@blueprint.index_route("/")
 def index():
     return render_template(
         "storefront_index.html",
