@@ -17,7 +17,8 @@ class Blueprint(flask.Blueprint):
                 # a potential index rule can't be known until the blueprint is registered
                 self.__index_route = (endpoint, f, options)
             else:
-                self.add_url_rule(rule, endpoint, f, **options)
+                raise ValueError("index_routes should be at /")
+                #self.add_url_rule(rule, endpoint, f, **options)
             return f
 
         return decorator
