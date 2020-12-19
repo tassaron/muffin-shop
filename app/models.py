@@ -68,6 +68,8 @@ class User(db.Model):
 #---------------------------------------------------
 
 class ShippingAddress(db.Model):
+    """Saved for registered user after placing an order.
+    If a user has no ShippingAddress then we use the staticmethod default()"""
     @staticmethod
     def default():
         return {
@@ -111,6 +113,7 @@ class ProductCategory(db.Model):
 
 
 class Product(db.Model):
+    """Product which will be available for purchase in the store if stock > 0"""
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(40), nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -123,6 +126,7 @@ class Product(db.Model):
 
 
 class ShoppingCart(db.Model):
+    """Shopping carts in the database should belong to a registered user"""
     user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )

@@ -1,5 +1,5 @@
 # Tassaron's Flask Template
-Template for a Flask webapp with login system and emails built-in, and other common features separated into submodules defined in `modules.json`.
+Template for a Flask webapp with login system and emails built-in, and other common features separated into "modules" defined in `modules.json`. See `MODULES.md` for more information about these modules.
 
 ## Project Goals
 1. Simplify deployment of a new blog, shop, or combined blog + shop.

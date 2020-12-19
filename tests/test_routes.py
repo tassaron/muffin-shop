@@ -152,7 +152,7 @@ def test_admin_privilege(client):
         follow_redirects=True,
     )
     assert flask_login.current_user == user
-    resp = client.get("/inventory/add")
+    resp = client.get("/inventory/create")
     assert resp.status_code == 200
 
 
