@@ -3,8 +3,9 @@ from tassaron_flask_template.blueprint import Blueprint
 import flask_login
 from werkzeug.utils import secure_filename
 from tassaron_flask_template.plugins import bcrypt, db
-from tassaron_flask_template.models import Product, ShippingAddress
+from tassaron_flask_template.models import ShippingAddress
 from tassaron_flask_template.decorators import hidden_route
+from .inventory_models import Product, ProductCategory
 import logging
 
 
@@ -36,9 +37,10 @@ def index():
     )
 
 
-@blueprint.route("/product/<product_id>")
+@blueprint.route("/product/<int:product_id>")
 def product_description(product_id):
-    return Product.get(product_id)
+    product = Product.query.filter_by(id=product_id).first()
+    return render_template("view_product.html", product=product, title=product.name)
 
 
 @blueprint.route("/product/addtocart", methods=["POST"])

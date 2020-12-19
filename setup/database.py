@@ -4,6 +4,7 @@ Database management script for a shop application. Use during initial setup or t
 """
 from tassaron_flask_template.__init__ import create_app
 from tassaron_flask_template.models import *
+from tassaron_flask_template.blueprints.inventory_models import *
 import os
 import string
 import random
@@ -45,7 +46,34 @@ def create_test_db_shop():
     db.create_all()
     db.session.add(User(email="admin@example.com", password="password", is_admin=True))
     db.session.add(User(email="user@example.com", password="password", is_admin=False))
-    db.session.add(ShippingAddress(user_id=2, first_name="Bri", last_name="Rainey", phone="5550005555", address1="123 Fake St", address2="Apt 9", postal_code="A0B1C2", city="Anytown", province="ON"))
+    db.session.add(
+        ShippingAddress(
+            user_id=2,
+            first_name="Bri",
+            last_name="Rainey",
+            phone="5550005555",
+            address1="123 Fake St",
+            address2="Apt 9",
+            postal_code="A0B1C2",
+            city="Anytown",
+            province="ON"
+        )
+    )
+    db.session.add(
+        ProductCategory(
+            name="Food",
+        )
+    )
+    db.session.add(
+        Product(
+            name="Potato",
+            price=1.0,
+            description="Tuber from the ground",
+            image="potato.jpg",
+            stock=1,
+            category_id=1,
+        )
+    )
     db.session.commit()
 
 

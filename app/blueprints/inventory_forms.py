@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, DecimalField, IntegerField
-from wtforms.validators import DataRequired, Length, Range
+from wtforms.validators import DataRequired, Length, NumberRange
 
 
 class CreateProductForm(FlaskForm):
@@ -17,9 +17,9 @@ class CreateProductForm(FlaskForm):
         "image", validators=[DataRequired(), Length(min=1, max=30)]
     )
     stock = IntegerField(
-        "stock", validators=[DataRequired(), Range(min=0)]
+        "stock", validators=[DataRequired(), NumberRange(min=0)]
     )
     category_id = IntegerField(
-        "category", validators=[DataRequired(), Range(min=1)]
+        "category", validators=[DataRequired(), NumberRange(min=1)]
     )
     submit = SubmitField("Create")
