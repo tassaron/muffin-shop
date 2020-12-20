@@ -1,7 +1,7 @@
 {% set selected = 2 %}
 {% extends 'base.html' %}
-{% block title %}About Us{% endblock %}
+{% block title %}About {{ site_name }}{% endblock %}
 
 {% block content %}
-About Test
+{{ about|safe }}
 {% endblock %}
