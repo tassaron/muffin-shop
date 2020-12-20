@@ -39,7 +39,7 @@ def index():
 
 @blueprint.route("/product/<int:product_id>")
 def product_description(product_id):
-    product = Product.query.filter_by(id=product_id).first()
+    product = Product.query.filter_by(id=product_id).first_or_404()
     return render_template("view_product.html", product=product, title=product.name)
 
 

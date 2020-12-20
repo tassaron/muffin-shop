@@ -45,9 +45,7 @@ def create_product():
 @blueprint.route("/delete/<int:id>")
 @admin_required
 def delete_product(id):
-    product = Product.query.get(id)
-    if product is None:
-        abort(404)
+    product = Product.query.get_or_404(id)
     flash(f"Product {product.name} deleted!", "danger")
     db.session.delete(product)
     db.session.commit()
@@ -57,9 +55,7 @@ def delete_product(id):
 @blueprint.route("/edit/<int:id>", methods=["GET", "POST"])
 @admin_required
 def edit_product(id):
-    product = Product.query.get(id)
-    if product is None:
-        abort(404)
+    product = Product.query.get_or_404(id)
     form = ProductForm()
     if form.validate_on_submit():
         product.name = form.name.data
