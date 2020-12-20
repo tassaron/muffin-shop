@@ -3,7 +3,7 @@ from wtforms import StringField, TextAreaField, SubmitField, DecimalField, Integ
 from wtforms.validators import DataRequired, Length, NumberRange
 
 
-class CreateProductForm(FlaskForm):
+class ProductForm(FlaskForm):
     name = StringField(
         "name", validators=[DataRequired(), Length(min=1, max=40)]
     )
@@ -22,4 +22,4 @@ class CreateProductForm(FlaskForm):
     category_id = IntegerField(
         "category", validators=[DataRequired(), NumberRange(min=1)]
     )
-    submit = SubmitField("Create")
+    submit = SubmitField("Submit")
