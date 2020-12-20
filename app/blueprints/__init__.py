@@ -42,10 +42,10 @@ def import_modules(app):
     # ensure env vars are set
     def ensure_env_var(token):
         if token not in os.environ:
-            if app.config["FLASK_ENV"] == "production":
+            if app.env == "production":
                 raise ConfigurationError(f"Missing {token} from environment vars")
             else:
-                LOG.warning(f"Missing {token} from environment vars")
+                app.logger.warning(f"Missing {token} from environment vars")
 
     for module in data.values():
         for env_var in module.get("env", []):

@@ -11,10 +11,15 @@ import logging
 from .routes import main_routes
 
 
+logging.basicConfig(
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(os.environ.get("LOG_FILE", "debug.log")),
+    ],
+    format="%(asctime)s %(name)-8.8s [%(levelname)s] %(message)s",
+    level=logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING"))
+)
 load_dotenv(".env")
-LOG = logging.getLogger(__package__)
-logging.basicConfig(filename=os.environ.get("LOG_FILE", "debug.log"))
-LOG.setLevel(logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING")))
 
 
 class Flask(flask.Flask):
@@ -24,32 +29,36 @@ class Flask(flask.Flask):
 
 
 def create_app():
+    mutated_env_file = False
     def create_ensure_env_var_func():
         default_values = {
             "FLASK_APP": "tassaron_flask_template.run:app",
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }
-
+        mutation = False
+        if os.path.exists(".env"):
+            mutation = True
         def ensure_env_var(token):
-            nonlocal default_values
+            nonlocal mutated_env_file
             if token not in os.environ:
-                LOG.warning(f"Creating new {str(token)}")
+                mutated_env_file = mutation
                 with open(".env", "a") as f:
                     f.write(f"\n{str(token)}={default_values[token]}")
 
         return ensure_env_var
 
     # FLASK_ENV must be set in the environment before the Flask instance is created
-    LOG.info("Loading environment variables")
     ensure_env_var = create_ensure_env_var_func()
     ensure_env_var("FLASK_APP")
     ensure_env_var("FLASK_ENV")
     ensure_env_var("SECRET_KEY")
     load_dotenv(".env")
 
-    LOG.info("Creating Flask instance")
     app = Flask("tassaron_flask_template")
+    app.logger.info("Created Flask instance")
+    if mutated_env_file:
+        app.logger.warning(".env file was modified programmatically")
     app.config.update(
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
@@ -67,12 +76,9 @@ def create_app():
         REMEMBER_COOKIE_HTTPONLY=True,
         SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
-        # Flask only respects FLASK_ENV if it's set in the environment before instance creation
-        # but for consistency and ease of access, we store it in app.config too
-        FLASK_ENV=os.environ["FLASK_ENV"],
     )
 
-    if app.config["FLASK_ENV"] == "production":
+    if app.env == "production":
         # Configure email
         try:
             app.config["EMAIL_API_KEY"] = os.environ["EMAIL_API_KEY"]
@@ -82,16 +88,13 @@ def create_app():
         except KeyError as e:
             raise KeyError(f"{e} is missing from .env")
     else:
-        LOG.warning("Email is disabled because FLASK_ENV != production")
-    if app.config["DEBUG"] == True:
-        LOG.critical("DEBUGGER IS ACTIVE because FLASK_ENV == development")
+        app.logger.warning("Email is disabled because FLASK_ENV != production")
 
     app.register_blueprint(main_routes)
     return app
 
 
 def create_plugins():
-    LOG.info("Creating plugins")
     from flask_login import LoginManager
     from flask_sqlalchemy import SQLAlchemy
     from flask_bcrypt import Bcrypt

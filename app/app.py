@@ -13,7 +13,7 @@ def init_app(app):
     migrate.init_app(app, db)
     register_blueprints(app)
 
-    if os.environ["FLASK_ENV"] == "production":
+    if app.env == "production":
         # Enable Monitoring Dashboard only in production
         import flask_monitoringdashboard as monitor
 
