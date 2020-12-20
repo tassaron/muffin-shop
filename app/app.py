@@ -16,12 +16,15 @@ def init_app(app):
     if os.environ["FLASK_ENV"] == "production":
         # Enable Monitoring Dashboard only in production
         import flask_monitoringdashboard as monitor
+
         monitor.config.init_from(file="monitor.cfg")
         try:
             monitor.config.username = os.environ["MONITOR_USERNAME"]
             monitor.config.password = os.environ["MONITOR_PASSWORD"]
         except KeyError:
-            raise KeyError("MONITOR_USERNAME and MONITOR_PASSWORD must be added to .env")
+            raise KeyError(
+                "MONITOR_USERNAME and MONITOR_PASSWORD must be added to .env"
+            )
         monitor.config.security_token = os.urandom(24)
         monitor.bind(app)
 
@@ -37,16 +40,19 @@ def init_app(app):
 
     from flask_uploads import configure_uploads
     from .images import Images
+
     configure_uploads(app, Images)
 
     def inject_vars():
         import flask_login
+
         nonlocal app
         return {
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
             "footer_year": app.config["FOOTER_YEAR"],
         }
+
     app.context_processor(inject_vars)
 
     return app

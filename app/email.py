@@ -1,6 +1,6 @@
-
 import requests
 from flask import current_app
+
 
 def send_email(subject, body, send_to):
     if current_app.config["FLASK_ENV"] != "production":

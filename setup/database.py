@@ -56,7 +56,7 @@ def create_test_db_shop():
             address2="Apt 9",
             postal_code="A0B1C2",
             city="Anytown",
-            province="ON"
+            province="ON",
         )
     )
     db.session.add(
@@ -103,8 +103,10 @@ if __name__ == "__main__":
         "test", help="create a new db with filler data for testing", nargs="?"
     )
     parser.add_argument(
-        "--shop", help="create a new db with filler data for testing the shop",
-        default=False, action="store_true"
+        "--shop",
+        help="create a new db with filler data for testing the shop",
+        default=False,
+        action="store_true",
     )
     parser.add_argument(
         "--db",

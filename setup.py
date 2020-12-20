@@ -4,7 +4,10 @@ setup(
     name="tassaron's flask template",
     version="20.12.13",  # year.month.day
     packages=["tassaron_flask_template", "tassaron_flask_template.blueprints"],
-    package_dir={"tassaron_flask_template": "app", "tassaron_flask_template.blueprints": "app/blueprints"},
+    package_dir={
+        "tassaron_flask_template": "app",
+        "tassaron_flask_template.blueprints": "app/blueprints",
+    },
     include_package_data=True,
     install_requires=[
         "uwsgi",

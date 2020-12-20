@@ -1,5 +1,14 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, current_app
-from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, NotFound, MethodNotAllowed, RequestEntityTooLarge, UnsupportedMediaType, InternalServerError
+from werkzeug.exceptions import (
+    BadRequest,
+    Unauthorized,
+    Forbidden,
+    NotFound,
+    MethodNotAllowed,
+    RequestEntityTooLarge,
+    UnsupportedMediaType,
+    InternalServerError,
+)
 
 
 main_routes = Blueprint("main", __name__)
@@ -41,7 +50,10 @@ def method_not_allowed_error(error):
 
 @main_routes.app_errorhandler(RequestEntityTooLarge)
 def too_large_upload_error(error):
-    flash(f"That file was rejected because it is more than {current_app.config['MAX_CONTENT_LENGTH']} bytes", "danger")
+    flash(
+        f"That file was rejected because it is more than {current_app.config['MAX_CONTENT_LENGTH']} bytes",
+        "danger",
+    )
     return render_template("error.html", title=error.name), 413
 
 

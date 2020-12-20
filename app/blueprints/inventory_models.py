@@ -1,4 +1,5 @@
 from tassaron_flask_template.plugins import plugins
+
 db = plugins[0]
 
 
@@ -9,6 +10,7 @@ class ProductCategory(db.Model):
 
 class Product(db.Model):
     """Product which will be available for purchase in the store if stock > 0"""
+
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(40), nullable=False)
     price = db.Column(db.Float, nullable=False)

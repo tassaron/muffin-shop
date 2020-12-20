@@ -81,8 +81,7 @@ def view_shipping_address(address):
     return render_template(
         "view_profile_section.html",
         items={
-            field_names[prop_id]: prop_value 
-            for prop_id, prop_value in data.items()
+            field_names[prop_id]: prop_value for prop_id, prop_value in data.items()
         },
     )
 

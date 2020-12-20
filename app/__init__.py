@@ -30,16 +30,16 @@ def create_app():
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }
+
         def ensure_env_var(token):
             nonlocal default_values
             if token not in os.environ:
                 LOG.warning(f"Creating new {str(token)}")
                 with open(".env", "a") as f:
-                    f.write(
-                        f"\n{str(token)}={default_values[token]}"
-                    )
+                    f.write(f"\n{str(token)}={default_values[token]}")
+
         return ensure_env_var
-    
+
     # FLASK_ENV must be set in the environment before the Flask instance is created
     LOG.info("Loading environment variables")
     ensure_env_var = create_ensure_env_var_func()

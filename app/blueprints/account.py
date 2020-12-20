@@ -14,11 +14,17 @@ import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
 from tassaron_flask_template.plugins import db
-from tassaron_flask_template.forms import ShortRegistrationForm, LoginForm, RequestPasswordResetForm, PasswordResetForm
+from tassaron_flask_template.forms import (
+    ShortRegistrationForm,
+    LoginForm,
+    RequestPasswordResetForm,
+    PasswordResetForm,
+)
 from tassaron_flask_template.email import send_password_reset_email
 
 
 import tassaron_flask_template.models as Models
+
 User = Models.User
 
 
@@ -44,7 +50,8 @@ def login():
             next_page = request.args.get("next")
             return (
                 redirect(next_page)
-                if next_page and is_safe_url(next_page, url_for(current_app.config["INDEX_ROUTE"]))
+                if next_page
+                and is_safe_url(next_page, url_for(current_app.config["INDEX_ROUTE"]))
                 else redirect(url_for(current_app.config["INDEX_ROUTE"]))
             )
         else:
@@ -57,7 +64,7 @@ def login():
 def reset_password():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))
-    
+
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -76,7 +83,7 @@ def change_password(token):
     if user is None:
         flash("That is an invalid or expired token", "warning")
         return redirect(url_for(".reset_password"))
-    
+
     form = PasswordResetForm()
     if form.validate_on_submit():
         user.update_password(form.password.data)
@@ -88,7 +95,7 @@ def change_password(token):
 
 
 # Everything below this point is for logged-in users
-#---------------------------------------------------
+# ---------------------------------------------------
 
 
 @blueprint.route("/profile")
@@ -104,10 +111,13 @@ def user_dashboard():
             section_data = model.query.filter_by(user_id=user_id).first()
             # section_data could be None and the target could respond with defaults
             try:
-                html = current_app.view_functions[module["model_views"][model_name]](section_data)
+                html = current_app.view_functions[module["model_views"][model_name]](
+                    section_data
+                )
             except KeyError:
                 current_app.logger.critical(
-                    "module %s has profile_model %s but no corresponding model view.", (module["name"], model_name)
+                    "module %s has profile_model %s but no corresponding model view.",
+                    (module["name"], model_name),
                 )
                 html = ""
             sections[model.__name__.lower()] = (section_name, html)

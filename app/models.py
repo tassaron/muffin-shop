@@ -29,7 +29,9 @@ class User(db.Model):
         self.password = User.create_password_hash(new_password)
 
     def create_password_reset_token(self):
-        serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"], 1800)
+        serializer = TimedJSONWebSignatureSerializer(
+            current_app.config["SECRET_KEY"], 1800
+        )
         return serializer.dumps({"user_id": self.id}).decode("utf-8")
 
     @staticmethod
@@ -65,11 +67,13 @@ class User(db.Model):
 
 
 # Shop Module
-#---------------------------------------------------
+# ---------------------------------------------------
+
 
 class ShippingAddress(db.Model):
     """Saved for registered user after placing an order.
     If a user has no ShippingAddress then we use the staticmethod default()"""
+
     @staticmethod
     def default():
         return {
@@ -82,6 +86,7 @@ class ShippingAddress(db.Model):
             "city": "",
             "province": "",
         }
+
     @staticmethod
     def names():
         return {
@@ -94,6 +99,7 @@ class ShippingAddress(db.Model):
             "city": "City",
             "province": "Province",
         }
+
     user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )
@@ -109,6 +115,7 @@ class ShippingAddress(db.Model):
 
 class ShoppingCart(db.Model):
     """Shopping carts in the database should belong to a registered user"""
+
     user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
     )

@@ -2,7 +2,15 @@ import os
 import uuid
 import imghdr
 import flask_uploads
-from flask import Blueprint, render_template, redirect, url_for, request, current_app, abort
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    url_for,
+    request,
+    current_app,
+    abort,
+)
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
@@ -14,8 +22,13 @@ Images = flask_uploads.UploadSet("images", flask_uploads.IMAGES)
 
 
 class UploadForm(FlaskForm):
-    image = FileField(validators=[FileAllowed(Images, 'Image files only'), FileRequired('Must be an image file')])
-    submit = SubmitField('Upload')
+    image = FileField(
+        validators=[
+            FileAllowed(Images, "Image files only"),
+            FileRequired("Must be an image file"),
+        ]
+    )
+    submit = SubmitField("Upload")
 
 
 def validate_image(stream):
@@ -28,7 +41,7 @@ def validate_image(stream):
     format = imghdr.what(None, header)
     if not format:
         return None
-    return '.' + (format if format != 'jpeg' else 'jpg')
+    return "." + (format if format != "jpeg" else "jpg")
 
 
 def get_files():
@@ -36,7 +49,7 @@ def get_files():
     return os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
 
 
-@main_routes.route('/images/upload', methods=['GET', 'POST'])
+@main_routes.route("/images/upload", methods=["GET", "POST"])
 @admin_required
 def upload_images():
     form = UploadForm()
@@ -54,27 +67,30 @@ def upload_images():
         success = True
     else:
         success = False
-    return render_template('upload_images.html', form=form, success=success)
+    return render_template("upload_images.html", form=form, success=success)
 
 
-@main_routes.route('/images')
+@main_routes.route("/images")
 @admin_required
 def manage_images():
     files_list = get_files()
-    return render_template('manage_images.html', files_list=files_list)
+    return render_template("manage_images.html", files_list=files_list)
 
 
-@main_routes.route('/images/<string:filename>')
+@main_routes.route("/images/<string:filename>")
 @admin_required
 def view_image(filename):
     files_list = get_files()
     if filename not in files_list:
         abort(404)
     file_path = Images.path(filename)
-    return render_template('view_image.html', file_url=url_for("static", filename=f"uploads/images/{filename}"))
+    return render_template(
+        "view_image.html",
+        file_url=url_for("static", filename=f"uploads/images/{filename}"),
+    )
 
 
-@main_routes.route('/images/<string:filename>/delete')
+@main_routes.route("/images/<string:filename>/delete")
 @admin_required
 def delete_image(filename):
     if filename not in get_files():
@@ -84,4 +100,4 @@ def delete_image(filename):
         os.remove(file_path)
     except FileNotFoundError:
         abort(404)
-    return redirect(url_for('main.manage_images'))
+    return redirect(url_for("main.manage_images"))

@@ -11,6 +11,7 @@ class Blueprint(flask.Blueprint):
         Copy of flask.Blueprint.route but it withholds endpoints with a rule of "/"
         The exact rule of these endpoints won't be known until registration
         """
+
         def decorator(f):
             endpoint = options.pop("endpoint", None)
             if rule == "/":
@@ -18,7 +19,7 @@ class Blueprint(flask.Blueprint):
                 self.__index_route = (endpoint, f, options)
             else:
                 raise ValueError("index_routes should be at /")
-                #self.add_url_rule(rule, endpoint, f, **options)
+                # self.add_url_rule(rule, endpoint, f, **options)
             return f
 
         return decorator

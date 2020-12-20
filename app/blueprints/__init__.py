@@ -19,7 +19,7 @@ def import_modules(app):
     Sets INDEX_ROUTE according to the main module's index value
     Ensures that all required env variables have been set
     """
-    with open("modules.json", 'r') as f:
+    with open("modules.json", "r") as f:
         data = json.load(f)
     main_module = data["main"]["module"]
 
@@ -27,7 +27,9 @@ def import_modules(app):
         nonlocal blueprints
         for blueprint in lst:
             module_name, blueprint_name = blueprint.split(":")
-            module = importlib.import_module(f".{module_name}", "tassaron_flask_template.blueprints")
+            module = importlib.import_module(
+                f".{module_name}", "tassaron_flask_template.blueprints"
+            )
             blueprints[module_name] = module.__dict__[blueprint_name]
 
     blueprints = {}
