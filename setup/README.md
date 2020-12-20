@@ -7,7 +7,7 @@
 1. Install Nginx: `apt install -y nginx`
 1. Configure firewall: `ufw allow [YOUR-SSH-PORT]; ufw allow 'Nginx Full'`
 1. Start firewall: `ufw enable`
-1. Make user account for the app: `adduser --disabled-login --in-group nogroup --home /srv/website website`
+1. Make user account for the app: `adduser --system --home /srv/website website`
 1. Clone repo from GitHub: `git clone https://github.com/tassaron2/flask-template /srv/website`
 1. Make Python virtual environment: `cd ~website; python3 -m venv env`
 1. Activate virtual environment: `source env/bin/activate`
@@ -17,6 +17,13 @@
 1. Place Nginx config: `cp setup/website.nginx /etc/nginx/sites-available/website.nginx`
 1. Enable Nginx config: `ln -s /etc/nginx/sites-available/website.nginx /etc/nginx/sites-enabled/website.nginx`
 1. Place Systemd unit: `cp setup/website.service /etc/systemd/system/website.service`
+1. Copy template for `.env` file: `cp setup/website.env.example .env`
+1. Edit `.env` to set `SITE_NAME` and change the value of `FLASK_ENV` to `production`
+1. Customize `modules.json`, `about.md`, and `app/static/img/logo.png` as needed
+1. Set any other variables in `.env` as needed for the modules enabled
+  1. For example, you need to set `STRIPE_` variables to take payments for a shop module
+  1. The security of your `.env` file is very important. It should not be readable by anonymous Unix users nor be committed to source control
+1. Customize HTML inside `app/templates` as needed.
 1. Set permissions: `chown -R website:www-data /srv/website; chmod -R 755 /srv/website`
 1. Make database: `sudo -u website python3 /srv/website/setup/database.py new`
 1. Start uWSGI service: `systemctl start website.service`
