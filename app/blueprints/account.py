@@ -60,7 +60,7 @@ def login():
     return render_template("login.html", form=form)
 
 
-@blueprint.route("/resetpassword", methods=["GET", "POST"])
+@blueprint.route("/reset_password", methods=["GET", "POST"])
 def reset_password():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))
@@ -74,7 +74,7 @@ def reset_password():
     return render_template("reset_password.html", form=form)
 
 
-@blueprint.route("/resetpassword/<token>", methods=["GET", "POST"])
+@blueprint.route("/reset_password/<token>", methods=["GET", "POST"])
 def change_password(token):
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))
