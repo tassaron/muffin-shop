@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, current_app
+from flask import render_template, flash, redirect, url_for, current_app
 from werkzeug.exceptions import (
     BadRequest,
     Unauthorized,
@@ -9,6 +9,9 @@ from werkzeug.exceptions import (
     UnsupportedMediaType,
     InternalServerError,
 )
+from werkzeug.routing import BuildError
+from functools import lru_cache
+from .blueprint import Blueprint
 
 
 main_routes = Blueprint("main", __name__)
@@ -16,6 +19,26 @@ main_routes = Blueprint("main", __name__)
 
 # import images at this point to ensure that all of main_routes is defined
 from .images import *
+
+
+def generic_url_for(rule):
+    try:
+        generic_url = url_for(rule.endpoint, **{arg_name: 1 for arg_name in rule.arguments})
+    except BuildError:
+        generic_url = rule.endpoint
+    return generic_url
+
+
+@lru_cache
+def all_urls():
+    return [generic_url_for(rule) for rule in current_app.url_map.iter_rules() if "static" not in rule.endpoint]
+
+
+@main_routes.admin_route("")
+def admin_index():
+    endpoints = [url for url in all_urls() if url.startswith(current_app.config["ADMIN_URL"])]
+    endpoints.remove(current_app.config["ADMIN_URL"])
+    return render_template("admin.html", endpoints=endpoints)
 
 
 @main_routes.app_errorhandler(BadRequest)

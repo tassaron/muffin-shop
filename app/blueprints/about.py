@@ -11,6 +11,6 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.index_route("/")
+@blueprint.index_route()
 def about_page():
     return render_template("about.html", about=render_markdown("about.md"))

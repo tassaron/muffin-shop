@@ -26,7 +26,7 @@ def float_to_str_currency(num):
     return str(num) if len(min) == 2 else ".".join((maj, f"{min}0"))
 
 
-@blueprint.index_route("/")
+@blueprint.index_route()
 def index():
     return render_template(
         "storefront_index.html",

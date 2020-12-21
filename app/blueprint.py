@@ -1,25 +1,49 @@
 import flask
+import flask_login
+import os
+
+
+ADMIN_URL = os.environ.get("ADMIN_URL", "/admin")
 
 
 class Blueprint(flask.Blueprint):
     def __init__(self, *args, **kwargs):
         self.__index_route = None
+        self.__admin_routes = []
         super().__init__(*args, **kwargs)
 
-    def index_route(self, rule, **options):
+    def admin_route(self, rule, **options):
+        """
+        Copy of flask.Blueprint.route but for admin routes. This prepends the admin_url
+        and ensures that the route is protected by the @admin_required decorator
+        """
+
+        def decorator(f):
+            new_rule = f"{ADMIN_URL}{'' if self.name == 'main' else f'/{self.name}'}{rule}"
+            endpoint = options.pop("endpoint", f"{self.name}.{f.__name__}")
+            def admin_required(f):
+                def wrapped(*args, **kwargs):
+                    if not flask_login.current_user.is_admin_authenticated:
+                        flask.abort(404)
+                    return f(*args, **kwargs)
+                return wrapped
+
+            def add_admin_url_rule(app):
+                app.add_url_rule(new_rule, endpoint, admin_required(f), **options)
+            self.__admin_routes.append(add_admin_url_rule)
+            return f
+
+        return decorator
+
+    def index_route(self, **options):
         """
         Copy of flask.Blueprint.route but it withholds endpoints with a rule of "/"
         The exact rule of these endpoints won't be known until registration
         """
-
+        rule = "/"
         def decorator(f):
             endpoint = options.pop("endpoint", None)
-            if rule == "/":
-                # a potential index rule can't be known until the blueprint is registered
-                self.__index_route = (endpoint, f, options)
-            else:
-                raise ValueError("index_routes should be at /")
-                # self.add_url_rule(rule, endpoint, f, **options)
+            self.__index_route = (endpoint, f, options)
             return f
 
         return decorator
@@ -36,4 +60,5 @@ class Blueprint(flask.Blueprint):
             else:
                 app.blueprint_index[self.name] = (endpoint, f, options)
 
+        app.admin_routes.extend(self.__admin_routes)
         super().register(app, options, first_registration)

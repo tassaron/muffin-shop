@@ -141,19 +141,7 @@ def test_reregistration_failure(client):
     assert len(User.query.filter_by(email="test@example.com").all()) == 1
 
 
-def test_admin_privilege(client):
-    db.create_all()
-    user = User(email="test@example.com", password="password", is_admin=True)
-    db.session.add(user)
-    db.session.commit()
-    client.post(
-        "/account/login",
-        data={"email": "test@example.com", "password": "password"},
-        follow_redirects=True,
-    )
-    assert flask_login.current_user == user
-    resp = client.get("/inventory/create")
-    assert resp.status_code == 200
+
 
 
 def test_user_privilege(client):
@@ -163,7 +151,7 @@ def test_user_privilege(client):
     db.session.commit()
     resp = client.get("/account/profile")
     assert resp.status_code == 302
-    resp = client.get("/inventory/add")
+    resp = client.get("/admin/images")
     assert resp.status_code == 404
     client.post(
         "/account/login",
@@ -174,6 +162,6 @@ def test_user_privilege(client):
     resp = client.get("/account/profile")
     assert resp.status_code == 200
     assert nav_selected_bytes("/") not in resp.data
-    resp = client.get("/inventory/add")
+    resp = client.get("/admin/images")
     assert resp.status_code == 404
     assert nav_selected_bytes("/") in resp.data

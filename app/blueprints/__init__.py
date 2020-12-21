@@ -68,3 +68,5 @@ def register_blueprints(app):
         endpoint, f, options = tup
         app.add_url_rule(f"/{blueprint_index}", endpoint, f, **options)
     app.blueprint_index = {}
+    for admin_route in app.admin_routes:
+        admin_route(app)

@@ -3,7 +3,6 @@ import uuid
 import imghdr
 import flask_uploads
 from flask import (
-    Blueprint,
     render_template,
     redirect,
     url_for,
@@ -15,7 +14,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 from .routes import main_routes
-from .decorators import admin_required
 
 
 Images = flask_uploads.UploadSet("images", flask_uploads.IMAGES)
@@ -49,8 +47,7 @@ def get_files():
     return os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
 
 
-@main_routes.route("/images/upload", methods=["GET", "POST"])
-@admin_required
+@main_routes.admin_route("/images/upload", methods=["GET", "POST"])
 def upload_images():
     form = UploadForm()
     if form.validate_on_submit():
@@ -70,15 +67,13 @@ def upload_images():
     return render_template("upload_images.html", form=form, success=success)
 
 
-@main_routes.route("/images")
-@admin_required
+@main_routes.admin_route("/images")
 def manage_images():
     files_list = get_files()
     return render_template("manage_images.html", files_list=files_list)
 
 
-@main_routes.route("/images/<string:filename>")
-@admin_required
+@main_routes.admin_route("/images/<string:filename>")
 def view_image(filename):
     files_list = get_files()
     if filename not in files_list:
@@ -90,8 +85,7 @@ def view_image(filename):
     )
 
 
-@main_routes.route("/images/<string:filename>/delete")
-@admin_required
+@main_routes.admin_route("/images/<string:filename>/delete")
 def delete_image(filename):
     if filename not in get_files():
         abort(404)
