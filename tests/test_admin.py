@@ -5,6 +5,7 @@ import flask_login
 from tassaron_flask_template.__init__ import create_app
 from tassaron_flask_template.app import init_app, plugins
 from tassaron_flask_template.models import User
+from tassaron_flask_template.routes import all_base_urls
 
 
 @pytest.fixture
@@ -35,5 +36,13 @@ def client():
 
 
 def test_admin_privilege(client):
-    resp = client.get("/admin")
+    resp = client.get(app.config["ADMIN_URL"])
     assert resp.status_code == 200
+
+
+def test_all_admin_routes(client):
+    endpoints = [url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])]
+    endpoints.remove(app.config["ADMIN_URL"])
+    for endpoint in endpoints:
+        resp = client.get(endpoint)
+        assert resp.status_code == 200

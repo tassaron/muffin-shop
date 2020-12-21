@@ -45,12 +45,12 @@ def product_description(product_id):
 
 @blueprint.route("/product/addtocart", methods=["POST"])
 def add_to_cart():
-    pass
+    return ""
 
 
 @blueprint.route("/product/removefromcart", methods=["POST"])
 def remove_from_cart():
-    pass
+    return ""
 
 
 @blueprint.route("/view_cart")
@@ -88,4 +88,4 @@ def view_shipping_address(address):
 
 @blueprint.route("/category/<category_id>")
 def category_index():
-    pass
+    return ""

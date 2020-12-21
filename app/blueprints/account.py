@@ -127,7 +127,7 @@ def user_dashboard():
 @blueprint.route("/profile/edit")
 @flask_login.login_required
 def edit_user():
-    pass
+    return ""
 
 
 @blueprint.route("/logout")

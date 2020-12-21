@@ -31,12 +31,17 @@ def generic_url_for(rule):
 
 @lru_cache
 def all_urls():
-    return [generic_url_for(rule) for rule in current_app.url_map.iter_rules() if "static" not in rule.endpoint]
+    return [generic_url_for(rule) for rule in current_app.url_map.iter_rules() if "static" not in rule.endpoint and "GET" in rule.methods]
+
+
+@lru_cache
+def all_base_urls():
+    return [url_for(rule.endpoint) for rule in current_app.url_map.iter_rules() if len(rule.arguments) == 0 and "GET" in rule.methods]
 
 
 @main_routes.admin_route("")
 def admin_index():
-    endpoints = [url for url in all_urls() if url.startswith(current_app.config["ADMIN_URL"])]
+    endpoints = [url for url in all_base_urls() if url.startswith(current_app.config["ADMIN_URL"])]
     endpoints.remove(current_app.config["ADMIN_URL"])
     return render_template("admin.html", endpoints=endpoints)
 

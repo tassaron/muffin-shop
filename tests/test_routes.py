@@ -5,6 +5,7 @@ import flask_login
 from tassaron_flask_template.__init__ import create_app
 from tassaron_flask_template.app import init_app, plugins
 from tassaron_flask_template.models import User
+from tassaron_flask_template.routes import all_base_urls
 
 
 def nav_selected_bytes(route):
@@ -141,9 +142,6 @@ def test_reregistration_failure(client):
     assert len(User.query.filter_by(email="test@example.com").all()) == 1
 
 
-
-
-
 def test_user_privilege(client):
     db.create_all()
     user = User(email="test@example.com", password="password", is_admin=False)
@@ -165,3 +163,44 @@ def test_user_privilege(client):
     resp = client.get("/admin/images")
     assert resp.status_code == 404
     assert nav_selected_bytes("/") in resp.data
+
+
+def test_all_anonymous_user_routes(client):
+    endpoints = [url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])]
+    try:
+        endpoints.remove("/view_shipping_address")
+        endpoints.remove("/view_cart")
+    except ValueError:
+        pass
+    for endpoint in endpoints:
+        resp = client.get(endpoint)
+        assert resp.status_code == 200 or resp.status_code == 302
+
+
+def test_all_logged_in_user_routes(client):
+    db.create_all()
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
+    db.session.commit()
+    client.post(
+        "/account/login",
+        data={"email": "test@example.com", "password": "password"},
+        follow_redirects=True,
+    )
+    endpoints = [url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])]
+    try:
+        endpoints.remove("/view_shipping_address")
+        endpoints.remove("/view_cart")
+    except ValueError:
+        pass
+    endpoints.remove("/account/register")
+    endpoints.remove("/account/login")
+    endpoints.remove("/account/logout")
+    endpoints.remove("/account/resetpassword")
+    for endpoint in endpoints:
+        resp = client.get(endpoint)
+        assert resp.status_code == 200
+    endpoints = [url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])]
+    for endpoint in endpoints:
+        resp = client.get(endpoint)
+        assert resp.status_code == 404
