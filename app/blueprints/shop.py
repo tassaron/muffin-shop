@@ -13,10 +13,10 @@ LOG = logging.getLogger(__package__)
 
 
 blueprint = Blueprint(
-    "storefront",
+    "shop",
     __name__,
     static_folder="../static",
-    template_folder="../templates/storefront",
+    template_folder="../templates/shop",
 )
 
 
@@ -29,7 +29,7 @@ def float_to_str_currency(num):
 @blueprint.index_route()
 def index():
     return render_template(
-        "storefront_index.html",
+        "shop_index.html",
         no_of_items=0,
         products=[]
         if not db.engine.dialect.has_table(db.engine, "Product")

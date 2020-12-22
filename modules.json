@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Home",
-        "module": "storefront",
+        "module": "shop",
         "navigation": ["about"]
     },
     "about": {
@@ -10,19 +10,19 @@
         "root": "about",
         "index": "about.about_page"
     },
-    "storefront": {
+    "shop": {
         "name": "Shop",
         "profile_models": {
             "Shipping Address": "ShippingAddress",
             "Your Cart": "ShoppingCart"
         },
         "model_views": {
-            "ShippingAddress": "storefront.view_shipping_address",
-            "ShoppingCart": "storefront.view_cart"
+            "ShippingAddress": "shop.view_shipping_address",
+            "ShoppingCart": "shop.view_cart"
         },
         "model_forms": {
-            "ShippingAddress": "storefront.edit_shipping_address",
-            "ShoppingCart": "storefront.edit_cart"
+            "ShippingAddress": "shop.edit_shipping_address",
+            "ShoppingCart": "shop.edit_cart"
         },
         "env": [
             "STRIPE_PUBLISHABLE_KEY",
@@ -31,9 +31,9 @@
         ],
         "blueprints": [
             "inventory:blueprint",
-            "storefront:blueprint"
+            "shop:blueprint"
         ],
-        "root": "storefront",
-        "index": "storefront.index"
+        "root": "shop",
+        "index": "shop.index"
     }
 }
