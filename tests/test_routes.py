@@ -166,6 +166,7 @@ def test_user_privilege(client):
 
 
 def test_all_anonymous_user_routes(client):
+    client.get("/")
     endpoints = [url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])]
     try:
         endpoints.remove("/view_shipping_address")
