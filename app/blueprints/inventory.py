@@ -2,7 +2,7 @@ from flask import current_app, render_template, flash, redirect, url_for
 from flask_login import current_user
 from werkzeug.datastructures import MultiDict
 from tassaron_flask_template.blueprint import Blueprint
-from tassaron_flask_template.plugins import db
+from tassaron_flask_template.main.plugins import db
 from .inventory_forms import ProductForm
 from .inventory_models import Product
 import os

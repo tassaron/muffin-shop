@@ -13,8 +13,8 @@ from flask import (
 import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
-from tassaron_flask_template.plugins import db
-from tassaron_flask_template.forms import (
+from tassaron_flask_template.main.plugins import db
+from tassaron_flask_template.main.forms import (
     ShortRegistrationForm,
     LoginForm,
     RequestPasswordResetForm,
@@ -23,7 +23,7 @@ from tassaron_flask_template.forms import (
 from tassaron_flask_template.email import send_password_reset_email
 
 
-import tassaron_flask_template.models as Models
+import tassaron_flask_template.main.models as Models
 
 User = Models.User
 

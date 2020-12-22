@@ -3,9 +3,9 @@ import tempfile
 import pytest
 import flask_login
 from flask import url_for
-from tassaron_flask_template.__init__ import create_app
-from tassaron_flask_template.app import init_app, plugins
-from tassaron_flask_template.models import User, ShippingAddress
+from tassaron_flask_template.main import create_app, init_app
+from tassaron_flask_template.main.plugins import plugins
+from tassaron_flask_template.main.models import User, ShippingAddress
 
 
 @pytest.fixture

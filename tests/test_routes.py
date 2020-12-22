@@ -2,10 +2,10 @@ import os
 import tempfile
 import pytest
 import flask_login
-from tassaron_flask_template.__init__ import create_app
-from tassaron_flask_template.app import init_app, plugins
-from tassaron_flask_template.models import User
-from tassaron_flask_template.routes import all_base_urls
+from tassaron_flask_template.main import create_app, init_app
+from tassaron_flask_template.main.plugins import plugins
+from tassaron_flask_template.main.models import User
+from tassaron_flask_template.main.routes import all_base_urls
 
 
 def nav_selected_bytes(route):

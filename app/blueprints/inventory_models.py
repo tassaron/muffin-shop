@@ -1,6 +1,4 @@
-from tassaron_flask_template.plugins import plugins
-
-db = plugins[0]
+from tassaron_flask_template.main.plugins import db
 
 
 class ProductCategory(db.Model):

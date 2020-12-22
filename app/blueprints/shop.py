@@ -2,8 +2,8 @@ from flask import *
 from tassaron_flask_template.blueprint import Blueprint
 import flask_login
 from werkzeug.utils import secure_filename
-from tassaron_flask_template.plugins import bcrypt, db
-from tassaron_flask_template.models import ShippingAddress
+from tassaron_flask_template.main.plugins import bcrypt, db
+from tassaron_flask_template.main.models import ShippingAddress
 from tassaron_flask_template.decorators import hidden_route
 from .inventory_models import Product, ProductCategory
 import logging

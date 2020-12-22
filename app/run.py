@@ -1,8 +1,8 @@
 """
-Entrypoint for uWSGI
+Entrypoint for uWSGI or __main__, where a WSGI application is actually created
 """
-from .__init__ import create_app
-from .app import init_app
+from tassaron_flask_template.main import create_app, init_app
+from tassaron_flask_template.main.plugins import login_manager
 
 app = create_app()
 app = init_app(app)
