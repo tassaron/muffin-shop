@@ -58,6 +58,7 @@ def create_app():
         REMEMBER_COOKIE_HTTPONLY=True,
         SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
+        MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "modules.json"),
     )
 
     if app.env == "production":
@@ -77,20 +78,20 @@ def create_app():
     return app
 
 
-def init_app(app):
+def init_app(app, modules=None):
     from .plugins import db, migrate, bcrypt, login_manager
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)
     migrate.init_app(app, db)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
-    app.register_modules()
+    app.register_modules(modules)
 
     if app.env == "production":
         # Enable Monitoring Dashboard only in production
         import flask_monitoringdashboard as monitor
 
-        monitor.config.init_from(file="monitor.cfg")
+        monitor.config.init_from(file=os.environ.get("MONITOR_CONFIG", "monitor.cfg"))
         try:
             monitor.config.username = os.environ["MONITOR_USERNAME"]
             monitor.config.password = os.environ["MONITOR_PASSWORD"]
