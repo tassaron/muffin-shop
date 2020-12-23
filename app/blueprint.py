@@ -50,7 +50,7 @@ class Blueprint(flask.Blueprint):
 
     def register(self, app, options, first_registration=False):
         """
-        Called when the Flask instance does register_blueprint in the __init__.py of .blueprints
+        Called when the Flask instance does register_blueprint
         """
         if self.__index_route is not None:
             endpoint, f, options = self.__index_route

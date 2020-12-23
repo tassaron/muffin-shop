@@ -1,6 +1,6 @@
 """
-Entrypoint for `python -m modulename` should start a Flask development server
+Entrypoint for `python -m modulename` starts a Flask development server
 """
-from .run import app
+from .run import application
 
-app.run()
+application.run()

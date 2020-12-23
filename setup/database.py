@@ -4,7 +4,7 @@ Database management script for a shop application. Use during initial setup or t
 """
 from tassaron_flask_template.__init__ import create_app
 from tassaron_flask_template.models import *
-from tassaron_flask_template.blueprints.inventory_models import *
+from tassaron_flask_template.shop.inventory_models import *
 import os
 import string
 import random

@@ -2,16 +2,18 @@ from setuptools import setup
 
 setup(
     name="tassaron's flask template",
-    version="20.12.13",  # year.month.day
+    version="20.12.22",  # year.month.day
     packages=[
         "tassaron_flask_template",
-        "tassaron_flask_template.blueprints",
         "tassaron_flask_template.main",
+        "tassaron_flask_template.about",
+        "tassaron_flask_template.shop",
     ],
     package_dir={
         "tassaron_flask_template": "app",
-        "tassaron_flask_template.blueprints": "app/blueprints",
         "tassaron_flask_template.main": "app/main",
+        "tassaron_flask_template.about": "app/about",
+        "tassaron_flask_template.shop": "app/shop",
     },
     include_package_data=True,
     install_requires=[

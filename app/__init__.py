@@ -57,22 +57,22 @@ class Flask(flask.Flask):
             data.update(modules)
         main_module = data["main"]["module"]
 
-        def import_python_modules(lst):
+        def import_python_modules(pkg, lst):
             nonlocal blueprints
             for blueprint in lst:
-                module_name, blueprint_name = blueprint.split(":")
+                pymodule_name, blueprint_name = blueprint.split(":")
                 module = importlib.import_module(
-                    f".{module_name}", "tassaron_flask_template.blueprints"
+                    f".{pymodule_name}", f"tassaron_flask_template.{pkg}"
                 )
-                blueprints[module_name] = module.__dict__[blueprint_name]
-            blueprints["account"] = importlib.import_module(
-                f".account", "tassaron_flask_template.blueprints"
-            ).__dict__["blueprint"]
+                blueprints[pymodule_name] = module.__dict__[blueprint_name]
 
         blueprints = {}
-        import_python_modules(data[main_module]["blueprints"])
+        blueprints["account"] = importlib.import_module(
+            f".account", "tassaron_flask_template.main"
+        ).__dict__["blueprint"]
+        import_python_modules(main_module, data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
-            import_python_modules(data[module_name]["blueprints"])
+            import_python_modules(module_name, data[module_name]["blueprints"])
         root_blueprint = blueprints.pop(data[main_module]["root"])
         app.config["INDEX_ROUTE"] = data[main_module]["index"]
 
