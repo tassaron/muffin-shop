@@ -15,7 +15,7 @@ logging.basicConfig(
         logging.StreamHandler(),
         logging.FileHandler(os.environ.get("LOG_FILE", "debug.log")),
     ],
-    format="%(asctime)s %(name)-8.8s [%(levelname)s] %(message)s",
+    format="%(name)-8.8s [%(levelname)s] %(message)s",
     level=logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING"))
 )
 

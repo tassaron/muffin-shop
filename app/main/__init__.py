@@ -4,9 +4,15 @@ Creates routes/blueprints without creating the app
 Home to factories for creating the app and its plugins
 """
 from tassaron_flask_template import Flask
+from flask import request
 from dotenv import load_dotenv
 import os
 import datetime
+try:
+    from uwsgi import setprocname
+except ModuleNotFoundError:
+    # during test execution uWSGI isn't running
+    setprocname = lambda _: None
 
 
 def create_app():
@@ -119,14 +125,26 @@ def init_app(app, modules=None):
 
     def inject_vars():
         import flask_login
-
-        nonlocal app
         return {
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
             "footer_year": app.config["FOOTER_YEAR"],
         }
 
+    def set_worker_name():
+        setprocname(request.url)
+
+    def log_request(response):
+        if response.is_sequence:
+            # this line borrowed from werkzeug's Response.__repr__ method
+            body_info = f"{sum(map(len, response.iter_encoded())) / 1024} kb"
+        else:
+            body_info = "streamed" if response.is_streamed else "likely-streamed"
+        app.logger.info(f"{response.status} -> {request.method} {request.url} ({body_info})")
+        return response
+
     app.context_processor(inject_vars)
+    app.before_request(set_worker_name)
+    app.after_request(log_request)
 
     return app
