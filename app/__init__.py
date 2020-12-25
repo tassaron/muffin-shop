@@ -5,19 +5,36 @@ import flask
 from dotenv import load_dotenv
 import os
 import logging
+import logging.handlers
 import json
 import importlib
 
 
 load_dotenv(".env")
-logging.basicConfig(
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler(os.environ.get("LOG_FILE", "debug.log")),
-    ],
-    format="%(name)-8.8s [%(levelname)s] %(message)s",
-    level=logging.getLevelName(os.environ.get("LOG_LEVEL", "WARNING"))
-)
+
+
+def setup_logging():
+    # The stream handler has no timestamp and logs most information including standard web traffic
+    # It's useful in development on a terminal. In production it's captured & timestamped by systemd
+    stream_handler = logging.StreamHandler()
+    stream_formatter = logging.Formatter("%(name)-8.8s [%(levelname)s] %(message)s")
+    stream_handler.setFormatter(stream_formatter)
+    stream_handler.setLevel(logging.getLevelName(os.environ.get("SYSLOG_LEVEL", "INFO")))
+
+    # The file handler needs to add the timestamp and (by default) provides only Warnings or higher
+    file_handler = logging.handlers.WatchedFileHandler(os.environ.get("LOG_FILE", "debug.log"))
+    file_formatter = logging.Formatter("%(asctime)s %(name)-8.8s [%(levelname)s] %(message)s")
+    file_handler.setFormatter(file_formatter)
+    file_handler.setLevel(logging.getLevelName(os.environ.get("FILELOG_LEVEL", "WARNING")))
+    logging.basicConfig(
+        handlers=[
+            stream_handler,
+            file_handler,
+        ]
+    )
+
+
+setup_logging()
 
 
 class ConfigurationError(ValueError):
