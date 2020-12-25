@@ -1,6 +1,7 @@
 import flask
 import flask_login
 import os
+from .__init__ import parse_pkg
 
 
 ADMIN_URL = os.environ.get("ADMIN_URL", "/admin")
@@ -10,6 +11,7 @@ class Blueprint(flask.Blueprint):
     def __init__(self, *args, **kwargs):
         self.__index_route = None
         self.__admin_routes = []
+        self.is_registered_index = False
         super().__init__(*args, **kwargs)
 
     def admin_route(self, rule, **options):
@@ -54,9 +56,10 @@ class Blueprint(flask.Blueprint):
         """
         if self.__index_route is not None:
             endpoint, f, options = self.__index_route
-            if app.modules["main"]["module"] == self.name:
+            if parse_pkg(app.modules["main"]["module"])[1] == self.name:
                 # this will be the true index of our site!
                 self.add_url_rule("/", endpoint, f, **options)
+                self.is_registered_index = True
             else:
                 app.blueprint_index[self.name] = (endpoint, f, options)
 
