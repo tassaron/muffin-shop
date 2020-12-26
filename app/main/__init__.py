@@ -134,10 +134,10 @@ def init_app(app, modules=None):
     def set_worker_name():
         setprocname(request.url)
 
-    def log_request(response):
+    def log_response(response):
         if response.is_sequence:
             # this line borrowed from werkzeug's Response.__repr__ method
-            body_info = f"{sum(map(len, response.iter_encoded())) / 1024} kb"
+            body_info = f"{(sum(map(len, response.iter_encoded())) / 1024):.2f} kb"
         else:
             body_info = "streamed" if response.is_streamed else "likely-streamed"
         app.logger.info(f"{response.status} -> {request.method} {request.url} ({body_info})")
@@ -145,6 +145,6 @@ def init_app(app, modules=None):
 
     app.context_processor(inject_vars)
     app.before_request(set_worker_name)
-    app.after_request(log_request)
+    app.after_request(log_response)
 
     return app

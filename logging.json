@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "disable_existing_loggers": true,
+    "formatters": {
+        "short": {
+            "format": "[%(levelname)s] %(message)s"
+        },
+        "timestamped": {
+            "format": "%(asctime)s %(name)-8.8s [%(levelname)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "short",
+            "stream": "ext://flask.logging.wsgi_errors_stream"
+        },
+        "file": {
+            "class": "logging.handlers.WatchedFileHandler",
+            "filename": "error.log",
+            "level": "WARNING",
+            "formatter": "timestamped",
+            "mode": "a"
+        }
+    },
+    "loggers": {
+        "tassaron_flask_template": {
+            "handlers": ["console", "file"]
+        }
+    }
+}
