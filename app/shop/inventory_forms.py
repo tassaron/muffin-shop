@@ -9,7 +9,7 @@ class ProductForm(FlaskForm):
     description = TextAreaField(
         "description", validators=[DataRequired(), Length(min=1, max=500)]
     )
-    image = StringField("image", validators=[DataRequired(), Length(min=1, max=30)])
+    image = StringField("image", validators=[DataRequired(), Length(min=5, max=36)])
     stock = IntegerField("stock", validators=[DataRequired(), NumberRange(min=0)])
     category_id = IntegerField(
         "category", validators=[DataRequired(), NumberRange(min=1)]

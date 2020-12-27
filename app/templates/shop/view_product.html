@@ -3,5 +3,5 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-{{ product }}
+<img src="{{ url_for('static', filename=product.image) }}">
 {% endblock %}

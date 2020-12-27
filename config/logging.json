@@ -35,6 +35,9 @@
         }
     },
     "loggers": {
+        "root": {
+            "handlers": ["error_log"]
+        },
         "tassaron_flask_template": {
             "handlers": ["console", "error_log"]
         },
