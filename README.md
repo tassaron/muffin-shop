@@ -1,6 +1,6 @@
 # Tassaron's Flask Template
 
-A work-in-progress template for an advanced Flask webapp with admin, login system and emails built-in, and other common features separated into "modules" defined in `config/modules.json`. See `MODULES.md` for more information about these modules.
+A work-in-progress template for an advanced Flask webapp with admin, login system and emails built-in, and other common features separated into "modules" defined in `config/modules.json`. A module represents a navigation tab on the website, which can be rearranged and renamed to suit the particular site. Any module can be designated as the homepage. See `MODULES.md` for more information about how these modules are defined.
 
 ## Project Goals
 
@@ -32,3 +32,12 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 1. Activate the venv and `pip install .`
 1. `flask db upgrade` to apply any database migrations
 1. To use the `flask` command you must have `FLASK_APP` in your environment
+
+## How it works
+
+1. Systemd starts Nginx and uWSGI
+1. Nginx serves files from `app/static` directly and passes the other requests through to uWSGI
+1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `app/run.py`.
+1. When uWSGI receives a connection, it picks one of its idle workers and calls the WSGI application in that process.
+1. The Main module `app/main` contains the `create_app` function and core systems like login, email, and admin
+1. The Main module's `init_app` function is called next to import other modules
