@@ -13,7 +13,8 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 
 1. Create a virtual env, activate it.
   `sudo apt install python3-venv; python3 -m venv env; source env/bin/activate`
-1. Install this package: `pip install .`
+1. Run `pip install -r requirements.txt` to install ALL dependencies including ones for development.
+1. Use the `setup.py` file for more minimal dependencies: `pip install .`
 1. Use `python3 setup/database.py new` to create a new database.
 1. Use the `devserver.sh` shell script to run a development uWSGI server (`localhost:5000`).
 1. OR use `python3 -m tassaron_flask_template` for Flask's built-in development server.
