@@ -46,6 +46,14 @@ def create_app():
     app.logger.info("Created Flask instance")
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
+
+    def boolean_from_env_var(varname, default=False):
+        try:
+            return bool(int(os.environ.get(varname, default)))
+        except ValueError:
+            app.logger.error(f"{varname} must be a number (0 is False, otherwise True)")
+            return default
+
     app.config.update(
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
@@ -56,6 +64,7 @@ def create_app():
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
         SESSION_COOKIE_SECURE=True,

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "disable_existing_loggers": true,
+    "disable_existing_loggers": false,
     "formatters": {
         "short": {
             "format": "[%(levelname)s] %(message)s"
@@ -17,17 +17,29 @@
             "formatter": "short",
             "stream": "ext://flask.logging.wsgi_errors_stream"
         },
-        "file": {
+        "error_log": {
             "class": "logging.handlers.WatchedFileHandler",
             "filename": "error.log",
             "level": "WARNING",
             "formatter": "timestamped",
             "mode": "a"
+        },
+        "sql_log": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "sql.log",
+            "level": "DEBUG",
+            "formatter": "timestamped",
+            "mode": "a",
+            "maxBytes": 1000000,
+            "backupCount": 9
         }
     },
     "loggers": {
         "tassaron_flask_template": {
-            "handlers": ["console", "file"]
+            "handlers": ["console", "error_log"]
+        },
+        "sqlalchemy.engine.base.Engine": {
+            "handlers": ["sql_log"]
         }
     }
 }
