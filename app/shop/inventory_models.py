@@ -1,5 +1,6 @@
 from tassaron_flask_template.main.plugins import db
 from tassaron_flask_template.main.images import Images
+from werkzeug.utils import secure_filename
 
 
 class ProductCategory(db.Model):
@@ -26,4 +27,4 @@ class Product(db.Model):
 
     @image.setter
     def image(self, new_image):
-        self._image = new_image
+        self._image = secure_filename(new_image)
