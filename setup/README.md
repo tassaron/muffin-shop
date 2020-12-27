@@ -19,7 +19,7 @@
 1. Place Systemd unit: `cp setup/website.service /etc/systemd/system/website.service`
 1. Copy template for `.env` file: `cp setup/website.env.example .env`
 1. Edit `.env` to set `SITE_NAME` and change the value of `FLASK_ENV` to `production`
-1. Customize `modules.json`, `about.md`, and `app/static/img/logo.png` as needed
+1. Customize `config/modules.json`, `config/markdown/about.md`, and `app/static/img/logo.png` as needed
 1. Set any other variables in `.env` as needed for the modules enabled
   1. For example, you need to set `STRIPE_` variables to take payments for a shop module
   1. The security of your `.env` file is very important. It should not be readable by anonymous Unix users nor be committed to source control

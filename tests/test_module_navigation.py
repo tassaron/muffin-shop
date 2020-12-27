@@ -19,8 +19,8 @@ def client():
         modules={
             "main": {
                 "name": "Home",
-                "module": "about",
-                "navigation": ["shop"]
+                "module": ".about",
+                "navigation": [".shop"]
             }
         }
     )

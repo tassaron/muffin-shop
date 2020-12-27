@@ -32,13 +32,13 @@ def client():
     os.unlink(db_path)
 
 
-def test_index(client):
+def test_index_nav_link(client):
     resp = client.get("/")
     assert nav_selected_bytes("/") in resp.data
     assert resp.status_code == 200
 
 
-def test_about_page(client):
+def test_about_page_nav_link(client):
     resp = client.get("/about")
     assert nav_selected_bytes("/about") in resp.data
 

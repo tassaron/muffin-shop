@@ -19,7 +19,7 @@ def create_app():
     mutated_env_file = False
     def create_ensure_env_var_func():
         default_values = {
-            "FLASK_APP": "tassaron_flask_template.run:app",
+            "FLASK_APP": "tassaron_flask_template.run",
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }
@@ -64,7 +64,8 @@ def create_app():
         REMEMBER_COOKIE_HTTPONLY=True,
         SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
-        MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "modules.json"),
+        MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
+        MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
     )
 
     if app.env == "production":
@@ -97,7 +98,7 @@ def init_app(app, modules=None):
         # Enable Monitoring Dashboard only in production
         import flask_monitoringdashboard as monitor
 
-        monitor.config.init_from(file=os.environ.get("MONITOR_CONFIG", "monitor.cfg"))
+        monitor.config.init_from(file=os.environ.get("MONITOR_CONFIG", "config/monitor.cfg"))
         try:
             monitor.config.username = os.environ["MONITOR_USERNAME"]
             monitor.config.password = os.environ["MONITOR_PASSWORD"]

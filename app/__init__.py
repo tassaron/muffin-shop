@@ -19,7 +19,7 @@ class ConfigurationError(ValueError):
 
 class Flask(flask.Flask):
     def __init__(app, *args, **kwargs):
-        with open(os.environ.get("LOGGING_CONFIG", "logging.json"), "r") as f:
+        with open(os.environ.get("LOGGING_CONFIG", "config/logging.json"), "r") as f:
             logging.config.dictConfig(json.load(f))
         app.blueprint_index = {}
         app.admin_routes = []

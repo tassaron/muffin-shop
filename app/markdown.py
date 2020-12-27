@@ -7,11 +7,11 @@ md_to_unsafe_html = create_markdown(escape=False, renderer="html", plugins=["str
 
 def render_markdown(filename):
     try:
-        with open(filename, 'r') as f:
+        with open(f"{current_app.config['MARKDOWN_PATH']}{filename}", "r") as f:
             string = f.read()
-    except FileNotFoundError:
+    except:
         if current_app.env == "production":
-            current_app.logger.critical("Failed to render missing markdown file: %s", filename)
+            current_app.logger.critical("Failed to render missing markdown file: %s", filename, exc_info=True)
             return ""
         raise
     string = render_template_string(string)
