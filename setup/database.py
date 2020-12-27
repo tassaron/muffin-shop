@@ -2,8 +2,8 @@
 """
 Database management script for a shop application. Use during initial setup or testing.
 """
-from tassaron_flask_template.__init__ import create_app
-from tassaron_flask_template.models import *
+from tassaron_flask_template.main import create_app
+from tassaron_flask_template.main.models import *
 from tassaron_flask_template.shop.inventory_models import *
 import os
 import string

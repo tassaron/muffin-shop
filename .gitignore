@@ -7,6 +7,6 @@ build/
 .cache/
 .pytest_cache/
 .vscode/
-*.log
+*.log*
 *.egg-info
 app/static/uploads/*
