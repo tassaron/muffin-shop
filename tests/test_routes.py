@@ -197,6 +197,7 @@ def test_all_logged_in_user_routes(client):
     endpoints.remove("/account/login")
     endpoints.remove("/account/logout")
     endpoints.remove("/account/reset_password")
+    endpoints.remove("/account/verify_email")
     for endpoint in endpoints:
         resp = client.get(endpoint)
         assert resp.status_code == 200

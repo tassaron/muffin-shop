@@ -67,14 +67,14 @@
                     {% endif %}
                     <li class="nav-item">
                         {% if not logged_in %}
-                        <a class="nav-link" href="/account/register">Sign Up</a>
+                        <a class="nav-link" href="{{ url_for('account.register') }}">Sign Up</a>
                         {% else %}
                         <div class="dropright mr-2">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="/account/profile">Edit</a>
-                                <a class="dropdown-item" href="/account/logout">Sign Out</a>
+                                <a class="dropdown-item" href="{{ url_for('account.user_dashboard') }}">Edit</a>
+                                <a class="dropdown-item" href="{{ url_for('account.logout') }}">Sign Out</a>
                             </div>
                         </div>
                         {% endif %}

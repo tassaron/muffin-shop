@@ -20,7 +20,7 @@ from tassaron_flask_template.main.forms import (
     RequestPasswordResetForm,
     PasswordResetForm,
 )
-from tassaron_flask_template.email import send_password_reset_email
+from tassaron_flask_template.email import send_password_reset_email, send_email_verification_email
 
 
 import tassaron_flask_template.main.models as Models
@@ -79,7 +79,7 @@ def change_password(token):
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
-    user = User.verify_password_reset_token(token)
+    user = User.verify_json_web_token(token)
     if user is None:
         flash("That is an invalid or expired token", "warning")
         return redirect(url_for(".reset_password"))
@@ -94,8 +94,26 @@ def change_password(token):
     return render_template("change_password.html", form=form)
 
 
-# Everything below this point is for logged-in users
-# ---------------------------------------------------
+@blueprint.route("/verify_email/<token>")
+@flask_login.login_required
+def verify_email(token):
+    user = User.verify_json_web_token(token)
+    if user is None or user != flask_login.current_user:
+        flash("That is an invalid or expired token", "warning")
+    else:
+        user.email_verified = True
+        db.session.commit()
+        flash("Your email has been verified!")
+
+    return redirect(url_for(current_app.config["INDEX_ROUTE"]))
+
+
+@blueprint.route("/verify_email")
+@flask_login.login_required
+def request_email_verification():
+    send_email_verification_email(flask_login.current_user)
+    flash("An email was sent to the address you provided during registration", "info")
+    return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 
 @blueprint.route("/profile")
@@ -145,15 +163,15 @@ def register():
     form = ShortRegistrationForm()
     if form.validate_on_submit():
         try:
-            db.session.add(
-                User(email=form.email.data, password=form.password.data, is_admin=False)
-            )
+            new_user = User(email=form.email.data, password=form.password.data, is_admin=False)
+            db.session.add(new_user)
             db.session.commit()
         except IntegrityError:
             flash("That email is already taken. Log in below", "danger")
             db.session.rollback()
         else:
             flash("Successfully signed up! Log in below", "success")
+            send_email_verification_email(new_user)
         return redirect(url_for("account.login"))
 
     return render_template("register.html", form=form)

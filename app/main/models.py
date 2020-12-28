@@ -10,6 +10,7 @@ db, migrate, bcrypt, login_manager = plugins
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(40), unique=True, nullable=True)
+    email_verified = db.Column(db.Boolean, nullable=False)
     password = db.Column(db.String(64), nullable=True)
     is_admin = db.Column(db.Boolean, nullable=False)
 
@@ -20,6 +21,8 @@ class User(db.Model):
     def __init__(self, **kwargs):
         if kwargs["password"] is not None:
             kwargs["password"] = User.create_password_hash(kwargs["password"])
+        if "email_verified" not in kwargs:
+            kwargs["email_verified"] = False
         super().__init__(**kwargs)
 
     def __repr__(self):
@@ -28,14 +31,18 @@ class User(db.Model):
     def update_password(self, new_password):
         self.password = User.create_password_hash(new_password)
 
-    def create_password_reset_token(self):
+    def update_email(self, new_email):
+        self.email = new_email
+        self.email_verified = False
+
+    def create_json_web_token(self):
         serializer = TimedJSONWebSignatureSerializer(
             current_app.config["SECRET_KEY"], 1800
         )
         return serializer.dumps({"user_id": self.id}).decode("utf-8")
 
     @staticmethod
-    def verify_password_reset_token(token):
+    def verify_json_web_token(token):
         serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"])
         try:
             user_id = serializer.loads(token)["user_id"]
@@ -56,7 +63,7 @@ class User(db.Model):
 
     @property
     def is_active(self):
-        return False if self.is_anonymous else True
+        return self.is_authenticated
 
     @property
     def is_admin_authenticated(self):

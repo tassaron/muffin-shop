@@ -10,7 +10,7 @@ huey = SqliteHuey(filename=os.environ.get("HUEY_DB", "db/huey.db"), immediate_us
 
 
 @huey.task()
-def send_email(email_config, subject, body, send_to):
+def huey_send_email(email_config, subject, body, send_to):
     """
     email_config = {
         "ENV": current_app.env,
@@ -22,7 +22,7 @@ def send_email(email_config, subject, body, send_to):
     """
     if email_config["ENV"] != "production":
         print(body)
-        return
+        return body.split("/")[-1]
 
     return requests.post(
         email_config["API_URL"],
