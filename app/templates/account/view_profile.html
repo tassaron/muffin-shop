@@ -2,6 +2,14 @@
 {% block title %}Your Profile{% endblock %}
 
 {% block content %}
+{% if not user.email_verified %}
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Your Email Isn't Verified</h4>
+    You may not receive email from us until you verify your address. If you don't receive an email within 60 seconds, <a 
+    href="{{ url_for('account.request_email_verification') }}" 
+    class="alert-link">you can request another one</a>. Please check your spam folder before doing so.
+</div>
+{% endif %}
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -41,7 +49,7 @@
                             <label>Email Address</label>
                         </div>
                         <div class="col-md-6">
-                            <p>kshitighelani@gmail.com</p>
+                            <p>{{ user.email }}</p>
                         </div>
                     </div>
                     <div class="row profile-row">

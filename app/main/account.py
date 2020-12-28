@@ -103,7 +103,7 @@ def verify_email(token):
     else:
         user.email_verified = True
         db.session.commit()
-        flash("Your email has been verified!")
+        flash("Your email has been verified!", "success")
 
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
@@ -139,7 +139,11 @@ def user_dashboard():
                 )
                 html = ""
             sections[model.__name__.lower()] = (section_name, html)
-    return render_template("view_profile.html", profile_sections=sections)
+    return render_template(
+        "view_profile.html",
+        user=flask_login.current_user,
+        profile_sections=sections
+    )
 
 
 @blueprint.route("/profile/edit")
