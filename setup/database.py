@@ -30,22 +30,27 @@ def create_new_db(email=None):
         except EmailNotValidError:
             pass
     password = random_password(16)
-    db.session.add(User(email=email, password=password, is_admin=True))
+    admin = User(email=email, password=password, is_admin=True)
+    db.session.add(admin)
     db.session.commit()
+    print("Initializing app (needed to construct URLs)...")
+    from tassaron_flask_template.main import init_app
+    init_app(app)
+    print("Sending verification email...")
+    from tassaron_flask_template.email import send_email_verification_email
+    send_email_verification_email(admin)
     print(f"Admin's temporary password is {password}")
 
 
 def create_test_db():
     db.create_all()
-    db.session.add(User(email="admin@example.com", password="password", is_admin=True))
-    db.session.add(User(email="user@example.com", password="password", is_admin=False))
+    add_test_users()
     db.session.commit()
 
 
 def create_test_db_shop():
     db.create_all()
-    db.session.add(User(email="admin@example.com", password="password", is_admin=True))
-    db.session.add(User(email="user@example.com", password="password", is_admin=False))
+    add_test_users()
     db.session.add(
         ShippingAddress(
             user_id=2,
@@ -77,6 +82,11 @@ def create_test_db_shop():
     db.session.commit()
 
 
+def add_test_users():
+    db.session.add(User(email="admin@example.com", email_verified=True, password="password", is_admin=True))
+    db.session.add(User(email="user@example.com", password="password", is_admin=False))
+
+
 def prompt_deletion(func, uri):
     dirname = os.path.abspath(os.path.dirname(uri).split(":///", 1)[1])
     basename = os.path.basename(uri)
@@ -96,7 +106,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.description = "Database creation script for this shop application"
+    parser.description = "Database creation script for this Flask application"
     actions = parser.add_mutually_exclusive_group()
     actions.add_argument("new", help="create a blank db file", nargs="?")
     actions.add_argument(
