@@ -1,6 +1,7 @@
 """
 Home to Flask subclass
 """
+from tassaron_flask_template.tasks import huey
 import flask
 from dotenv import load_dotenv
 import os
@@ -25,6 +26,8 @@ class Flask(flask.Flask):
         app.admin_routes = []
         super().__init__(*args, **kwargs)
         app.logger.removeHandler(default_handler)
+        if app.env == "development":
+            huey.immediate = True
 
     def register_modules(app, modules):
         root_blueprint, others = app.import_modules(modules)

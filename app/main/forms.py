@@ -7,6 +7,7 @@ from wtforms import (
     ValidationError,
 )
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+from .models import User
 
 
 class LoginForm(FlaskForm):

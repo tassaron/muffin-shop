@@ -8,6 +8,7 @@ from flask import request
 from dotenv import load_dotenv
 import os
 import datetime
+from typing import Optional
 try:
     from uwsgi import setprocname
 except ModuleNotFoundError:
@@ -16,6 +17,13 @@ except ModuleNotFoundError:
 
 
 def create_app():
+    """
+    First check if the environment has absolutely mandatory keys, such as the Flask secret key
+    These keys will be inserted into the .env file if they don't exist, for convenience
+    Afterwards this function creates the Flask application object, then updates its config
+    Then we import the main module's blueprint from routes.py and register it
+    The WSGI application is returned with no plugins initialized nor extra modules imported
+    """
     mutated_env_file = False
     def create_ensure_env_var_func():
         default_values = {
@@ -94,7 +102,15 @@ def create_app():
     return app
 
 
-def init_app(app, modules=None):
+def init_app(app, modules: Optional[dict]=None):
+    """
+    Import and create the Flask plugins, and call init_app for each of them.
+    Then register the extra template modules as defined in MODULES_CONFIG json
+    In production mode the Monitoring Dashboard is bound to the application
+    Configure the Flask-Login's LoginManager, then configure Flask-Uploads
+    Give the application some global wrappers for logging and Jinja context
+    If `modules` is defined, update the modules dictionary after reading json
+    """
     from .plugins import db, migrate, bcrypt, login_manager
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)

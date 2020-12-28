@@ -16,7 +16,7 @@
   1. Standard practice is to name Nginx config files after the domain name, but it's not necessary
 1. Place Nginx config: `cp setup/website.nginx /etc/nginx/sites-available/website.nginx`
 1. Enable Nginx config: `ln -s /etc/nginx/sites-available/website.nginx /etc/nginx/sites-enabled/website.nginx`
-1. Place Systemd unit: `cp setup/website.service /etc/systemd/system/website.service`
+1. Place Systemd units: `cp setup/*.service /etc/systemd/system`
 1. Copy template for `.env` file: `cp setup/website.env.example .env`
 1. Edit `.env` to set `SITE_NAME` and change the value of `FLASK_ENV` to `production`
 1. Customize `config/modules.json`, `config/markdown/about.md`, and `app/static/img/logo.png` as needed
