@@ -2,6 +2,7 @@
 """
 Database management script for a shop application. Use during initial setup or testing.
 """
+import argparse
 from tassaron_flask_template.main import create_app
 from tassaron_flask_template.main.models import *
 from tassaron_flask_template.shop.inventory_models import *
@@ -87,23 +88,24 @@ def add_test_users():
     db.session.add(User(email="user@example.com", password="password", is_admin=False))
 
 
-def prompt_deletion(func, uri):
-    dirname = os.path.abspath(os.path.dirname(uri).split(":///", 1)[1])
-    basename = os.path.basename(uri)
-    filename = "/".join((dirname, basename))
-    if os.path.exists(filename):
-        print(f"This task will delete the current { basename }.")
-        resp = input("Proceed? [y/N] ")
-        if resp.strip().lower() != "y":
-            return
-        os.remove(filename)
-    elif not os.path.exists(dirname):
-        os.makedirs(dirname)
-    return func()
-
-
-if __name__ == "__main__":
-    import argparse
+def main():
+    """
+    Run commandline argument parser
+    """
+    def prompt_deletion(func):
+        dirname = os.path.abspath(os.path.dirname(args.db).split(":///", 1)[1])
+        basename = os.path.basename(args.db)
+        filename = "/".join((dirname, basename))
+        if os.path.exists(filename):
+            print(f"This task will delete the current { basename }.")
+            if args.yes == False:
+                resp = input("Proceed? [y/N] ")
+                if resp.strip().lower() != "y":
+                    return
+            os.remove(filename)
+        elif not os.path.exists(dirname):
+            os.makedirs(dirname)
+        return func()
 
     parser = argparse.ArgumentParser()
     parser.description = "Database creation script for this Flask application"
@@ -111,6 +113,12 @@ if __name__ == "__main__":
     actions.add_argument("new", help="create a blank db file", nargs="?")
     actions.add_argument(
         "test", help="create a new db with filler data for testing", nargs="?"
+    )
+    parser.add_argument(
+        "--yes", "-y", "-f",
+        help="assume yes (delete the database)",
+        default=False,
+        action="store_true",
     )
     parser.add_argument(
         "--shop",
@@ -127,12 +135,16 @@ if __name__ == "__main__":
 
     with app.app_context():
         if args.new == "new":
-            prompt_deletion(create_new_db, args.db)
+            prompt_deletion(create_new_db)
 
         elif args.new == "test":
             if args.shop:
-                prompt_deletion(create_test_db_shop, args.db)
+                prompt_deletion(create_test_db_shop)
             else:
-                prompt_deletion(create_test_db, args.db)
+                prompt_deletion(create_test_db)
         else:
             parser.print_help()
+
+
+if __name__ == "__main__":
+    main()
