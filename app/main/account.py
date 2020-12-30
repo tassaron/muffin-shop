@@ -9,6 +9,7 @@ from flask import (
     current_app,
     redirect,
     url_for,
+    abort,
 )
 import flask_login
 from sqlalchemy.exc import IntegrityError
@@ -20,7 +21,7 @@ from tassaron_flask_template.main.forms import (
     RequestPasswordResetForm,
     PasswordResetForm,
 )
-from tassaron_flask_template.email import send_password_reset_email, send_email_verification_email
+from tassaron_flask_template.email import *
 
 
 import tassaron_flask_template.main.models as Models
@@ -68,9 +69,14 @@ def reset_password():
     form = RequestPasswordResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        send_password_reset_email(user)
-        flash("An email was sent with instructions to reset your password", "info")
-        return redirect(url_for(".login"))
+        try:
+            result = send_password_reset_email(user)
+            flash("An email was sent with instructions to reset your password", "info")
+            return redirect(url_for(".login"))
+        except OutboxFull:
+            flash("Sorry, you have to wait a few hours before requesting another email", "info")
+        except Unverified:
+            flash("Your email address isn't verified so the email couldn't be sent", "warning")
     return render_template("reset_password.html", form=form)
 
 
@@ -87,9 +93,16 @@ def change_password(token):
     form = PasswordResetForm()
     if form.validate_on_submit():
         user.update_password(form.password.data)
+        email = Models.NewEmail.query.filter_by(user_id=user.id).first()
+        if email is None:
+            current_app.logger.warning("The password token should expire before the email does... user_id: %s", user.id)
+        else:
+            old_email = Models.OldEmail.from_email(email)
+            db.session.add(old_email)
+            db.session.delete(email)
         db.session.commit()
         flash("Your password has been updated! Now you can log in")
-        return redirect((url_for(".login")))
+        return redirect(url_for(".login"))
 
     return render_template("change_password.html", form=form)
 
@@ -98,10 +111,17 @@ def change_password(token):
 @flask_login.login_required
 def verify_email(token):
     user = User.verify_json_web_token(token)
-    if user is None or user != flask_login.current_user:
+    if user is None or user != flask_login.current_user or user.email_verified == True:
         flash("That is an invalid or expired token", "warning")
     else:
         user.email_verified = True
+        email = Models.NewEmail.query.filter_by(user_id=user.id).first()
+        if email is None:
+            current_app.logger.warning("The email verification token should expire before the email does... user_id: %s", user.id)
+        else:
+            old_email = Models.OldEmail.from_email(email)
+            db.session.add(old_email)
+            db.session.delete(email)
         db.session.commit()
         flash("Your email has been verified!", "success")
 
@@ -111,8 +131,18 @@ def verify_email(token):
 @blueprint.route("/verify_email")
 @flask_login.login_required
 def request_email_verification():
-    send_email_verification_email(flask_login.current_user)
-    flash("An email was sent to the address you provided during registration", "info")
+    if flask_login.current_user.email_verified:
+        abort(401)
+    try:
+        result = send_email_verification_email(flask_login.current_user)
+    except OutboxFull:
+        flash(
+            "Sorry, you have to wait a few hours before requesting another email. "
+            "Please remember to check your spam folder",
+            "info"
+        )
+    else:
+        flash("An email was sent to the address you provided during registration", "info")
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 

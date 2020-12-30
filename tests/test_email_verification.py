@@ -1,9 +1,10 @@
 from tassaron_flask_template.main import create_app, init_app
 from tassaron_flask_template.main.plugins import db
 from tassaron_flask_template.main.models import User
-from tassaron_flask_template.email import send_password_reset_email, send_email_verification_email
+from tassaron_flask_template.email import *
+from huey.api import Result
 import tempfile
-from os import path
+import os
 
 
 def test_email_verification():
@@ -27,18 +28,25 @@ def test_email_verification():
         assert user.email_verified == False
 
         # sending email to user should fail
-        result = send_password_reset_email(user)
-        assert result is None
+        try:
+            result = send_password_reset_email(user)
+        except Unverified:
+            pass
+        else:
+            assert "Didn't raise Unverified" == True
 
         # verify email
         result = send_email_verification_email(user)
-        client.get(f"/account/verify_email/{result()}", follow_redirects=True)
+        client.get(f"/account/verify_email/{result()}")
         assert user.email_verified == True
 
         # sending email should now succeed!
+        # client.get("/account/logout", follow_redirects=True)
         result = send_password_reset_email(user)
-        assert hasattr(result, "__call__")
+        assert type(result) == Result
 
         # updating the email will unverify it again
         user.update_email("")
         assert user.email_verified == False
+    os.close(db_fd)
+    os.unlink(db_path)

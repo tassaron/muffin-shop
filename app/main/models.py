@@ -1,6 +1,7 @@
 from .plugins import plugins
 from itsdangerous import TimedJSONWebSignatureSerializer
 import os
+from datetime import datetime
 from flask import current_app
 
 # plugins = create_plugins()
@@ -73,7 +74,43 @@ class User(db.Model):
         return str(self.id)
 
 
-# Shop Module
+class NewEmail(db.Model):
+    """
+    Email table with user IDs as the primary key, representing currently 'active' emails
+    An email will be removed from this table after the recipient takes action or in a few hours
+    """
+    id = db.Column(
+        db.Integer, primary_key=True, nullable=False
+    )
+    user_id = db.Column(
+        db.Integer, unique=True, nullable=False #db.ForeignKey("user.id")
+    )
+    typ = db.Column(db.Integer, nullable=False)
+    creation_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+
+class OldEmail(db.Model):
+    """
+    Valid integers for Email Types:
+     0 = verification
+     1 = password reset
+    """
+    id = db.Column(
+        db.Integer, primary_key=True, nullable=False
+    )
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), nullable=False
+    )
+    typ = db.Column(db.Integer, nullable=False)
+    creation_time = db.Column(db.DateTime, nullable=False)
+    archive_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @classmethod
+    def from_email(cls, email: NewEmail):
+        return cls(user_id=email.user_id, typ=email.typ, creation_time=email.creation_time)
+
+
+# Shop Module's Profile_Models
 # ---------------------------------------------------
 
 
