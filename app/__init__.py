@@ -73,6 +73,9 @@ class Flask(flask.Flask):
         blueprints["account"] = importlib.import_module(
             f".account", "tassaron_flask_template.main"
         ).__dict__["blueprint"]
+        blueprints["task_overview"] = importlib.import_module(
+            f".task_overview", "tassaron_flask_template.main"
+        ).__dict__["blueprint"]
         import_python_modules(parse_pkg(main_module), data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
             if module_name not in data:
