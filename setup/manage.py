@@ -4,6 +4,7 @@ App management script for a Flask application
 """
 import argparse
 import sys
+from tassaron_flask_template import create_env_file
 from tassaron_flask_template.main import create_app, init_app
 from tassaron_flask_template.main.routes import all_urls
 
@@ -20,8 +21,11 @@ def main():
     parser.description = "Management script for this Flask application"
     parser.add_argument(
         "action",
-        choices=["urls"],
-        help="urls: write all urls to output stream",
+        choices=["init", "urls"],
+        help=(
+            "init: start new project (generate env file)",
+            "urls: write all urls to output stream"
+        ),
     )
     parser.add_argument(
         "-o",
@@ -40,6 +44,9 @@ def main():
             else:
                 with open(args.o, 'w') as f:
                     print_all_urls(f)
+
+    elif args.action == "init":
+        create_env_file()
 
     else:
         parser.print_help()

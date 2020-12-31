@@ -98,6 +98,7 @@ class Flask(flask.Flask):
         app.logger.info("Found other blueprints: %s", ", ".join([blueprint for blueprint in blueprints]))
         return (root_blueprint, blueprints)
 
+
 def parse_pkg(string) -> tuple:
     p = string.split(".", 1)
     if len(p) != 2:
@@ -105,3 +106,34 @@ def parse_pkg(string) -> tuple:
     if p[0] == "":
         p[0] = "tassaron_flask_template"
     return tuple(p)
+
+
+def create_env_file() -> bool:
+    """
+    An idempotent operation that won't affect a sensible .env file
+    but it will mutate an existing file or create a whole new one if needed.
+    Return True if an existing file was mutated
+    """
+    mutated_env_file = False
+    def create_ensure_env_var_func():
+        default_values = {
+            "FLASK_APP": "tassaron_flask_template.run",
+            "FLASK_ENV": "development",
+            "SECRET_KEY": os.urandom(24),
+        }
+        mutation = False
+        if os.path.exists(".env"):
+            mutation = True
+        def ensure_env_var(token):
+            nonlocal mutated_env_file
+            if token not in os.environ:
+                mutated_env_file = mutation
+                with open(".env", "a") as f:
+                    f.write(f"\n{str(token)}={default_values[token]}")
+        return ensure_env_var
+    ensure_env_var = create_ensure_env_var_func()
+    ensure_env_var("FLASK_APP")
+    ensure_env_var("FLASK_ENV")
+    ensure_env_var("SECRET_KEY")
+    load_dotenv(".env")
+    return mutated_env_file

@@ -3,9 +3,8 @@ Entrypoint for initial import of the package in any context
 Creates routes/blueprints without creating the app
 Home to factories for creating the app and its plugins
 """
-from tassaron_flask_template import Flask
+from tassaron_flask_template import Flask, create_env_file
 from flask import request
-from dotenv import load_dotenv
 import os
 import datetime
 from typing import Optional
@@ -24,32 +23,7 @@ def create_app():
     Then we import the main module's blueprint from routes.py and register it
     The WSGI application is returned with no plugins initialized nor extra modules imported
     """
-    mutated_env_file = False
-    def create_ensure_env_var_func():
-        default_values = {
-            "FLASK_APP": "tassaron_flask_template.run",
-            "FLASK_ENV": "development",
-            "SECRET_KEY": os.urandom(24),
-        }
-        mutation = False
-        if os.path.exists(".env"):
-            mutation = True
-        def ensure_env_var(token):
-            nonlocal mutated_env_file
-            if token not in os.environ:
-                mutated_env_file = mutation
-                with open(".env", "a") as f:
-                    f.write(f"\n{str(token)}={default_values[token]}")
-
-        return ensure_env_var
-
-    # FLASK_ENV must be set in the environment before the Flask instance is created
-    ensure_env_var = create_ensure_env_var_func()
-    ensure_env_var("FLASK_APP")
-    ensure_env_var("FLASK_ENV")
-    ensure_env_var("SECRET_KEY")
-    load_dotenv(".env")
-
+    mutated_env_file = create_env_file()
     app = Flask("tassaron_flask_template")
     app.logger.info("Created Flask instance")
     if mutated_env_file:
