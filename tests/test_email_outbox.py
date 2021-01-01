@@ -17,6 +17,8 @@ def test_email_outbox_for_reset_password():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
+    app.config["CLIENT_SESSIONS"] = True
+    app.config["SERVER_NAME"] = "localhost:5000"
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -63,6 +65,8 @@ def test_email_outbox_isolated_per_user():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
+    app.config["CLIENT_SESSIONS"] = True
+    app.config["SERVER_NAME"] = "localhost:5000"
     app = init_app(app)
     with app.app_context():
         db.create_all()

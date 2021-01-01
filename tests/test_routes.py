@@ -3,7 +3,7 @@ import tempfile
 import pytest
 import flask_login
 from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.plugins import db, bcrypt, login_manager
+from tassaron_flask_template.main.plugins import login_manager, db
 from tassaron_flask_template.main.models import User
 from tassaron_flask_template.main.routes import all_base_urls
 
@@ -17,12 +17,13 @@ def nav_selected_bytes(route):
 
 @pytest.fixture
 def client():
-    global app, db, bcrypt, login_manager
+    global app
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
+    app.config["CLIENT_SESSIONS"] = True
     app = init_app(app)
     client = app.test_client()
     with app.app_context():

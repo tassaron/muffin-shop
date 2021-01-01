@@ -40,7 +40,7 @@ def client():
 def test_add_to_cart_api_success(client):
     resp = client.post(
         "/cart/add",
-        data=json.dumps({"id": 1}),
+        data=json.dumps({"id": 1, "quantity": 1}),
         content_type='application/json',
     )
     assert resp.status_code == 200
@@ -51,7 +51,7 @@ def test_add_to_cart_api_success(client):
 def test_add_to_cart_api_nonexistent(client):
     resp = client.post(
         "/cart/add",
-        data=json.dumps({"id": 2}),
+        data=json.dumps({"id": 2, "quantity": 1}),
         content_type='application/json',
     )
     assert resp.status_code == 200
@@ -72,7 +72,7 @@ def test_add_to_cart_api_failed_outofstock(client):
     )
     resp = client.post(
         "/cart/add",
-        data=json.dumps({"id": 2}),
+        data=json.dumps({"id": 2, "quantity": 1}),
         content_type='application/json',
     )
     assert resp.status_code == 200
@@ -83,7 +83,7 @@ def test_add_to_cart_api_failed_outofstock(client):
 def test_add_to_cart_api_baddata(client):
     resp = client.post(
         "/cart/add",
-        data=json.dumps({"id": "a"}),
+        data=json.dumps({"id": "a", "quantity": 1}),
         content_type='application/json',
     )
     assert resp.status_code == 400
