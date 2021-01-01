@@ -13,7 +13,6 @@ def test_email_verification():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
-    app.config["CLIENT_SESSIONS"] = True
     app.config["SERVER_NAME"] = "localhost:5000"
     app = init_app(app)
     with app.app_context():

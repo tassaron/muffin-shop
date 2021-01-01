@@ -48,8 +48,6 @@ def create_app():
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
-        SESSION_USE_SIGNER=True,
-        SESSION_TYPE="sqlalchemy",
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
         SESSION_COOKIE_SECURE=True,
@@ -101,7 +99,6 @@ def init_app(app, modules: Optional[dict]=None):
     if app.config["CLIENT_SESSIONS"]:
         app.session_interface.get_user_session = lambda _: None
         app.session_interface.set_user_session = lambda _, __: None
-        app.session_interface._generate_sid = lambda: None
     else:
         sql_session.init_app(app)
 

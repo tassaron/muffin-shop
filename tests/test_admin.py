@@ -16,7 +16,6 @@ def client():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
-    app.config["CLIENT_SESSIONS"] = True
     app = init_app(app)
     client = app.test_client()
     with app.app_context():

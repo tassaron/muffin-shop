@@ -23,11 +23,11 @@ def client():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
-    app.config["CLIENT_SESSIONS"] = True
     app = init_app(app)
     client = app.test_client()
     with app.app_context():
         with client:
+            db.create_all()
             yield client
     os.close(db_fd)
     os.unlink(db_path)
@@ -51,7 +51,7 @@ def test_404_page(client):
 
 
 def test_login_success(client):
-    db.create_all()
+    
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -65,7 +65,7 @@ def test_login_success(client):
 
 
 def test_login_failure(client):
-    db.create_all()
+    
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -79,7 +79,7 @@ def test_login_failure(client):
 
 
 def test_registration_success(client):
-    db.create_all()
+    
     assert User.query.filter_by(email="test@example.com").first() is None
     resp = client.post(
         "/account/register",
@@ -94,7 +94,7 @@ def test_registration_success(client):
 
 
 def test_registration_failure(client):
-    db.create_all()
+    
     assert User.query.filter_by(email="test@example.com").first() is None
     resp = client.post(
         "/account/register",
@@ -119,7 +119,7 @@ def test_registration_failure(client):
 
 
 def test_anonymous_user(client):
-    db.create_all()
+    
     anon1 = login_manager.anonymous_user()
     anon2 = login_manager.anonymous_user()
     db.session.add(anon1)
@@ -143,7 +143,7 @@ def test_reregistration_failure(client):
 
 
 def test_user_privilege(client):
-    db.create_all()
+    
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -179,7 +179,7 @@ def test_all_anonymous_user_routes(client):
 
 
 def test_all_logged_in_user_routes(client):
-    db.create_all()
+    
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()

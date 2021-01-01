@@ -1,50 +1,87 @@
+from flask import current_app
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-from flask_session import Session
+from flask_session import Session, SqlAlchemySessionInterface
 from itsdangerous import want_bytes
+
+
+class TassaronSessionInterface(SqlAlchemySessionInterface):
+    """
+    Add get and set methods onto the FlaskSessionInterface provided by Flask-Session
+    """
+    def __init__(
+            self, app, db, table, key_prefix, use_signer=False, permanent=True):
+        """
+        Copy of parent's __init__ with some major modifications
+        Patch an extra column onto Flask-Session's otherwise-lovely model
+        user_id column is used to restore a user's server-side session upon login
+        """
+        if db is None:
+            db = SQLAlchemy(app)
+        self.db = db
+        self.key_prefix = key_prefix
+        self.use_signer = use_signer
+        self.permanent = permanent
+
+        # Only create Session Model if it doesn't already exist
+        # this fixes 
+        if table not in self.db.metadata:
+            class Session(self.db.Model):
+                __tablename__ = table
+
+                id = self.db.Column(self.db.Integer, primary_key=True)
+                session_id = self.db.Column(self.db.String(256), unique=True)
+                data = self.db.Column(self.db.Text)
+                expiry = self.db.Column(self.db.DateTime)
+                user_id = self.db.Column(
+                    self.db.Integer, self.db.ForeignKey("user.id"), nullable=True
+                )
+
+                def __init__(self, session_id, data, expiry):
+                    self.session_id = session_id
+                    self.data = data
+                    self.expiry = expiry
+
+                def __repr__(self):
+                    return '<Session data %s>' % self.data
+
+            self.sql_session_model = db.session_ext_session_model = Session
+        else:
+            self.sql_session_model = db.session_ext_session_model
+        
+    def get_user_session(self, id):
+        """Given a user id, return None or tuple of (session_id, unpickled session data)"""
+        session = self.sql_session_model.query.filter_by(user_id=id).first()
+        if session is not None:
+            return (
+                session.session_id[len(self.key_prefix):],
+                self.serializer.loads(want_bytes(session.data))
+            )
+
+    def set_user_session(self, sess, uid):
+        """Find existing session and assign a user_id to it. Can also set to None"""
+        sid = sess.sid
+        store_id = self.key_prefix + sid
+        existing_session = self.sql_session_model.query.filter_by(session_id=store_id).first()
+        if existing_session is None:
+            current_app.logger.error(f"The store_id {store_id} isn't valid")
+        elif existing_session.user_id is not None and uid is not None and existing_session.user_id != uid:
+            current_app.logger.error("Session belongs to a different user. Shouldn't happen")
+        else:
+            existing_session.user_id = uid
+            self.db.session.add(existing_session)
+            self.db.session.commit()
 
 
 class SqlSession(Session):
     def init_app(self, app):
-        """
-        Patch an extra column onto Flask-Session's otherwise-lovely model
-        user_id column is used to restore a user's server-side session upon login
-        For convenience we'll also patch get and set methods onto the session_interface
-        """
         super().init_app(app)
-        app.session_interface.sql_session_model.__table_args__ = {'extend_existing' : True}
-        app.session_interface.sql_session_model.extend_existing = True
-        app.session_interface.sql_session_model.user_id = app.session_interface.db.Column(
-            app.session_interface.db.Integer, app.session_interface.db.ForeignKey("user.id"), nullable=True
+        app.session_interface = TassaronSessionInterface(
+            app, app.config['SESSION_SQLALCHEMY'],
+            "sessions", "session:", True, True
         )
-
-        def get_user_session(id):
-            """Given a user id, return None or tuple of (session_id, unpickled session data)"""
-            session = app.session_interface.sql_session_model.query.filter_by(user_id=id).first()
-            if session is not None:
-                return (
-                    session.session_id[len(app.session_interface.key_prefix):],
-                    app.session_interface.serializer.loads(want_bytes(session.data))
-                )
-
-        def set_user_session(sess, uid):
-            """Find existing session and assign a user_id to it. Can also set to None"""
-            sid = sess.sid
-            store_id = app.session_interface.key_prefix + sid
-            existing_session = app.session_interface.sql_session_model.query.filter_by(session_id=store_id).first()
-            if existing_session is None:
-                app.logger.error(f"The store_id {store_id} isn't valid")
-            elif existing_session.user_id is not None and uid is not None and existing_session.user_id != uid:
-                app.logger.error("Session belongs to a different user. Shouldn't happen")
-            else:
-                existing_session.user_id = uid
-                app.session_interface.db.session.add(existing_session)
-                app.session_interface.db.session.commit()
-
-        app.session_interface.get_user_session = get_user_session
-        app.session_interface.set_user_session = set_user_session
 
 
 def create_plugins():
