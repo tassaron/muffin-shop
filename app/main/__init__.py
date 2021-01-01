@@ -59,7 +59,7 @@ def create_app():
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
         MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
-        CLIENT_SESSIONS=os.environ.get("CLIENT_SESSIONS", False),
+        CLIENT_SESSIONS=boolean_from_env_var("CLIENT_SESSIONS"),
     )
 
     if app.env == "production":

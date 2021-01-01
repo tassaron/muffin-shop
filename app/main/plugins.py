@@ -14,7 +14,7 @@ class TassaronSessionInterface(SqlAlchemySessionInterface):
     def __init__(
             self, app, db, table, key_prefix, use_signer=False, permanent=True):
         """
-        Copy of parent's __init__ with some major modifications
+        Copy of parent's __init__ with fixes merged: https://github.com/fengsp/flask-session/pull/12
         Patch an extra column onto Flask-Session's otherwise-lovely model
         user_id column is used to restore a user's server-side session upon login
         """
@@ -25,9 +25,9 @@ class TassaronSessionInterface(SqlAlchemySessionInterface):
         self.use_signer = use_signer
         self.permanent = permanent
 
-        # Only create Session Model if it doesn't already exist
-        # this fixes 
         if table not in self.db.metadata:
+            # ^ Only create Session Model if it doesn't already exist
+            # Fixes the SQLAlchemy "extend_existing must be true" exception during tests
             class Session(self.db.Model):
                 __tablename__ = table
 
@@ -76,6 +76,9 @@ class TassaronSessionInterface(SqlAlchemySessionInterface):
 
 
 class SqlSession(Session):
+    """
+    Add our customized session interface to Flask-Session
+    """
     def init_app(self, app):
         super().init_app(app)
         app.session_interface = TassaronSessionInterface(
