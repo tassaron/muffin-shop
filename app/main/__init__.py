@@ -48,6 +48,8 @@ def create_app():
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
+        SESSION_USE_SIGNER=True,
+        SESSION_TYPE="sqlalchemy",
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
         SESSION_COOKIE_SECURE=True,
@@ -55,9 +57,11 @@ def create_app():
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
         SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
+        SITE_DESCRIPTION=os.environ.get("SITE_DESCRIPTION", "metadescription for your website"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
         MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
+        CLIENT_SESSIONS=os.environ.get("CLIENT_SESSIONS", False),
     )
 
     if app.env == "production":
@@ -86,13 +90,20 @@ def init_app(app, modules: Optional[dict]=None):
     Give the application some global wrappers for logging and Jinja context
     If `modules` is defined, update the modules dictionary after reading json
     """
-    from .plugins import db, migrate, bcrypt, login_manager
+    from .plugins import db, migrate, bcrypt, login_manager, sql_session
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)
-    migrate.init_app(app, db)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
+    app.config["SESSION_SQLALCHEMY"] = db
+    migrate.init_app(app, db)
+    if app.config["CLIENT_SESSIONS"]:
+        app.session_interface.get_user_session = lambda _: None
+        app.session_interface.set_user_session = lambda _, __: None
+        app.session_interface._generate_sid = lambda: None
+    else:
+        sql_session.init_app(app)
 
     if app.env == "production":
         # Enable Monitoring Dashboard only in production
@@ -129,6 +140,7 @@ def init_app(app, modules: Optional[dict]=None):
         return {
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
+            "site_description": app.config["SITE_DESCRIPTION"],
             "footer_year": app.config["FOOTER_YEAR"],
         }
 

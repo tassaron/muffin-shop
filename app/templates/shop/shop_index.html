@@ -29,19 +29,42 @@
                         <p class="card-text">{{product.description}}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">
-                            Add to box for ${{product.price|currency}}
-                        </small>
+                        <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp;<small class="text-muted">${{product.price|currency}}</small>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <!-- /.row -->
-
+        {# end row #}
     </div>
-    <!-- /.col-lg-9 -->
-
+    {# end col-lg-9 #}
 </div>
 <!-- /.row -->
+{% endblock %}
+
+
+{% block script %}
+<script>
+function add_to_cart(id) {
+    fetch("{{ url_for('cart.add_product_to_cart', _external=True) }}", {
+        method: "POST",
+        credentials: "same-origin",
+        body: JSON.stringify({"id": id, "quantity": 1}),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    }).then(function (response) {
+        response.json().then(function (data) {
+            console.log(data)
+        })
+    })
+};
+
+$(function () {
+    {% for product in products %}
+    $('a#cart-btn-{{ product.id }}').on('click', function () { add_to_cart({{ product.id }}); });
+    {% endfor %}
+});
+</script>
 {% endblock %}

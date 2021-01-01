@@ -5,6 +5,7 @@ Database management script for a shop application. Use during initial setup or t
 import argparse
 from tassaron_flask_template.main import create_app
 from tassaron_flask_template.main.models import *
+from tassaron_flask_template.main.plugins import db, sql_session
 from tassaron_flask_template.shop.inventory_models import *
 import os
 import string
@@ -14,6 +15,8 @@ from email_validator import validate_email, EmailNotValidError
 
 app = create_app()
 db.init_app(app)
+app.config["SESSION_SQLALCHEMY"] = db
+sql_session.init_app(app)
 
 
 def random_password(length):
@@ -31,15 +34,17 @@ def create_new_db(email=None):
         except EmailNotValidError:
             pass
     password = random_password(16)
-    admin = User(email=email, password=password, is_admin=True)
+    admin = User(email=email, password=password, email_verified=True, is_admin=True)
     db.session.add(admin)
     db.session.commit()
+    """
     print("Initializing app (needed to construct URLs)...")
     from tassaron_flask_template.main import init_app
     init_app(app)
     print("Sending verification email...")
     from tassaron_flask_template.email import send_email_verification_email
     send_email_verification_email(admin)
+    """
     print(f"Admin's temporary password is {password}")
 
 
@@ -77,6 +82,26 @@ def create_test_db_shop():
             description="Tuber from the ground",
             image="potato.jpg",
             stock=1,
+            category_id=1,
+        )
+    )
+    db.session.add(
+        Product(
+            name="Tomato",
+            price=1.0,
+            description="Fruit from a lovely friend",
+            image="potato.jpg",
+            stock=2,
+            category_id=1,
+        )
+    )
+    db.session.add(
+        Product(
+            name="Hot Cake",
+            price=1.0,
+            description="It sure sells like it!",
+            image="potato.jpg",
+            stock=0,
             category_id=1,
         )
     )

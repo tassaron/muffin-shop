@@ -1,7 +1,6 @@
 from flask import *
 from tassaron_flask_template.blueprint import Blueprint
-import flask_login
-from tassaron_flask_template.main.plugins import bcrypt, db
+from tassaron_flask_template.main.plugins import db
 from tassaron_flask_template.main.models import ShippingAddress
 from tassaron_flask_template.decorators import hidden_route
 from .inventory_models import Product, ProductCategory
@@ -19,6 +18,21 @@ blueprint = Blueprint(
 )
 
 
+@blueprint.app_context_processor
+def inject_cart_vars():
+    return {
+        "no_of_items": len(session["cart"]),
+    }
+
+
+@blueprint.before_app_request
+def create_cart_session():
+    if "cart" not in session:
+        session["cart"] = {
+            # int product_id: int quantity
+        }
+
+
 @blueprint.app_template_filter("currency")
 def float_to_str_currency(num):
     maj, min = str(num).split(".")
@@ -29,7 +43,6 @@ def float_to_str_currency(num):
 def index():
     return render_template(
         "shop_index.html",
-        no_of_items=0,
         products=[]
         if not db.engine.dialect.has_table(db.engine, "Product")
         else Product.query.all(),

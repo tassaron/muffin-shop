@@ -1,11 +1,10 @@
 from .plugins import plugins
 from itsdangerous import TimedJSONWebSignatureSerializer
-import os
 from datetime import datetime
 from flask import current_app
 
 # plugins = create_plugins()
-db, migrate, bcrypt, login_manager = plugins
+db, migrate, bcrypt, login_manager, _ = plugins
 
 
 class User(db.Model):
@@ -157,10 +156,3 @@ class ShippingAddress(db.Model):
     province = db.Column(db.String(2), nullable=False)
 
 
-class ShoppingCart(db.Model):
-    """Shopping carts in the database should belong to a registered user"""
-
-    user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
-    )
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
