@@ -60,9 +60,8 @@ class TassaronSessionInterface(SqlAlchemySessionInterface):
                 self.serializer.loads(want_bytes(session.data))
             )
 
-    def set_user_session(self, sess, uid):
+    def set_user_session(self, sid, uid):
         """Find existing session and assign a user_id to it. Can also set to None"""
-        sid = sess.sid
         store_id = self.key_prefix + sid
         existing_session = self.sql_session_model.query.filter_by(session_id=store_id).first()
         if existing_session is None:

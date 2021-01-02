@@ -48,19 +48,21 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password_hash(form.password.data):
             flash("Logged in! ✔️", "success")
-            # restore a user's shopping cart session or assign a user id to an anonymous session
-            restored_session_data = current_app.session_interface.get_user_session(user.id)
-            if restored_session_data is None:
-                # no existing data, so we can assign this session as the user's first
-               current_app.session_interface.set_user_session(session, user.id)
-            elif session["cart"] == {}:
-                # cart is empty so copy the other session that has a full cart
-               session["cart"] = restored_session_data[1]["cart"]
-            else:
-                # assign this session as the user's new "existing session" & nullify the old one
-                # so future logins with empty cart will inherit the latest full cart
-                current_app.session_interface.set_user_session(restored_session_data[0], None)
-                current_app.session_interface.set_user_session(session, user.id)
+
+            if not current_app.config["CLIENT_SESSIONS"]:
+                # restore a user's shopping cart session or assign a user id to an anonymous session
+                restored_session_data = current_app.session_interface.get_user_session(user.id)
+                if restored_session_data is None:
+                    # no existing data, so we can assign this session as the user's first
+                    current_app.session_interface.set_user_session(session.sid, user.id)
+                elif session["cart"] == {}:
+                    # cart is empty so copy the other session that has a full cart
+                    session["cart"] = restored_session_data[1]["cart"]
+                else:
+                    # assign this session as the user's new "existing session" & nullify the old one
+                    # so future logins with empty cart will inherit the latest full cart
+                    current_app.session_interface.set_user_session(restored_session_data[0], None)
+                    current_app.session_interface.set_user_session(session.sid, user.id)
 
             flask_login.login_user(user, remember=form.rememberme.data)
             next_page = request.args.get("next")

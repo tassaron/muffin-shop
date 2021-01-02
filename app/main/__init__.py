@@ -95,12 +95,9 @@ def init_app(app, modules: Optional[dict]=None):
     login_manager.login_message_category = "info"
     app.register_modules(modules)
     app.config["SESSION_SQLALCHEMY"] = db
-    migrate.init_app(app, db)
-    if app.config["CLIENT_SESSIONS"]:
-        app.session_interface.get_user_session = lambda _: None
-        app.session_interface.set_user_session = lambda _, __: None
-    else:
+    if not app.config["CLIENT_SESSIONS"]:
         sql_session.init_app(app)
+    migrate.init_app(app, db)
 
     if app.env == "production":
         # Enable Monitoring Dashboard only in production
