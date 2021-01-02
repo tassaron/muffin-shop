@@ -2,7 +2,7 @@ from tassaron_flask_template.main import create_app, init_app
 from tassaron_flask_template.main.plugins import db
 from tassaron_flask_template.shop.inventory_models import *
 import tempfile
-from os import path
+import os
 
 
 def test_product_image_safe_path():
@@ -36,3 +36,5 @@ def test_product_image_safe_path():
             category_id=1,
         )
         assert product_with_path_traversal_image.image == normal_product.image
+    os.close(db_fd)
+    os.unlink(db_path)
