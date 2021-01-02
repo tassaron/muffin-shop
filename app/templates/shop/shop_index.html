@@ -56,7 +56,9 @@ function add_to_cart(id) {
         })
     }).then(function (response) {
         response.json().then(function (data) {
-            console.log(data)
+            if (data["success"] === true) {
+                $("#cart-number").text(data["count"]);
+            }
         })
     })
 };

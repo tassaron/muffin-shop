@@ -83,8 +83,9 @@
             </div>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href={{ url_for('shop.view_cart') }}>
-                        <img src={{url_for('static', filename='img/cart.png')}} id="cart_icon"> {{no_of_items}}
+                    <a href={{ url_for('shop.view_cart') }} style="text-decoration: none; color: whitesmoke">
+                        <img src={{url_for('static', filename='img/cart.png')}} id="cart-icon">
+                            <span class="cart-label" id="cart-number">{{no_of_items}}</span>
                     </a>
                 </li>
             </ul>

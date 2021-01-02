@@ -28,6 +28,9 @@ def add_product_to_cart():
             else:
                 session["cart"][id] += quantity
             print(session["cart"])
-            return {"success": True}
+            return {
+                "success": True,
+                "count": len(session["cart"]),
+            }
     except:
         return {"success": False}, 400

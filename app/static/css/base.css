@@ -1,4 +1,10 @@
-img#cart_icon {
+img#cart-icon {
     width: 32px;
     height: 32px;
+}
+
+span.cart-label {
+    font-size: 1.2rem;
+    margin-left: 0.3rem;
+    font-weight: bold;
 }
