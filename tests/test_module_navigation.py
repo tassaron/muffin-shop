@@ -27,6 +27,7 @@ def client():
     client = app.test_client()
     with app.app_context():
         with client:
+            db.create_all()
             yield client
     os.close(db_fd)
     os.unlink(db_path)
