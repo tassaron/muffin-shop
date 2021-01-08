@@ -11,7 +11,7 @@ from tassaron_flask_template.main.routes import all_base_urls
 def client():
     global app, db, bcrypt, login_manager
     app = create_app()
-    db, migrate, bcrypt, login_manager, _ = plugins
+    db, migrate, bcrypt, login_manager = plugins
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False

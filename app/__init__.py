@@ -9,6 +9,8 @@ import logging.config
 from flask.logging import default_handler
 import json
 import importlib
+import re
+from urllib.parse import quote
 
 
 load_dotenv(".env")
@@ -140,3 +142,12 @@ def create_env_file() -> bool:
     ensure_env_var("SECRET_KEY")
     load_dotenv(".env")
     return mutated_env_file
+
+
+def prettier_url_safe(string) -> str:
+    """Replace URL-unsafe characters with underscores"""
+    string = quote(string)
+    ugly_escapes = set(re.findall("%[0-9]{2}", string))
+    for url_encoded_character in ugly_escapes:
+        string.replace(url_encoded_character, "_")
+    return string

@@ -38,7 +38,6 @@ setup(
         "Flask-Reuploaded==0.3.2",
         "Flask-SQLAlchemy==2.4.4",
         "Flask-WTF==0.14.3",
-        "Flask-Session==0.3.2",
         "email_validator",
         "is_safe_url==1.0",
         "mistune==2.0.0a5",

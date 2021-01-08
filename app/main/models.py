@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import current_app
 
 # plugins = create_plugins()
-db, migrate, bcrypt, login_manager, _ = plugins
+db, migrate, bcrypt, login_manager = plugins
 
 
 class User(db.Model):

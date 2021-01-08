@@ -3,7 +3,7 @@ Entrypoint for initial import of the package in any context
 Creates routes/blueprints without creating the app
 Home to factories for creating the app and its plugins
 """
-from tassaron_flask_template import Flask, create_env_file
+from tassaron_flask_template import Flask, create_env_file, prettier_url_safe
 from flask import request
 import os
 import datetime
@@ -24,7 +24,8 @@ def create_app():
     The WSGI application is returned with no plugins initialized nor extra modules imported
     """
     mutated_env_file = create_env_file()
-    app = Flask("tassaron_flask_template")
+    website_name = os.environ.get("SITE_NAME", "Tassaron Flask Template")
+    app = Flask(prettier_url_safe(website_name))
     app.logger.info("Created Flask instance")
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
@@ -54,7 +55,7 @@ def create_app():
         REMEMBER_COOKIE_SECURE=True,
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
-        SITE_NAME=os.environ.get("SITE_NAME", "Your Website Name Here"),
+        SITE_NAME=website_name,
         SITE_DESCRIPTION=os.environ.get("SITE_DESCRIPTION", "metadescription for your website"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
@@ -88,15 +89,14 @@ def init_app(app, modules: Optional[dict]=None):
     Give the application some global wrappers for logging and Jinja context
     If `modules` is defined, update the modules dictionary after reading json
     """
-    from .plugins import db, migrate, bcrypt, login_manager, sql_session
+    from .plugins import db, migrate, bcrypt, login_manager
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
-    app.config["SESSION_SQLALCHEMY"] = db
-    if not app.config["CLIENT_SESSIONS"]:
-        sql_session.init_app(app)
+    from .session_interface import TassaronSessionInterface
+    app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
 
     if app.env == "production":
