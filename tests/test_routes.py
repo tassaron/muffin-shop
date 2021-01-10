@@ -206,3 +206,9 @@ def test_all_logged_in_user_routes(client):
     for endpoint in endpoints:
         resp = client.get(endpoint)
         assert resp.status_code == 404
+
+
+def test_static(client):
+    # Irrelevant when using Nginx in production, but still important
+    resp = client.get("/static/img/logo.png")
+    assert resp.status_code == 200

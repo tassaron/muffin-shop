@@ -24,8 +24,7 @@ def create_app():
     The WSGI application is returned with no plugins initialized nor extra modules imported
     """
     mutated_env_file = create_env_file()
-    website_name = os.environ.get("SITE_NAME", "Tassaron Flask Template")
-    app = Flask(prettier_url_safe(website_name))
+    app = Flask("tassaron_flask_template")
     app.logger.info("Created Flask instance")
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
@@ -55,13 +54,15 @@ def create_app():
         REMEMBER_COOKIE_SECURE=True,
         SESSION_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_HTTPONLY=True,
-        SITE_NAME=website_name,
+        SITE_NAME=(website_name := os.environ.get("SITE_NAME", "Tassaron Flask Template")),
         SITE_DESCRIPTION=os.environ.get("SITE_DESCRIPTION", "metadescription for your website"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
         MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
         CLIENT_SESSIONS=boolean_from_env_var("CLIENT_SESSIONS"),
     )
+    
+    app.unique_name = prettier_url_safe(website_name)
 
     if app.env == "production":
         # Configure email

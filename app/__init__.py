@@ -146,8 +146,8 @@ def create_env_file() -> bool:
 
 def prettier_url_safe(string) -> str:
     """Replace URL-unsafe characters with underscores"""
-    string = quote(string)
+    string = quote(str(string))
     ugly_escapes = set(re.findall("%[0-9]{2}", string))
     for url_encoded_character in ugly_escapes:
-        string.replace(url_encoded_character, "_")
-    return string
+        string = string.replace(url_encoded_character, "_")
+    return string.lower()

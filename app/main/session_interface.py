@@ -79,7 +79,7 @@ class TassaronSessionInterface(SessionInterface):
 
     @staticmethod
     def _get_signer(app):
-        return Signer(app.secret_key, salt=f"{app.name}_session", key_derivation="hmac")
+        return Signer(app.secret_key, salt=f"{app.unique_name}_session", key_derivation="hmac")
 
     def get_user_session(self, id):
         """Given a user id, return None or tuple of (session_id, unpickled session data)"""
