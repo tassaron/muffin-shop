@@ -8,7 +8,7 @@
 1. Configure firewall: `ufw allow [YOUR-SSH-PORT]; ufw allow 'Nginx Full'`
 1. Start firewall: `ufw enable`
 1. Make user account for the app: `adduser --system --home /srv/website website`
-1. Clone repo from GitHub: `git clone https://github.com/tassaron2/flask-template /srv/website`
+1. Clone repo from GitHub: `git clone https://github.com/tassaron/flask-template /srv/website`
 1. Make Python virtual environment: `cd ~website; python3 -m venv env`
 1. Activate virtual environment: `source env/bin/activate`
 1. Install using Pip: `pip install .`

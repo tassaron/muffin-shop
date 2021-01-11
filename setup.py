@@ -14,7 +14,7 @@ except Exception:
 setup(
     name="tassaron flask template",
     author="tassaron",
-    version="20.12.27",  # year.month.day
+    version="21.01.10",  # year.month.day
     packages=[
         "tassaron_flask_template",
         "tassaron_flask_template.main",
@@ -45,7 +45,7 @@ setup(
         "requests==2.25.1",
         "huey==2.3.0",
     ],
-    url="https://github.com/tassaron2/flask-template",
+    url="https://github.com/tassaron/flask-template",
     license="MIT",
     description="my template for an advanced Flask app",
     long_description=long_description,

@@ -1,4 +1,4 @@
-# Tassaron's Flask Template
+# Tassaron's Flask Template ![](https://img.shields.io/badge/python-3.8-informational) ![](https://img.shields.io/github/license/tassaron/flask-template) ![](https://img.shields.io/github/last-commit/tassaron/flask-template) ![](https://img.shields.io/mastodon/follow/1?domain=https%3A%2F%2Ftassaron.com&style=social)
 
 A work-in-progress template for an advanced Flask webapp with admin, login system and emails built-in, and other common features separated into "modules" defined in `config/modules.json`. A module represents a navigation tab on the website, which can be rearranged and renamed to suit the particular site. Any module can be designated as the homepage. See `MODULES.md` for more information about how these modules are defined.
 
