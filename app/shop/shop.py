@@ -55,22 +55,14 @@ def product_description(product_id):
     return render_template("view_product.html", product=product, title=product.name)
 
 
-@blueprint.route("/product/addtocart", methods=["POST"])
-def add_to_cart():
-    return ""
-
-
-@blueprint.route("/product/removefromcart", methods=["POST"])
-def remove_from_cart():
-    return ""
-
-
 @blueprint.route("/view_cart")
-@hidden_route
-def view_cart(cart):
+def view_cart():
     return render_template(
         "view_cart.html",
-        cart=cart,
+        cart=[
+            (Product.query.get(id), quantity)
+            for id, quantity in session["cart"].items()
+        ],
     )
 
 

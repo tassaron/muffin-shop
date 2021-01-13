@@ -1,16 +1,43 @@
-{% if cart == None %}
-<div class="row profile-row">
-    Your shopping cart is empty
+{% set selected = 1 %}
+{% extends 'base.html' %}
+{% block title %}Your Shopping Cart{% endblock %}
+
+{% block content %}
+
+{% if cart == [] %}
+<div class="row">
+    <div class="col-md-6">
+        Your shopping cart is empty
+    </div>
 </div>
 {% else %}
-{% for item in cart %}
-<div class="row profile-row">
-    <div class="col-md-6">
-        <label>{{ item.name }}</label>
-    </div>
-    <div class="col-md-6">
-        <p>{{ item.quantity }}</p>
+<div class="container">
+    <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="border-0">
+                <div class="p-2 px-3 text-uppercase">Product</div>
+              </th>
+              <th scope="col" class="border-0">
+                <div class="py-2 text-uppercase">Price</div>
+              </th>
+              <th scope="col" class="border-0">
+                <div class="py-2 text-uppercase">Quantity</div>
+              </th>
+              <th scope="col" class="border-0">
+                <div class="py-2 text-uppercase">Remove</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item, quantity in cart %}
+            {% include 'cart_component.html' %}
+            {% endfor %}
+        </tbody>
+        </table>
     </div>
 </div>
-{% endfor %}
 {% endif %}
+
+{% endblock %}
