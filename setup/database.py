@@ -5,7 +5,8 @@ Database management script for a shop application. Use during initial setup or t
 import argparse
 from tassaron_flask_template.main import create_app
 from tassaron_flask_template.main.models import *
-from tassaron_flask_template.main.plugins import db, sql_session
+from tassaron_flask_template.main.plugins import db
+from tassaron_flask_template.main.session_interface import TassaronSessionInterface
 from tassaron_flask_template.shop.inventory_models import *
 import os
 import string
@@ -15,8 +16,7 @@ from email_validator import validate_email, EmailNotValidError
 
 app = create_app()
 db.init_app(app)
-app.config["SESSION_SQLALCHEMY"] = db
-sql_session.init_app(app)
+app.session_interface = TassaronSessionInterface(app, db)
 
 
 def random_password(length):
