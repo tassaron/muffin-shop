@@ -43,9 +43,7 @@ def float_to_str_currency(num):
 def index():
     return render_template(
         "shop_index.html",
-        products=[]
-        if not db.engine.dialect.has_table(db.engine, "Product")
-        else Product.query.all(),
+        products=Product.query.all(),
     )
 
 

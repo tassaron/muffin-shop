@@ -41,7 +41,6 @@ def create_app():
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
         ADMIN_URL=os.environ.get("ADMIN_URL", "/admin"),
         UPLOADS_DEFAULT_DEST="app/static/uploads",
-        UPLOADED_IMAGES_URL="",  # https://github.com/jugmac00/flask-reuploaded/issues/24
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"

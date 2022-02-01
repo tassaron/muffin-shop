@@ -50,7 +50,7 @@ class Blueprint(flask.Blueprint):
 
         return decorator
 
-    def register(self, app, options, first_registration=False):
+    def register(self, app, options):
         """
         Called when the Flask instance does register_blueprint
         """
@@ -64,4 +64,4 @@ class Blueprint(flask.Blueprint):
                 app.blueprint_index[self.name] = (endpoint, f, options)
 
         app.admin_routes.extend(self.__admin_routes)
-        super().register(app, options, first_registration)
+        super().register(app, options)
