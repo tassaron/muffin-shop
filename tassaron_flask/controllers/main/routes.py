@@ -11,14 +11,14 @@ from werkzeug.exceptions import (
 )
 from werkzeug.routing import BuildError
 from functools import lru_cache
-from tassaron_flask_template.blueprint import Blueprint
+from tassaron_flask.blueprint import Blueprint
 
 
 main_routes = Blueprint("main", __name__)
 
 
 # import images at this point to ensure that all of main_routes is defined
-from .images import *
+from tassaron_flask.controllers.main.images import *
 
 
 def generic_url_for(rule):

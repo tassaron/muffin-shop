@@ -38,7 +38,7 @@
         "root": {
             "handlers": ["error_log"]
         },
-        "tassaron_flask_template": {
+        "tassaron_flask": {
             "handlers": ["console", "error_log"]
         },
         "sqlalchemy.engine.base.Engine": {

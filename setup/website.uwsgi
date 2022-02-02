@@ -1,5 +1,5 @@
 [uwsgi]
-module = tassaron_flask_template.run
+module = tassaron_flask.run
 master = true
 enable-threads = true
 single-interpreter = true

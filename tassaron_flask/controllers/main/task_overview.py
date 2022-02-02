@@ -1,14 +1,14 @@
 import os
 import sqlite3
-from tassaron_flask_template.blueprint import Blueprint
+from tassaron_flask.blueprint import Blueprint
 from flask import render_template
 
 
 blueprint = Blueprint(
     "huey",
     __name__,
-    static_folder="../static",
-    template_folder="../templates",
+    static_folder="../../static",
+    template_folder="../../templates",
 )
 
 

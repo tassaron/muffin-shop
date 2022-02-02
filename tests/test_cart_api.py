@@ -1,6 +1,6 @@
-from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.shop.inventory_models import Product, ProductCategory
+from tassaron_flask.helpers.main.app_factory import create_app, init_app
+from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.models.shop.inventory_models import Product, ProductCategory
 import tempfile
 import os
 from flask import json, jsonify

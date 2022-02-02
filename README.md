@@ -17,7 +17,7 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 1. Use the `setup.py` file for more minimal dependencies: `pip install .`
 1. Use `python3 setup/database.py new` to create a new database.
 1. Use the `devserver.sh` shell script to run a development uWSGI server (`localhost:5000`).
-1. OR use `python3 -m tassaron_flask_template` for Flask's built-in development server.
+1. OR use `python3 -m tassaron_flask` for Flask's built-in development server.
 1. See the [readme inside `/setup`](setup/README.md) for help with setting up a production server.
 
 ## Customizing
@@ -37,8 +37,30 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 ## How it works
 
 1. Systemd starts Nginx and uWSGI
-1. Nginx serves files from `app/static` directly and passes the other requests through to uWSGI
-1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `app/run.py`.
+1. Nginx serves files from `tassaron_flask/static` directly and passes the other requests through to uWSGI
+1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `tassaron_flask/run.py`.
+1. The WSGI application is created by the Main module, specifically by `create_app` defined in `tassaron_flask/helpers/main/app_factory.py`
 1. When uWSGI receives a connection, it picks one of its idle workers and calls the WSGI application in that process.
-1. The Main module `app/main` contains the `create_app` function and core systems like login, email, and admin
-1. The Main module's `init_app` function is called next to import other modules
+
+## Code Style
+* Black formatter
+* Absolute imports only
+* The `tassaron_flask` package must be installed using pip for the imports to work
+
+## Project Structure
+### /tassaron_flask
+* Core pieces of the module system needed by every module
+* Entrypoint: `run.py`
+### /tassaron_flask/static
+* Files served traditionally by the web server (*e.g.*, images, CSS)
+### /tassaron_flask/templates/`<module>`
+* HTML files to be parsed by Jinja templating engine
+### /tassaron_flask/controllers/`<module>`
+* URL endpoints (routes) which could return a view (template) or JSON
+### /tassaron_flask/models/`<module>`
+* Models shape data in the database (using SQLAlchemy)
+* Models manipulate data at the request of controllers
+### /tassaron_flask/forms/`<module>`
+* Server-side form validation using WTForms
+### /tassaron_flask/helpers/`<module>`
+* Extra helpers for modules such as utility functions, Flask plugins, asynchronous tasks

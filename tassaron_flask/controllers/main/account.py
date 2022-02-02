@@ -15,17 +15,17 @@ from flask import (
 import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.main.forms import (
+from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.forms.main.forms import (
     ShortRegistrationForm,
     LoginForm,
     RequestPasswordResetForm,
     PasswordResetForm,
 )
-from tassaron_flask_template.email import *
+from tassaron_flask.helpers.main.email import *
 
 
-import tassaron_flask_template.main.models as Models
+import tassaron_flask.models.main.models as Models
 
 User = Models.User
 
@@ -33,8 +33,8 @@ User = Models.User
 blueprint = Blueprint(
     "account",
     __name__,
-    static_folder="../static",
-    template_folder="../templates/account",
+    static_folder="../../static",
+    template_folder="../../templates/account",
 )
 
 

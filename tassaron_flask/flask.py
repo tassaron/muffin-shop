@@ -1,7 +1,7 @@
 """
 Home to Flask subclass
 """
-from tassaron_flask_template.tasks import huey
+from tassaron_flask.helpers.main.tasks import huey
 import flask
 from dotenv import load_dotenv
 import os
@@ -62,21 +62,21 @@ class Flask(flask.Flask):
 
         def import_python_modules(pkg, mod_list):
             nonlocal blueprints
-            pkg, subpkg = pkg
+            pkg, *subpkg = pkg
             for blueprint in mod_list:
                 pymodule_name, blueprint_name = blueprint.split(":")
                 module = importlib.import_module(
                     f".{pymodule_name}",
-                    f"{pkg}.{subpkg}"
+                    f"{pkg}.{'.'.join(subpkg)}"
                 )
                 blueprints[pymodule_name] = module.__dict__[blueprint_name]
         
         blueprints = {}
         blueprints["account"] = importlib.import_module(
-            f".account", "tassaron_flask_template.main"
+            f".account", "tassaron_flask.controllers.main"
         ).__dict__["blueprint"]
         blueprints["task_overview"] = importlib.import_module(
-            f".task_overview", "tassaron_flask_template.main"
+            f".task_overview", "tassaron_flask.controllers.main"
         ).__dict__["blueprint"]
         import_python_modules(parse_pkg(main_module), data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
@@ -105,11 +105,12 @@ class Flask(flask.Flask):
 
 
 def parse_pkg(string) -> tuple:
-    p = string.split(".", 1)
+    p: list = string.split(".", 1)
     if len(p) != 2:
         raise ConfigurationError(f"'{string}' does not specify a parent package")
     if p[0] == "":
-        p[0] = "tassaron_flask_template"
+        p[0] = "tassaron_flask"
+    p.insert(1, "controllers")
     return tuple(p)
 
 
@@ -122,7 +123,7 @@ def create_env_file() -> bool:
     mutated_env_file = False
     def create_ensure_env_var_func():
         default_values = {
-            "FLASK_APP": "tassaron_flask_template.run",
+            "FLASK_APP": "tassaron_flask.run",
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }

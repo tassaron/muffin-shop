@@ -1,13 +1,13 @@
 from flask import render_template
-from tassaron_flask_template.blueprint import Blueprint
-from tassaron_flask_template.markdown import render_markdown
+from tassaron_flask.blueprint import Blueprint
+from tassaron_flask.helpers.main.markdown import render_markdown
 
 
 blueprint = Blueprint(
     "about",
     __name__,
-    static_folder="../static",
-    template_folder="../templates",
+    static_folder="../../static",
+    template_folder="../../templates",
 )
 
 

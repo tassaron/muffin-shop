@@ -3,11 +3,11 @@
 Database management script for a shop application. Use during initial setup or testing.
 """
 import argparse
-from tassaron_flask_template.main import create_app
-from tassaron_flask_template.main.models import *
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.main.session_interface import TassaronSessionInterface
-from tassaron_flask_template.shop.inventory_models import *
+from tassaron_flask.helpers.main.app_factory import create_app
+from tassaron_flask.models.main.models import *
+from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.helpers.main.session_interface import TassaronSessionInterface
+from tassaron_flask.models.shop.inventory_models import *
 import os
 import string
 import random
@@ -39,10 +39,10 @@ def create_new_db(email=None):
     db.session.commit()
     """
     print("Initializing app (needed to construct URLs)...")
-    from tassaron_flask_template.main import init_app
+    from tassaron_flask.main import init_app
     init_app(app)
     print("Sending verification email...")
-    from tassaron_flask_template.email import send_email_verification_email
+    from tassaron_flask.email import send_email_verification_email
     send_email_verification_email(admin)
     """
     print(f"Admin's temporary password is {password}")

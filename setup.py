@@ -12,21 +12,9 @@ except Exception:
 
 
 setup(
-    name="tassaron flask template",
+    name="tassaron flask",
     author="tassaron",
     version="0.0.0",
-    packages=[
-        "tassaron_flask_template",
-        "tassaron_flask_template.main",
-        "tassaron_flask_template.about",
-        "tassaron_flask_template.shop",
-    ],
-    package_dir={
-        "tassaron_flask_template": "app",
-        "tassaron_flask_template.main": "app/main",
-        "tassaron_flask_template.about": "app/about",
-        "tassaron_flask_template.shop": "app/shop",
-    },
     include_package_data=True,
     install_requires=[
         "uWSGI",

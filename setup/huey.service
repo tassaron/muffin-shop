@@ -7,7 +7,7 @@ User=website
 Group=www-data
 WorkingDirectory=/srv/website
 Environment="PATH=/srv/website/env/bin"
-ExecStart=/srv/website/env/bin/huey_consumer.py tassaron_flask_template.huey -s 60
+ExecStart=/srv/website/env/bin/huey_consumer.py tassaron_flask.huey -s 60
 Requires=website.service
 
 [Install]
