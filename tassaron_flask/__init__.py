@@ -1,7 +1,7 @@
 """
 Home to Flask subclass
 """
-from tassaron_flask_template.tasks import huey
+from tassaron_flask.helpers.main.tasks import huey
 import flask
 from dotenv import load_dotenv
 import os
@@ -73,10 +73,10 @@ class Flask(flask.Flask):
         
         blueprints = {}
         blueprints["account"] = importlib.import_module(
-            f".account", "tassaron_flask_template.controllers.main"
+            f".account", "tassaron_flask.controllers.main"
         ).__dict__["blueprint"]
         blueprints["task_overview"] = importlib.import_module(
-            f".task_overview", "tassaron_flask_template.controllers.main"
+            f".task_overview", "tassaron_flask.controllers.main"
         ).__dict__["blueprint"]
         import_python_modules(parse_pkg(main_module), data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
@@ -109,7 +109,7 @@ def parse_pkg(string) -> tuple:
     if len(p) != 2:
         raise ConfigurationError(f"'{string}' does not specify a parent package")
     if p[0] == "":
-        p[0] = "tassaron_flask_template"
+        p[0] = "tassaron_flask"
     p.insert(1, "controllers")
     return tuple(p)
 
@@ -123,7 +123,7 @@ def create_env_file() -> bool:
     mutated_env_file = False
     def create_ensure_env_var_func():
         default_values = {
-            "FLASK_APP": "tassaron_flask_template.run",
+            "FLASK_APP": "tassaron_flask.run",
             "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }

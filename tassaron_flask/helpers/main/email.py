@@ -1,8 +1,8 @@
 from flask import current_app, url_for
 from sqlalchemy.exc import IntegrityError
-from .tasks import huey_send_email
-from .models.main.models import User, NewEmail, OldEmail
-from .models.main.plugins import db
+from tassaron_flask.helpers.main.tasks import huey_send_email
+from tassaron_flask.models.main.models import User, NewEmail, OldEmail
+from tassaron_flask.helpers.main.plugins import db
 from huey.api import Result
 
 

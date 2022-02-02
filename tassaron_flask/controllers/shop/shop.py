@@ -1,9 +1,9 @@
 from flask import *
-from tassaron_flask_template.blueprint import Blueprint
-from tassaron_flask_template.models.main.plugins import db
-from tassaron_flask_template.models.main.models import ShippingAddress
-from tassaron_flask_template.decorators import hidden_route
-from .inventory_models import Product, ProductCategory
+from tassaron_flask.blueprint import Blueprint
+from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.models.main.models import ShippingAddress
+from tassaron_flask.decorators import hidden_route
+from ...models.shop.inventory_models import Product, ProductCategory
 import logging
 
 

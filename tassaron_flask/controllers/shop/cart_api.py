@@ -3,8 +3,8 @@ POST to these Cart endpoints in order to manipulate the Cart Session Cookie
 Each endpoint returns a response of success or not, to update the client-side record
 """
 from flask import Blueprint, request, session
-from tassaron_flask_template.models.main.plugins import db
-from .inventory_models import Product
+from tassaron_flask.helpers.main.plugins import db
+from ...models.shop.inventory_models import Product
 
 
 blueprint = Blueprint(

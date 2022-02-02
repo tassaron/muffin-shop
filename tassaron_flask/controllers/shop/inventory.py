@@ -1,10 +1,10 @@
 from flask import current_app, render_template, flash, redirect, url_for, abort
 from flask_login import current_user
 from werkzeug.datastructures import MultiDict
-from tassaron_flask_template.blueprint import Blueprint
-from tassaron_flask_template.models.main.plugins import db
-from .inventory_forms import ProductForm
-from .inventory_models import Product
+from tassaron_flask.blueprint import Blueprint
+from tassaron_flask.helpers.main.plugins import db
+from ...forms.shop.inventory_forms import ProductForm
+from ...models.shop.inventory_models import Product
 import os
 
 

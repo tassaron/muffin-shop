@@ -3,7 +3,7 @@ Entrypoint for initial import of the package in any context
 Creates routes/blueprints without creating the app
 Home to factories for creating the app and its plugins
 """
-from tassaron_flask_template import Flask, create_env_file, prettier_url_safe
+from tassaron_flask import Flask, create_env_file, prettier_url_safe
 from flask import request
 import os
 import datetime
@@ -24,7 +24,7 @@ def create_app():
     The WSGI application is returned with no plugins initialized nor extra modules imported
     """
     mutated_env_file = create_env_file()
-    app = Flask("tassaron_flask_template")
+    app = Flask("tassaron_flask")
     app.logger.info("Created Flask instance")
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
@@ -40,7 +40,7 @@ def create_app():
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
         ADMIN_URL=os.environ.get("ADMIN_URL", "/admin"),
-        UPLOADS_DEFAULT_DEST="app/static/uploads",
+        UPLOADS_DEFAULT_DEST="tassaron_flask/static/uploads",
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
@@ -75,7 +75,7 @@ def create_app():
     else:
         app.logger.warning("Email is disabled because FLASK_ENV != production")
 
-    from tassaron_flask_template.controllers.main.routes import main_routes
+    from tassaron_flask.controllers.main.routes import main_routes
     app.register_blueprint(main_routes)
     return app
 
@@ -89,13 +89,13 @@ def init_app(app, modules: Optional[dict]=None):
     Give the application some global wrappers for logging and Jinja context
     If `modules` is defined, update the modules dictionary after reading json
     """
-    from .plugins import db, migrate, bcrypt, login_manager
+    from ...helpers.main.plugins import db, migrate, bcrypt, login_manager
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
-    from tassaron_flask_template.controllers.main.session_interface import TassaronSessionInterface
+    from tassaron_flask.helpers.main.session_interface import TassaronSessionInterface
     app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
 
@@ -126,7 +126,7 @@ def init_app(app, modules: Optional[dict]=None):
 
     from flask_uploads import configure_uploads
     #FIXME
-    from tassaron_flask_template.controllers.main.images import Images
+    from tassaron_flask.controllers.main.images import Images
 
     configure_uploads(app, Images)
 

@@ -11,7 +11,7 @@ from werkzeug.exceptions import (
 )
 from werkzeug.routing import BuildError
 from functools import lru_cache
-from tassaron_flask_template.blueprint import Blueprint
+from tassaron_flask.blueprint import Blueprint
 
 
 main_routes = Blueprint("main", __name__)

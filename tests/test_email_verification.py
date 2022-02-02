@@ -1,7 +1,7 @@
-from tassaron_flask_template.models.main import create_app, init_app
-from tassaron_flask_template.models.main.plugins import db
-from tassaron_flask_template.models.main.models import User
-from tassaron_flask_template.email import *
+from tassaron_flask.models.main import create_app, init_app
+from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.models.main.models import User
+from tassaron_flask.helpers.main.email import *
 from huey.api import Result
 import tempfile
 import os

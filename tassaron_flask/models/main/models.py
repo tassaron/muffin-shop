@@ -1,4 +1,4 @@
-from .plugins import plugins
+from ...helpers.main.plugins import plugins
 from itsdangerous import TimedJSONWebSignatureSerializer
 from datetime import datetime
 from flask import current_app
