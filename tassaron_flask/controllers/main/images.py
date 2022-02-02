@@ -1,7 +1,5 @@
 import os
 import uuid
-import imghdr
-import flask_uploads
 from flask import (
     render_template,
     redirect,
@@ -10,41 +8,10 @@ from flask import (
     current_app,
     abort,
 )
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField
+
 from tassaron_flask.controllers.main.routes import main_routes
-
-
-Images = flask_uploads.UploadSet("images", flask_uploads.IMAGES)
-
-
-class UploadForm(FlaskForm):
-    image = FileField(
-        validators=[
-            FileAllowed(Images, "Image files only"),
-            FileRequired("Must be an image file"),
-        ]
-    )
-    submit = SubmitField("Upload")
-
-
-def validate_image(stream):
-    """
-    Useful function borrowed from blog.miguelgrinberg.com/post/handling-file-uploads-with-flask
-    Checks to see if header of a bytestream claims that the file is an image
-    """
-    header = stream.read(512)
-    stream.seek(0)
-    format = imghdr.what(None, header)
-    if not format:
-        return None
-    return "." + (format if format != "jpeg" else "jpg")
-
-
-def get_files():
-    """Returns list of files in the uploads/images directory"""
-    return os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
+from tassaron_flask.forms.main.images import UploadForm
+from tassaron_flask.helpers.main.images import Images, validate_image, get_files
 
 
 @main_routes.admin_route("/images/upload", methods=["GET", "POST"])
