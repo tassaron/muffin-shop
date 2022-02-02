@@ -75,7 +75,7 @@ def create_app():
     else:
         app.logger.warning("Email is disabled because FLASK_ENV != production")
 
-    from .routes import main_routes
+    from tassaron_flask_template.controllers.main.routes import main_routes
     app.register_blueprint(main_routes)
     return app
 
@@ -95,7 +95,7 @@ def init_app(app, modules: Optional[dict]=None):
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
-    from .session_interface import TassaronSessionInterface
+    from tassaron_flask_template.controllers.main.session_interface import TassaronSessionInterface
     app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
 
@@ -125,7 +125,8 @@ def init_app(app, modules: Optional[dict]=None):
     )
 
     from flask_uploads import configure_uploads
-    from .images import Images
+    #FIXME
+    from tassaron_flask_template.controllers.main.images import Images
 
     configure_uploads(app, Images)
 

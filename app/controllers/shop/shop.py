@@ -1,7 +1,7 @@
 from flask import *
 from tassaron_flask_template.blueprint import Blueprint
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.main.models import ShippingAddress
+from tassaron_flask_template.models.main.plugins import db
+from tassaron_flask_template.models.main.models import ShippingAddress
 from tassaron_flask_template.decorators import hidden_route
 from .inventory_models import Product, ProductCategory
 import logging
@@ -13,8 +13,8 @@ LOG = logging.getLogger(__package__)
 blueprint = Blueprint(
     "shop",
     __name__,
-    static_folder="../static",
-    template_folder="../templates/shop",
+    static_folder="../../static",
+    template_folder="../../templates/shop",
 )
 
 

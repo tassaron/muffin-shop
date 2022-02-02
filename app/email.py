@@ -1,8 +1,8 @@
 from flask import current_app, url_for
 from sqlalchemy.exc import IntegrityError
 from .tasks import huey_send_email
-from .main.models import User, NewEmail, OldEmail
-from .main.plugins import db
+from .models.main.models import User, NewEmail, OldEmail
+from .models.main.plugins import db
 from huey.api import Result
 
 

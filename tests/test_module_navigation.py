@@ -1,8 +1,8 @@
 import os
 import tempfile
 import pytest
-from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.plugins import db, bcrypt, login_manager
+from tassaron_flask_template.models.main import create_app, init_app
+from tassaron_flask_template.models.main.plugins import db, bcrypt, login_manager
 from test_routes import client as normal_client
 
 

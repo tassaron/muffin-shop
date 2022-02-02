@@ -17,15 +17,13 @@ setup(
     version="0.0.0",
     packages=[
         "tassaron_flask_template",
-        "tassaron_flask_template.main",
-        "tassaron_flask_template.about",
-        "tassaron_flask_template.shop",
+        "tassaron_flask_template.controllers.main",
+        "tassaron_flask_template.controllers.about",
+        "tassaron_flask_template.controllers.shop",
+        "tassaron_flask_template.models.main",
     ],
     package_dir={
         "tassaron_flask_template": "app",
-        "tassaron_flask_template.main": "app/main",
-        "tassaron_flask_template.about": "app/about",
-        "tassaron_flask_template.shop": "app/shop",
     },
     include_package_data=True,
     install_requires=[

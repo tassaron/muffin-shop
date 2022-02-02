@@ -3,11 +3,11 @@
 Database management script for a shop application. Use during initial setup or testing.
 """
 import argparse
-from tassaron_flask_template.main import create_app
-from tassaron_flask_template.main.models import *
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.main.session_interface import TassaronSessionInterface
-from tassaron_flask_template.shop.inventory_models import *
+from tassaron_flask_template.models.main import create_app
+from tassaron_flask_template.models.main.models import *
+from tassaron_flask_template.models.main.plugins import db
+from tassaron_flask_template.controllers.main.session_interface import TassaronSessionInterface
+from tassaron_flask_template.controllers.shop.inventory_models import *
 import os
 import string
 import random

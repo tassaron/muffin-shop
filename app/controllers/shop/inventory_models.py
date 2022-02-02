@@ -1,5 +1,5 @@
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.main.images import Images
+from tassaron_flask_template.models.main.plugins import db
+from tassaron_flask_template.controllers.main.images import Images
 from werkzeug.utils import secure_filename
 
 

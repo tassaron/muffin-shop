@@ -1,6 +1,6 @@
-from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.plugins import db
-from tassaron_flask_template.shop.inventory_models import *
+from tassaron_flask_template.models.main import create_app, init_app
+from tassaron_flask_template.models.main.plugins import db
+from tassaron_flask_template.controllers.shop.inventory_models import *
 import tempfile
 import os
 

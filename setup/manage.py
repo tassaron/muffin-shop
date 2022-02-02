@@ -5,8 +5,8 @@ App management script for a Flask application
 import argparse
 import sys
 from tassaron_flask_template import create_env_file
-from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.routes import all_urls
+from tassaron_flask_template.models.main import create_app, init_app
+from tassaron_flask_template.controllers.main.routes import all_urls
 
 
 def print_all_urls(stream):

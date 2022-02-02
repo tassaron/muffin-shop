@@ -1,10 +1,10 @@
 import os
 import tempfile
 import pytest
-from tassaron_flask_template.main import create_app, init_app
-from tassaron_flask_template.main.plugins import plugins
-from tassaron_flask_template.main.models import User
-from tassaron_flask_template.main.routes import all_base_urls
+from tassaron_flask_template.models.main import create_app, init_app
+from tassaron_flask_template.models.main.plugins import plugins
+from tassaron_flask_template.models.main.models import User
+from tassaron_flask_template.controllers.main.routes import all_base_urls
 
 
 @pytest.fixture
