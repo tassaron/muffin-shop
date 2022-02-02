@@ -13,7 +13,7 @@ from flask import (
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
-from .routes import main_routes
+from tassaron_flask.controllers.main.routes import main_routes
 
 
 Images = flask_uploads.UploadSet("images", flask_uploads.IMAGES)

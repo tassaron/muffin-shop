@@ -2,7 +2,7 @@
 Ensure that a user cannot receive a second email until they've taken action
 on the previous one, or until enough time has passed
 """
-from tassaron_flask.models.main import create_app, init_app
+from tassaron_flask.helpers.main.app_factory import create_app, init_app
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.models.main.models import User
 from tassaron_flask.helpers.main.email import *

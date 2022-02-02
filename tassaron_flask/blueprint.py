@@ -1,7 +1,7 @@
 import flask
 import flask_login
 import os
-from .__init__ import parse_pkg
+from tassaron_flask.flask import parse_pkg
 
 
 ADMIN_URL = os.environ.get("ADMIN_URL", "/admin")

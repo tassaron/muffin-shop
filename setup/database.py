@@ -3,7 +3,7 @@
 Database management script for a shop application. Use during initial setup or testing.
 """
 import argparse
-from tassaron_flask.models.main import create_app
+from tassaron_flask.helpers.main.app_factory import create_app
 from tassaron_flask.models.main.models import *
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.helpers.main.session_interface import TassaronSessionInterface

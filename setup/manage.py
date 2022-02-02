@@ -4,8 +4,8 @@ App management script for a Flask application
 """
 import argparse
 import sys
-from tassaron_flask import create_env_file
-from tassaron_flask.models.main import create_app, init_app
+from tassaron_flask.flask import create_env_file
+from tassaron_flask.helpers.main.app_factory import create_app, init_app
 from tassaron_flask.controllers.main.routes import all_urls
 
 

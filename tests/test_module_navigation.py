@@ -1,7 +1,7 @@
 import os
 import tempfile
 import pytest
-from tassaron_flask.models.main import create_app, init_app
+from tassaron_flask.helpers.main.app_factory import create_app, init_app
 from tassaron_flask.helpers.main.plugins import db, bcrypt, login_manager
 from test_routes import client as normal_client
 

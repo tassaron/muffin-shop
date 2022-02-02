@@ -2,7 +2,7 @@ import os
 import tempfile
 import pytest
 import flask_login
-from tassaron_flask.models.main import create_app, init_app
+from tassaron_flask.helpers.main.app_factory import create_app, init_app
 from tassaron_flask.helpers.main.plugins import login_manager, db
 from tassaron_flask.models.main.models import User
 from tassaron_flask.controllers.main.routes import all_base_urls

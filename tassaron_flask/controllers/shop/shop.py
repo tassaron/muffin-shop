@@ -3,7 +3,7 @@ from tassaron_flask.blueprint import Blueprint
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.models.main.models import ShippingAddress
 from tassaron_flask.decorators import hidden_route
-from ...models.shop.inventory_models import Product, ProductCategory
+from tassaron_flask.models.shop.inventory_models import Product, ProductCategory
 import logging
 
 
