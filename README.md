@@ -37,30 +37,30 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 ## How it works
 
 1. Systemd starts Nginx and uWSGI
-1. Nginx serves files from `app/static` directly and passes the other requests through to uWSGI
-1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `app/run.py`.
-1. The WSGI application is created by the Main module, specifically by `create_app` defined in `app/etc/main/__init__.py`
+1. Nginx serves files from `tassaron_flask/static` directly and passes the other requests through to uWSGI
+1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `tassaron_flask/run.py`.
+1. The WSGI application is created by the Main module, specifically by `create_app` defined in `tassaron_flask/helpers/main/app_factory.py`
 1. When uWSGI receives a connection, it picks one of its idle workers and calls the WSGI application in that process.
 
 ## Code Style
 * Black formatter
 * Absolute imports only
-* App must be installed using pip for the imports to work
+* The `tassaron_flask` package must be installed using pip for the imports to work
 
 ## Project Structure
-### /app
+### /tassaron_flask
 * Core pieces of the module system needed by every module
 * Entrypoint: `run.py`
-### /app/static
+### /tassaron_flask/static
 * Files served traditionally by the web server (*e.g.*, images, CSS)
-### /app/templates/`<module>`
+### /tassaron_flask/templates/`<module>`
 * HTML files to be parsed by Jinja templating engine
-### /app/controllers/`<module>`
+### /tassaron_flask/controllers/`<module>`
 * URL endpoints (routes) which could return a view (template) or JSON
-### /app/models/`<module>`
+### /tassaron_flask/models/`<module>`
 * Models shape data in the database (using SQLAlchemy)
 * Models manipulate data at the request of controllers
-### /app/forms/`<module>`
+### /tassaron_flask/forms/`<module>`
 * Server-side form validation using WTForms
-### /app/helpers/`<module>`
+### /tassaron_flask/helpers/`<module>`
 * Extra helpers for modules such as utility functions, Flask plugins, asynchronous tasks
