@@ -49,10 +49,6 @@ def create_app():
         SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
-        SESSION_COOKIE_SECURE=True,
-        REMEMBER_COOKIE_SECURE=True,
-        SESSION_COOKIE_HTTPONLY=True,
-        REMEMBER_COOKIE_HTTPONLY=True,
         SITE_NAME=(website_name := os.environ.get("SITE_NAME", "Tassaron Flask Template")),
         SITE_DESCRIPTION=os.environ.get("SITE_DESCRIPTION", "metadescription for your website"),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
@@ -64,12 +60,18 @@ def create_app():
     app.unique_name = prettier_url_safe(website_name)
 
     if app.env == "production":
-        # Configure email
+        # Enforce HTTPS and configure email
         try:
-            app.config["EMAIL_API_KEY"] = os.environ["EMAIL_API_KEY"]
-            app.config["EMAIL_API_URL"] = os.environ["EMAIL_API_URL"]
-            app.config["EMAIL_SENDER_NAME"] = os.environ["EMAIL_SENDER_NAME"]
-            app.config["EMAIL_SENDER_ADDRESS"] = os.environ["EMAIL_SENDER_ADDRESS"]
+            app.config.update(
+                EMAIL_API_KEY = os.environ["EMAIL_API_KEY"],
+                EMAIL_API_URL = os.environ["EMAIL_API_URL"],
+                EMAIL_SENDER_NAME = os.environ["EMAIL_SENDER_NAME"],
+                EMAIL_SENDER_ADDRESS = os.environ["EMAIL_SENDER_ADDRESS"],
+                SESSION_COOKIE_SECURE=True,
+                REMEMBER_COOKIE_SECURE=True,
+                SESSION_COOKIE_HTTPONLY=True,
+                REMEMBER_COOKIE_HTTPONLY=True,
+            )
         except KeyError as e:
             raise KeyError(f"{e} is missing from .env")
     else:

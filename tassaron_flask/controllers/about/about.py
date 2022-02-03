@@ -6,8 +6,6 @@ from tassaron_flask.helpers.main.markdown import render_markdown
 blueprint = Blueprint(
     "about",
     __name__,
-    static_folder="../../static",
-    template_folder="../../templates",
 )
 
 

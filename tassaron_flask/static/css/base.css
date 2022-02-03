@@ -3,8 +3,16 @@ img#cart-icon {
     height: 32px;
 }
 
+a.cart-link {
+    color: black;
+}
+
 span.cart-label {
     font-size: 1.2rem;
     margin-left: 0.3rem;
     font-weight: bold;
+}
+
+.ProductSlideshow {
+    padding-bottom: 0.25rem;
 }

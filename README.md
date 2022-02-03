@@ -11,7 +11,8 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 
 ## Setup on Ubuntu Server 20.04
 
-1. Create a virtual env, activate it.
+1. `npm run build` to transpile the JavaScript
+1. Create a Python virtual env, activate it.
   `sudo apt install python3-venv; python3 -m venv env; source env/bin/activate`
 1. Run `pip install -r requirements.txt` to install ALL dependencies including ones for development.
 1. Use the `setup.py` file for more minimal dependencies: `pip install .`
@@ -30,6 +31,7 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 
 1. Stop running server
 1. `git pull` the new code
+1. Run `npm run build` to transpile the JavaScript
 1. Activate the venv and `pip install .`
 1. `flask db upgrade` to apply any database migrations
 1. To use the `flask` command you must have `FLASK_APP` in your environment
@@ -52,7 +54,7 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 * Core pieces of the module system needed by every module
 * Entrypoint: `run.py`
 ### /tassaron_flask/static
-* Files served traditionally by the web server (*e.g.*, images, CSS)
+* Files served traditionally by the web server (*e.g.*, images, CSS, JavaScript)
 ### /tassaron_flask/templates/`<module>`
 * HTML files to be parsed by Jinja templating engine
 ### /tassaron_flask/controllers/`<module>`
@@ -64,3 +66,8 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 * Server-side form validation using WTForms
 ### /tassaron_flask/helpers/`<module>`
 * Extra helpers for modules such as utility functions, Flask plugins, asynchronous tasks
+### /tassaron_flask/nodejs
+* NodeJS project root including the `package.json` and Webpack config
+* Here is where you run `npm run build` to create working JavaScript for distribution
+### /tassaron_flask/nodejs/react
+* React components to be bundled by Webpack (outputs into `/static/js/dist`)
