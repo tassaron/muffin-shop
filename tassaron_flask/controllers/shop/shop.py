@@ -13,8 +13,6 @@ LOG = logging.getLogger(__package__)
 blueprint = Blueprint(
     "shop",
     __name__,
-    static_folder="../../static",
-    template_folder="../../templates/shop",
 )
 
 

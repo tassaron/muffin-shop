@@ -7,8 +7,6 @@ from flask import render_template
 blueprint = Blueprint(
     "huey",
     __name__,
-    static_folder="../../static",
-    template_folder="../../templates",
 )
 
 

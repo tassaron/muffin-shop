@@ -8,7 +8,7 @@ from tassaron_flask.models.shop.inventory_models import Product
 import os
 
 
-blueprint = Blueprint("inventory", __name__, template_folder="../../templates/inventory")
+blueprint = Blueprint("inventory", __name__)
 
 
 @blueprint.admin_route("")

@@ -33,8 +33,6 @@ User = Models.User
 blueprint = Blueprint(
     "account",
     __name__,
-    static_folder="../../static",
-    template_folder="../../templates/account",
 )
 
 

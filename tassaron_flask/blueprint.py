@@ -12,6 +12,8 @@ class Blueprint(flask.Blueprint):
         self.__index_route = None
         self.__admin_routes = []
         self.is_registered_index = False
+        kwargs["static_folder"] = "../../static"
+        kwargs["template_folder"] = f"../../templates{f'/{args[0]}' if args[0] != 'main' else ''}"
         super().__init__(*args, **kwargs)
 
     def admin_route(self, rule, **options):
