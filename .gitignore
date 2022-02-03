@@ -9,4 +9,6 @@ build/
 .vscode/
 *.log*
 *.egg-info
-app/static/uploads/*
+tassaron_flask/static/uploads/*
+tassaron_flask/static/js/dist/*
+tassaron_flask/nodejs/node_modules/*
