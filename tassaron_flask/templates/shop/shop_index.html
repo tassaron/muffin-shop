@@ -44,6 +44,7 @@
 
 
 {% block script %}
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 <script>
 function add_to_cart(id) {
     fetch("{{ url_for('cart.add_product_to_cart', _external=True) }}", {
