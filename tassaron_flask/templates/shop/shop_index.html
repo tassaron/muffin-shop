@@ -8,15 +8,15 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-4 d-none d-lg-block" style="overflow:hidden; --bs-gutter-x: 0; border-radius: 5rem;">
+        <div class="col-lg-4 d-none d-lg-block" style="overflow:hidden; border-radius: 5rem;">
             <img style="margin: 0 -10%;" src="{{ url_for('static', filename='img/client/the_rainbow_farm/carli.jpg') }}">
         </div>
-        <div class="col col-lg-8">
+        <div class="col col-lg-8 px-1">
             <div class="row">
                 {% include 'carousel.html' %}
             </div>
             <div class="row">
-                <div class="container d-flex slogan-text justify-content-center align-items-center">
+                <div class="d-flex slogan-text justify-content-center align-items-center">
                     Shop Close to Home
                 </div>
             </div>

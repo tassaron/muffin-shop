@@ -16,13 +16,13 @@
 
 </head>
 
-<body>
+<body style="background: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }}); background-size:cover; background-repeat: no-repeat;">
     <!-- Navigation -->
     <nav>
-    <div class="container">
+    <div class="container" style="background-image: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
         <header class="p-3">
             <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
                     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                         <img src="{{ url_for('static', filename='img/client/the_rainbow_farm/logo.svg') }}" style="max-width: 180px; max-height: 100%;" alt="Logo">
                         <span class="px-2 fs-4 site-name-header">
@@ -54,7 +54,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container py-4" style="background-color: whitesmoke;">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
