@@ -10,7 +10,7 @@ from tassaron_flask.controllers.main.routes import all_base_urls
 
 def nav_selected_bytes(route):
     return bytes(
-        f'<li class="nav-item active">\n                        <a class="nav-link" href="{route}">',
+        f'<a href="{route}" class="nav-link active" aria-current="page">',
         "utf-8",
     )
 
