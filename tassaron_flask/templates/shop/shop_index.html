@@ -8,23 +8,25 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-4 d-none d-lg-block" style="overflow:hidden; border-radius: 5rem;">
-            <img style="margin: 0 -10%;" src="{{ url_for('static', filename='img/client/the_rainbow_farm/carli.jpg') }}">
+        <div class="col-lg-4 d-none d-lg-block portrait-container">
+            
         </div>
-        <div class="col col-lg-8 px-1">
+        <div class="col col-lg-8 px-1 border-bottom">
             <div class="row">
                 {% include 'carousel.html' %}
             </div>
-            <div class="row">
-                <div class="d-flex slogan-text justify-content-center align-items-center">
-                    Shop Close to Home
+            <div class="container map-bg text-center slogan-text">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6 col my-4 py-4"><p>The Rainbow Farm is part of a sustainable local agriculture movement.  We sell at farmer's markets around the Cornwall,&nbsp;Ontario region.</p></div>
+                    <div class="col-lg-3"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
+<div class="container py-4">
+    <div class="row justify-content-center">
         {% if product_categories|length == 0 %}
         No products are in stock! Check back later :)
         {% endif %}

@@ -1,10 +1,17 @@
+div.portrait-container {
+    border-radius: 5rem;
+    background: url('/static/img/client/the_rainbow_farm/brianna.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .site-name-header span {
     font-family: serif;
     font-size: medium;
 }
 
 .site-name-header span:nth-of-type(1n+2) {
-    font-size: x-large;
+    font-size: xx-large;
 }
 
 img#cart-icon {
@@ -27,6 +34,13 @@ span.cart-label {
 }
 
 .slogan-text {
-    font-size: xx-large;
+    font-size: x-large;
     font-family: serif;
+}
+
+.map-bg {
+    background-image: url('/static/img/client/the_rainbow_farm/map.png');
+    background-position: top center;
+    background-repeat: no-repeat;
+
 }
