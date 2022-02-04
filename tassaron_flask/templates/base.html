@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%; background: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }}); background-size:cover; background-repeat: no-repeat;">
 
 <head>
 
@@ -16,10 +16,10 @@
 
 </head>
 
-<body style="background: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }}); background-size:cover; background-repeat: no-repeat;">
+<body style="background: transparent">
     <!-- Navigation -->
     <nav>
-    <div class="container" style="background-image: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
+    <div class="container" style="background: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
         <header class="px-3">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
@@ -54,7 +54,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container mb-4" style="background-color: whitesmoke;">
+    <div class="container mb-4 pb-4" style="background-color: whitesmoke; min-height:100%;">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}

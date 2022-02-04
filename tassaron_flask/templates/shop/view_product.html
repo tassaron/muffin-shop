@@ -3,5 +3,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<img src="{{ url_for('static', filename=product.image) }}">
+<div id="ProductPage-row" class="row">
+    <div id="ProductPage-name">{{product.name}}</div>
+    <div id="ProductPage-root"></div>
+    <span id="ProductPage-slides">
+        {{ url_for('static', filename=product.image) }}
+    </span>
+    <div id="ProductPage-description">{{product.description}}</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}
