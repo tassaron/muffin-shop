@@ -41,7 +41,16 @@ def float_to_str_currency(num):
 def index():
     return render_template(
         "shop_index.html",
-        products=Product.query.all(),
+        product_categories=ProductCategory.query.all(),
+    )
+
+
+@blueprint.route("/category/<int:category_id>")
+def shop_category_index(category_id):
+    products = Product.query.filter_by(category_id=category_id).all()
+    return render_template(
+        "shop_product_list.html",
+        products=products,
     )
 
 
@@ -49,6 +58,14 @@ def index():
 def product_description(product_id):
     product = Product.query.filter_by(id=product_id).first_or_404()
     return render_template("view_product.html", product=product, title=product.name)
+
+
+@blueprint.route("/all")
+def all_products():
+    return render_template(
+        "shop_product_list.html",
+        products=Product.query.all(),
+    )
 
 
 @blueprint.route("/view_cart")

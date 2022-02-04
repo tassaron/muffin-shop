@@ -17,6 +17,7 @@ def test_product_image_safe_path():
         db.session.add(
             ProductCategory(
                 name="Food",
+                image="potato.jpg",
             )
         )
         product_with_path_traversal_image = Product(

@@ -72,7 +72,14 @@ def create_test_db_shop():
     )
     db.session.add(
         ProductCategory(
-            name="Food",
+            name="Veggies",
+            image="potato.jpg",
+        )
+    )
+    db.session.add(
+        ProductCategory(
+            name="Flowers",
+            image="potato.jpg",
         )
     )
     db.session.add(
@@ -91,7 +98,7 @@ def create_test_db_shop():
             price=1.0,
             description="Fruit from a lovely friend",
             image="potato.jpg",
-            stock=2,
+            stock=10,
             category_id=1,
         )
     )
@@ -102,7 +109,7 @@ def create_test_db_shop():
             description="It sure sells like it!",
             image="potato.jpg",
             stock=0,
-            category_id=1,
+            category_id=2,
         )
     )
     db.session.commit()

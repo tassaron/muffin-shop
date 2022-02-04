@@ -27,6 +27,7 @@ def client():
         db.session.add(
             ProductCategory(
                 name="Food",
+                image="potato.jpg",
             )
         )
         db.session.add(
