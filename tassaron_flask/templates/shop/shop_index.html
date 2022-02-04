@@ -6,45 +6,63 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col">
-        {% include 'carousel.html' %}
-        <div class="row">
-            {% if products|length == 0 %}
-            No products are in stock! Check back later :)
-            {% endif %}
-            {% for product in products %}
-            {% set product_url = url_for("shop.product_description", product_id=product.id) %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    <a href="{{ product_url }}">
-                        <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
-                            alt="{{ product.name }}">
-                    </a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="{{ product_url }}">{{product.name}}</a>
-                        </h4>
-                        <h5>{{product.stock}} in stock</h5>
-                        <p class="card-text">{{product.description}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp;<small class="text-muted">${{product.price|currency}}</small>
-                    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 d-none d-lg-block" style="overflow:hidden; --bs-gutter-x: 0; border-radius: 5rem;">
+            <img style="margin: 0 -10%;" src="{{ url_for('static', filename='img/client/the_rainbow_farm/carli.jpg') }}">
+        </div>
+        <div class="col col-lg-8">
+            <div class="row">
+                {% include 'carousel.html' %}
+            </div>
+            <div class="row">
+                <div class="container d-flex slogan-text justify-content-center align-items-center">
+                    Shop Close to Home
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {# end row #}
     </div>
-    {# end col-lg-9 #}
 </div>
-<!-- /.row -->
+<div class="container">
+    <div class="row">
+        {% if products|length == 0 %}
+        No products are in stock! Check back later :)
+        {% endif %}
+        {% for product in products %}
+        {% set product_url = url_for("shop.product_description", product_id=product.id) %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <a href="{{ product_url }}">
+                    <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}">
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="{{ product_url }}">{{product.name}}</a>
+                    </h4>
+                    <h5>{{product.stock}} in stock</h5>
+                    <p class="card-text">{{product.description}}</p>
+                </div>
+                <div class="card-footer">
+                    <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp;<small class="text-muted">${{product.price|currency}}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 
 
 {% block script %}
+<!-- ReactJS -->
 <script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+    
 <script>
 function add_to_cart(id) {
     fetch("{{ url_for('cart.add_product_to_cart', _external=True) }}", {

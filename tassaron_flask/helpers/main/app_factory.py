@@ -137,6 +137,7 @@ def init_app(app, modules: Optional[dict]=None):
         return {
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
+            "site_name_words": app.config["SITE_NAME"].split(),
             "site_description": app.config["SITE_DESCRIPTION"],
             "footer_year": app.config["FOOTER_YEAR"],
         }

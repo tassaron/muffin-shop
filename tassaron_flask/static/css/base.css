@@ -1,3 +1,12 @@
+.site-name-header span {
+    font-family: serif;
+    font-size: medium;
+}
+
+.site-name-header span:nth-of-type(1n+2) {
+    font-size: x-large;
+}
+
 img#cart-icon {
     width: 32px;
     height: 32px;
@@ -15,4 +24,9 @@ span.cart-label {
 
 .ProductSlideshow {
     padding-bottom: 0.25rem;
+}
+
+.slogan-text {
+    font-size: xx-large;
+    font-family: serif;
 }

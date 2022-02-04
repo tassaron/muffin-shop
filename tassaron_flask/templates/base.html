@@ -24,8 +24,12 @@
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
                     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                        <img src="{{ url_for('static', filename='img/logo.png') }}" style="max-width: 76px; max-height: 100%;" alt="Logo">
-                        <span class="fs-4">{{ site_name }}</span>
+                        <img src="{{ url_for('static', filename='img/client/the_rainbow_farm/logo.svg') }}" style="max-width: 180px; max-height: 100%;" alt="Logo">
+                        <span class="px-2 fs-4 site-name-header">
+                            {% for site_name_word in site_name_words %}
+                                <span>{{ site_name_word }}</span>
+                            {% endfor %}
+                        </span>
                     </a>
             
                     <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -73,11 +77,6 @@
                 </small></p>
         </div>
     </footer>
-
-    <!-- Old jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
 
     {% block script %}{% endblock %}
     
