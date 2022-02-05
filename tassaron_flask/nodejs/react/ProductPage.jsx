@@ -3,7 +3,6 @@
 */
 import React, { Component } from "react";
 import ProductSlideshow from "./ProductSlideshow";
-import ProductDescription from "./ProductDescription";
 
 
 class ProductPage extends Component {
@@ -18,13 +17,9 @@ class ProductPage extends Component {
             return node
         }
 
-        // Ensure we're inside the ProductPage-row
-        this.rowNode = getNodeOrError("ProductPage-row");
-
         // Get `productName`
         const nameNode = getNodeOrError("ProductPage-name");
         this.productName = nameNode.innerHTML;
-
         // Get `slideImages`
         const slidesNode = getNodeOrError("ProductPage-slides");
         this.slideImages = slidesNode.innerHTML.split(",");
@@ -32,26 +27,11 @@ class ProductPage extends Component {
     }
 
     render() {
-        const productDescription = this.getProductDescription();
-
         return (
-            <div className="row">
-                <div className="col">
-                    <ProductSlideshow slideImages={this.slideImages} productName={this.productName} />
-                </div>
-                { ( () => { if (productDescription) return <ProductDescription content={productDescription} /> } )() }
+            <div>
+                <ProductSlideshow slideImages={this.slideImages} productName={this.productName} />
             </div>
         )
-    }
-
-    getProductDescription() {
-        const productDescriptionNode = document.getElementById("ProductPage-description");
-        if (!productDescriptionNode) {
-            return "";
-        }
-        const productDescription = productDescriptionNode.innerHTML;
-        this.rowNode.removeChild(productDescriptionNode);
-        return productDescription;
     }
 }
 

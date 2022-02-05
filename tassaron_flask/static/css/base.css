@@ -5,6 +5,15 @@ div.portrait-container {
     background-size: cover;
 }
 
+div.product-card {
+    border-radius: 5rem;
+    background: url('/static/img/client/the_rainbow_farm/flower-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    height: 400px;
+}
+
 .site-name-header span {
     font-family: serif;
 }

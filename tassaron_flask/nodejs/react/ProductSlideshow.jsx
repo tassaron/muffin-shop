@@ -21,19 +21,35 @@ class ProductSlideshow extends Component {
             easing: "ease",
             indicators: false,
         };
+        const styles = [];
+        for (let i=0; i < this.props.slideImages.length; i++) {
+            styles.push({
+                background: `black url(${this.props.slideImages[i]})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "bottom",
+                height: "400px"
+            });
+        }
 
         if (this.props.slideImages.length == 1) {
-            return <img className="lazy" src={this.props.slideImages[0]} alt={this.props.productName} />
+            return (
+                <div className="lazy" style={styles[0]} alt={this.props.productName} />
+            )
         } else {
             return (
                 <div className="ProductSlideshow">
                     <div className="slide-container">
                         <Slide ref={this.slideRef} {...properties}>
-                            {this.props.slideImages.map((each, index) => (
-                                <div draggable onDragStart={(e) => e.preventDefault()} key={index} className="each-slide">
-                                    <img className="lazy" src={each} alt={this.props.productName} />
-                                </div>
-                            ))}
+                            {
+                                this.props.slideImages.map(
+                                    (_, index) => (
+                                        <div draggable onDragStart={(e) => e.preventDefault()} key={index} className="each-slide">
+                                            <div className="lazy" style={styles[index]} alt={this.props.productName} />
+                                        </div>
+                                    )
+                                )
+                            }
                         </Slide>
                     </div>
                 </div>

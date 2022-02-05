@@ -3,13 +3,28 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div id="ProductPage-row" class="row">
-    <div id="ProductPage-name">{{product.name}}</div>
-    <div id="ProductPage-root"></div>
-    <span id="ProductPage-slides">
-        {{ url_for('static', filename=product.image) }}
-    </span>
-    <div id="ProductPage-description">{{product.description}}</div>
+<span id="ProductPage-slides">
+    {{ url_for('static', filename=product.image) }}
+</span>
+<div class="row">
+    <div id="ProductPage-root" class="col d-lg-block"></div>
+    <div class="col">
+        <div class="card product-card shadow p-3 mb-5 bg-body">
+            <div class="card-body">
+                <h1 class="card-title text-center border-bottom">
+                    <span id="ProductPage-name">{{product.name}}</span>
+                </h1>
+                <p class="card-text">
+                    <span id="ProductPage-description">{{product.description}}</span>
+                </p>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary">-</button>
+                    <button type="button" class="btn btn-primary-ouline"><span id="ProductPage-quantity">{{quantity}}</span></button>
+                    <button type="button" class="btn btn-primary">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

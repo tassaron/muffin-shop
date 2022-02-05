@@ -57,7 +57,8 @@ def shop_category_index(category_id):
 @blueprint.route("/product/<int:product_id>")
 def product_description(product_id):
     product = Product.query.filter_by(id=product_id).first_or_404()
-    return render_template("view_product.html", product=product, title=product.name)
+    quantity = session["cart"].get(product_id, 0)
+    return render_template("view_product.html", product=product, title=product.name, quantity=quantity)
 
 
 @blueprint.route("/all")
