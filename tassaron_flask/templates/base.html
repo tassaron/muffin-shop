@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%; background: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }}); background-size:cover; background-repeat: no-repeat;">
+<html lang="en" class="bg-fixed" style="background-image: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }});">
 
 <head>
 
@@ -54,7 +54,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container mb-4 pb-4" style="background-color: whitesmoke; min-height:100%;">
+    <div class="container pb-5" style="background-color: whitesmoke; min-height:100%;">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -66,16 +66,17 @@
     </div>
     <!-- /.container -->
 
+    <div class="container" style="background: linear-gradient(to top, rgba(255,255,255,0) 75%, whitesmoke); height: 4em;">
+    </div>
+
     <!-- Footer -->
-    <footer class="footer fixed-bottom bg-dark">
-        <div class="container">
-            <p class="row-sm-6 text-center text-white">
-                <small>&copy; {{site_name}} {{footer_year}} &nbsp;&bullet;&nbsp;
-                    <a style="color:white;" href="https://rainey.tech">
-                        Website made by Brianna Rainey
-                    </a>
-                </small></p>
-        </div>
+    <footer class="footer">
+        <p class="row-sm-6 text-center">
+            &copy; {{site_name}} {{footer_year}} &nbsp;&bullet;&nbsp;
+            <a href="https://rainey.tech">
+                Website made by Brianna Rainey
+            </a>
+        </p>
     </footer>
 
     {% block script %}{% endblock %}

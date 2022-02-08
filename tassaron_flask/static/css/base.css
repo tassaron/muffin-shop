@@ -1,3 +1,20 @@
+.bg-fixed {
+    height: 100%;
+    background-size:cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+footer {
+    font-size: calc(0.8rem + .2vw);
+    color: #666;
+}
+
+footer a {
+    color: #666;
+    text-decoration: none;
+}
+
 div.portrait-container {
     border-radius: 5rem;
     background: url('/static/img/client/the_rainbow_farm/brianna.jpg');
