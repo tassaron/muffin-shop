@@ -3,5 +3,36 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<img src="{{ url_for('static', filename=product.image) }}">
+<span id="ProductPage-slides">
+    {{ url_for('static', filename=product.image) }}
+</span>
+<div class="row">
+    <div class="col-md-7 col-lg-6" id="ProductPage-slideshow"></div>
+    <div class="col-md-5 col-lg-6">
+        <h1 class="product-title mt-sm-0 text-center border-bottom">
+            <span id="ProductPage-name">{{product.name}}</span>
+        </h1>
+        <div class="card product-card shadow p-3 pb-4 mb-4 bg-body">
+            <div class="card-body p-lg-4 p-md-2">
+                <p class="card-text product-description">
+                    <span id="ProductPage-description">{{product.description}}</span>
+                    <div class="text-center product-price">
+                        ${{product.price|currency}} each
+                    </div>
+                </p>
+                <div class="row d-flex d-md-none d-lg-flex">
+                    {% include 'product_page_buttons.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-none d-md-flex d-lg-none text-center">
+    {% include 'product_page_buttons.html' %}
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-fixed" style="background-image: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }});">
 
 <head>
 
@@ -16,10 +16,10 @@
 
 </head>
 
-<body style="background: url({{ url_for('static', filename='img/client/the_rainbow_farm/clouds.jpg') }}); background-size:cover; background-repeat: no-repeat;">
+<body style="background: transparent">
     <!-- Navigation -->
     <nav>
-    <div class="container" style="background-image: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
+    <div class="container" style="background: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
         <header class="px-3">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
@@ -54,7 +54,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container mb-4" style="background-color: whitesmoke;">
+    <div class="container pb-1" style="background-color: whitesmoke; min-height:100%;">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -66,16 +66,17 @@
     </div>
     <!-- /.container -->
 
+    <div class="container" style="background: linear-gradient(to top, rgba(255,255,255,0) 75%, whitesmoke); height: 4em;">
+    </div>
+
     <!-- Footer -->
-    <footer class="footer fixed-bottom bg-dark">
-        <div class="container">
-            <p class="row-sm-6 text-center text-white">
-                <small>&copy; {{site_name}} {{footer_year}} &nbsp;&bullet;&nbsp;
-                    <a style="color:white;" href="https://rainey.tech">
-                        Website made by Brianna Rainey
-                    </a>
-                </small></p>
-        </div>
+    <footer class="footer">
+        <p class="row-sm-6 text-center">
+            &copy; {{site_name}} {{footer_year}} &nbsp;&bullet;&nbsp;
+            <a href="https://rainey.tech">
+                Website made by Brianna Rainey
+            </a>
+        </p>
     </footer>
 
     {% block script %}{% endblock %}
