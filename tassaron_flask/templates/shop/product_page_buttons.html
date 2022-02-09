@@ -1,10 +1,10 @@
-<div class="d-none"><span id="ProductPage-stock">{{ product.stock }}</span> in stock</div>
 <div class="col-5">
-    <div id="ProductPage-buttons" class="btn-group" role="group" aria-label="product quantity">
+    <div class="ProductPage-buttons btn-group" role="group" aria-label="product quantity">
+        <div class="d-none"><span class="ProductPage-stock">{{ product.stock }}</span> in stock</div>
         <div class="btn-group" role="group" aria-label="product quantity">
-            <button type="button" id="ProductPage-quantity-down" class="btn btn-secondary p-3">-</button>
-            <div id="ProductPage-quantity" class="p-3 text-dark">{{product.cart_quantity}}</div>
-            <button type="button" id="ProductPage-quantity-up" class="btn btn-secondary p-3">+</button>
+            <button type="button" class="ProductPage-quantity-down btn btn-secondary p-3">-</button>
+            <div class="ProductPage-quantity p-3 text-dark">{{product.cart_quantity}}</div>
+            <button type="button" class="ProductPage-quantity-up btn btn-secondary p-3">+</button>
         </div>
     </div>
 </div>
