@@ -15,22 +15,21 @@
         {% set product_url = url_for("shop.product_description", product_id=product.id) %}
         {% set quantity = product.cart_quantity %}
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
+            <div class="card product-card" style="border-radius: 0px;">
                 <a href="{{ product_url }}">
                     <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
                         alt="{{ product.name }}">
                 </a>
-                <div class="card-body">
-                    <h4 class="card-title">
+                <div class="card-body product-description" style="border-radius: 0px;">
+                    <h4 class="card-title product-title">
                         <a href="{{ product_url }}">{{product.name}}</a>
                     </h4>
-                    <h5>{{product.stock}} in stock</h5>
                     <p class="card-text">{{product.description}}</p>
                 </div>
                 <div class="card-footer row">
                     {% include 'product_page_buttons.html' %}
                     <!-- <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp; -->
-                    <small class="text-muted">${{product.price|currency}}</small>
+                    <small style="font-family:serif;">${{product.price|currency}} each</small>
                 </div>
             </div>
         </div>
