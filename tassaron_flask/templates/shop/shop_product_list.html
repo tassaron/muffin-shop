@@ -40,30 +40,12 @@
 
 {% block script %}
 <script>
-function add_to_cart(id) {
-    const quantity = Number(document.getElementById("ProductPage-quantity").innerText) || 0;
-    fetch("{{ url_for('cart.add_product_to_cart', _external=True) }}", {
-        method: "POST",
-        credentials: "same-origin",
-        body: JSON.stringify({"id": id, "quantity": quantity}),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    }).then(function (response) {
-        response.json().then(function (data) {
-            if (data["success"] === true) {
-                document.getElementById("cart-number").innerText = data["count"];
-            }
-        })
-    })
-};
-
-(function () {
-    {% for product in products %}
-    document.getElementsByClassName('cart-btn-{{ product.id }}')[0].onclick = () => { add_to_cart({{ product.id }}); };
-    {% endfor %}
-})();
+    {% include 'cart_button_script.js' %}
+    (function () {
+        {% for product in products %}
+        document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = () => { add_to_cart({{ product.id }}); };
+        {% endfor %}
+    })();
 </script>
 
 <!-- ReactJS -->

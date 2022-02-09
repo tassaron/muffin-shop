@@ -16,12 +16,14 @@ renderIfExists(<ProductSlideshowFromHtml />, "ProductPage-slideshow");
 
 const nodes = document.getElementsByClassName("ProductPage-buttons");
 for (let node of nodes) {
+    const quantityNode = getChildOrError(node, "ProductPage-quantity");
     ReactDOM.render(
         <ProductPageButtons
             stock={Number(getChildOrError(node, "ProductPage-stock").innerText)}
-            initialQuantity={Number(getChildOrError(node, "ProductPage-quantity").innerText)}
+            initialQuantity={Number(quantityNode.innerText)}
             downBtn={getChildOrError(node, "ProductPage-quantity-down").outerHTML}
             upBtn={getChildOrError(node, "ProductPage-quantity-up").outerHTML}
+            productId={quantityNode.dataset.productId}
             />,
         node
     );

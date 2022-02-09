@@ -20,19 +20,22 @@
                         ${{product.price|currency}} each
                     </div>
                 </p>
-                <div class="row d-flex d-md-none d-lg-flex">
+                <div class="row-8 row-md-12 row-lg-8 d-flex">
                     {% include 'product_page_buttons.html' %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="d-none d-md-flex d-lg-none text-center">
-    {% include 'product_page_buttons.html' %}
-</div>
 {% endblock %}
 
 {% block script %}
+<script>
+    {% include 'cart_button_script.js' %}
+    for (let node of document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')) {
+        node.onclick = () => { add_to_cart({{ product.id }}); };
+    }
+</script>
 <!-- ReactJS -->
 <script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}

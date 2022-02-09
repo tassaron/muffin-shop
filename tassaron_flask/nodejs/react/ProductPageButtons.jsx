@@ -1,9 +1,7 @@
-/* This component gets the product stock data from the HTML
-*  It handles the plus/minus buttons, add to cart button, and cart number in navbar
-*  We do API requests to the "shop.add_product_to_cart" route
+/* This component receives the product stock data as a prop
+* And handles the quantity of the add-to-cart helper button
 */
 import React, { Component } from "react";
-import getNodeOrError from "./util";
 
 
 class ProductPageButtons extends Component {
@@ -15,6 +13,8 @@ class ProductPageButtons extends Component {
     }
 
     render() {
+        
+
         return (
             <div class="btn-group" role="group" aria-label="product quantity">
                 <div dangerouslySetInnerHTML={{__html: this.props.downBtn}}
@@ -28,7 +28,7 @@ class ProductPageButtons extends Component {
                         }
                     }
                     />
-                <div id="ProductPage-quantity" class="p-3">{this.state.quantity}</div>
+                <div class="ProductPage-quantity p-3" data-product-id={this.props.productId}>{this.state.quantity}</div>
                 <div dangerouslySetInnerHTML={{__html: this.props.upBtn}}
                     onClick={
                         () => {

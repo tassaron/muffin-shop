@@ -20,7 +20,7 @@ def add_product_to_cart():
         id = int(item["id"])
         quantity = int(item["quantity"])
         product = Product.query.get(id)
-        if product is None or product.stock < quantity:
+        if product is None or quantity < 1 or product.stock < quantity:
             return {"success": False}
         else:
             if id not in session["cart"]:
