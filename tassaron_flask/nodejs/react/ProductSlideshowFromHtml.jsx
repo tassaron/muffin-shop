@@ -1,11 +1,11 @@
 /* This component gets the product information from the page HTML
- * and composes the Product Page out of other components.
+ * and creates the Product Slideshow.
 */
 import React, { Component } from "react";
 import ProductSlideshow from "./ProductSlideshow";
 
 
-class ProductPage extends Component {
+class ProductSlideshowFromHtml extends Component {
     constructor() {
         super();
 
@@ -35,4 +35,4 @@ class ProductPage extends Component {
     }
 }
 
-export default ProductPage
+export default ProductSlideshowFromHtml

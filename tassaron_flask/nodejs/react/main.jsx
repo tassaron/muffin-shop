@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ProductPage from "./ProductPage";
+import ProductSlideshowFromHtml from "./ProductSlideshowFromHtml";
 import "./styles.css";
  
-ReactDOM.render(<ProductPage />, document.getElementById("ProductPage-root"));
+ReactDOM.render(<ProductSlideshowFromHtml />, document.getElementById("ProductPage-root"));
