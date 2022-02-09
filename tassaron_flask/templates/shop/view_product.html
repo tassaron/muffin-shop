@@ -16,6 +16,9 @@
             <div class="card-body p-lg-4 p-md-2">
                 <p class="card-text product-description">
                     <span id="ProductPage-description">{{product.description}}</span>
+                    <div class="text-center product-price">
+                        ${{product.price|currency}} each
+                    </div>
                 </p>
                 <div class="row d-flex d-md-none d-lg-flex">
                     {% include 'product_page_buttons.html' %}

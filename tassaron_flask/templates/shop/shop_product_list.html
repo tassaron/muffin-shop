@@ -13,6 +13,7 @@
         {% endif %}
         {% for product in products %}
         {% set product_url = url_for("shop.product_description", product_id=product.id) %}
+        {% set quantity = product.cart_quantity %}
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
                 <a href="{{ product_url }}">
@@ -26,8 +27,10 @@
                     <h5>{{product.stock}} in stock</h5>
                     <p class="card-text">{{product.description}}</p>
                 </div>
-                <div class="card-footer">
-                    <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp;<small class="text-muted">${{product.price|currency}}</small>
+                <div class="card-footer row">
+                    {% include 'product_page_buttons.html' %}
+                    <!-- <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp; -->
+                    <small class="text-muted">${{product.price|currency}}</small>
                 </div>
             </div>
         </div>
