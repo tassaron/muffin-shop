@@ -13,7 +13,7 @@
         <div class="col col-lg-8 px-1 border-bottom">
             <div id="ProductPage-row" class="row">
                 <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
-                <div id="ProductPage-root"></div>
+                <div id="ProductPage-slideshow"></div>
                 <span id="ProductPage-slides">
                     static/img/client/the_rainbow_farm/tomato_party.jpg,
                     static/img/client/the_rainbow_farm/zucchini_party.jpg,
@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<div class="container py-4">
+<div class="container pt-2">
     <div class="row justify-content-center">
         {% if product_categories|length == 0 %}
         No products are in stock! Check back later :)
