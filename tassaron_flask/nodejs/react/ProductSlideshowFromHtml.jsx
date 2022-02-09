@@ -3,19 +3,12 @@
 */
 import React, { Component } from "react";
 import ProductSlideshow from "./ProductSlideshow";
+import getNodeOrError from "./util";
 
 
 class ProductSlideshowFromHtml extends Component {
     constructor() {
         super();
-
-        const getNodeOrError = function(name) {
-            const node = document.getElementById(name);
-            if (!node) {
-                throw new ReferenceError(`Missing DOM node with ID ${name}`);
-            }
-            return node
-        }
 
         // Get `productName`
         const nameNode = getNodeOrError("ProductPage-name");

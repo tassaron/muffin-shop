@@ -28,7 +28,6 @@
                 </div>
                 <div class="card-footer row">
                     {% include 'product_page_buttons.html' %}
-                    <!-- <a id="cart-btn-{{ product.id }}" class="btn btn-success cart-btn">+ Add to Cart</a>&nbsp; -->
                     <small style="font-family:serif;">${{product.price|currency}} each</small>
                 </div>
             </div>
@@ -40,16 +39,13 @@
 
 
 {% block script %}
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
 <script>
 function add_to_cart(id) {
+    const quantity = Number(document.getElementById("ProductPage-quantity").innerText) || 0;
     fetch("{{ url_for('cart.add_product_to_cart', _external=True) }}", {
         method: "POST",
         credentials: "same-origin",
-        body: JSON.stringify({"id": id, "quantity": 1}),
+        body: JSON.stringify({"id": id, "quantity": quantity}),
         cache: "no-cache",
         headers: new Headers({
             "content-type": "application/json"
@@ -57,16 +53,19 @@ function add_to_cart(id) {
     }).then(function (response) {
         response.json().then(function (data) {
             if (data["success"] === true) {
-                $("#cart-number").text(data["count"]);
+                document.getElementById("cart-number").innerText = data["count"];
             }
         })
     })
 };
 
-$(function () {
+(function () {
     {% for product in products %}
-    $('a#cart-btn-{{ product.id }}').on('click', function () { add_to_cart({{ product.id }}); });
+    document.getElementsByClassName('cart-btn-{{ product.id }}')[0].onclick = () => { add_to_cart({{ product.id }}); };
     {% endfor %}
-});
+})();
 </script>
+
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}
