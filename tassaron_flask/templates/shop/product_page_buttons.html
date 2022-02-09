@@ -1,0 +1,14 @@
+<div class="col-5">
+    <div class="btn-group" role="group" aria-label="product quantity">
+        <button type="button" class="btn btn-secondary p-3">-</button>
+        <span id="ProductPage-quantity" class="p-3">{{quantity}}</span>
+        <button type="button" class="btn btn-secondary p-3">+</button>
+    </div>
+</div>
+<div class="col-2"></div>
+<div class="col-5">
+    <button type="button" class="btn btn-dark p-3 text-white">
+        <img src={{url_for('static', filename='img/cart_white.png')}} id="cart-icon">
+        Add to Cart
+    </button>
+</div>
