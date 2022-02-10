@@ -2,7 +2,7 @@
 POST to these Cart endpoints in order to manipulate the Cart Session Cookie
 Each endpoint returns a response of success or not, to update the client-side record
 """
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, current_app
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.models.shop.inventory_models import Product
 
@@ -26,8 +26,8 @@ def add_product_to_cart():
             if id not in session["cart"]:
                 session["cart"][id] = quantity
             else:
-                session["cart"][id] += quantity
-            print(session["cart"])
+                session["cart"][id] = min(product.stock, session["cart"][id] + quantity)
+            current_app.logger.debug(session["cart"])
             return {
                 "success": True,
                 "count": len(session["cart"]),
