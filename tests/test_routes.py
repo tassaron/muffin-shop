@@ -33,9 +33,9 @@ def client():
     os.unlink(db_path)
 
 
-def test_index_nav_link(client):
-    resp = client.get("/")
-    assert nav_selected_bytes("/") in resp.data
+def test_shop_nav_link(client):
+    resp = client.get("/all")
+    assert nav_selected_bytes("/all") in resp.data
     assert resp.status_code == 200
 
 
@@ -46,7 +46,6 @@ def test_about_page_nav_link(client):
 
 def test_404_page(client):
     resp = client.get("/invalid")
-    assert nav_selected_bytes("/") in resp.data
     assert resp.status_code == 404
 
 
@@ -159,10 +158,9 @@ def test_user_privilege(client):
     assert flask_login.current_user == user
     resp = client.get("/account/profile")
     assert resp.status_code == 200
-    assert nav_selected_bytes("/") not in resp.data
+    assert nav_selected_bytes("/about") not in resp.data
     resp = client.get("/admin/images")
     assert resp.status_code == 404
-    assert nav_selected_bytes("/") in resp.data
 
 
 def test_all_anonymous_user_routes(client):
