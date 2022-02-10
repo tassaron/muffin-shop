@@ -3,6 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+{% include 'js_required.html' %}
 <span id="ProductPage-slides">
     {{ url_for('static', filename=product.image) }}
 </span>
