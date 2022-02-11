@@ -16,7 +16,7 @@
         <div class="card product-card shadow p-3 pb-4 mb-4 bg-body">
             <div class="card-body p-lg-4 p-md-2">
                 <p class="card-text product-description">
-                    <span id="ProductPage-description" data-product-id="{{product.id}}">{{product.description}}</span>
+                    {{product.description}}
                     <div class="text-center product-price">
                         ${{product.price|currency}} each
                     </div>
@@ -24,6 +24,7 @@
                 <div class="row-8 row-md-12 row-lg-8 d-flex">
                     {% include 'product_page_buttons.html' %}
                 </div>
+                <div class="ProductPage-alert-area" data-product-id="{{product.id}}"></div>
             </div>
         </div>
     </div>

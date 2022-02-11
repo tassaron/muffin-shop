@@ -12,8 +12,7 @@ class CartQuantityUpdater extends Component {
     }
 
     componentDidMount() {
-        this.btnNode = document.querySelector(`.ProductPage-cart-btn-${this.props.productId}[data-product-id='${this.props.productId}']`);
-        this.watchedNode = document.querySelector(`.product-description[data-product-id='${this.props.productId}']`);
+        this.watchedNode = document.querySelector(`.ProductPage-alert-area[data-product-id='${this.props.productId}']`);
         this.timer = setInterval(
             () => this.tick(),
             3000
@@ -39,11 +38,11 @@ class CartQuantityUpdater extends Component {
     }
 
     tick() {
-        if (this.watchedNode.childElementCount == 2 || this.vanishing) {
+        if (this.watchedNode.childElementCount == 0 || this.vanishing) {
             return
         }
         this.vanishing = true;
-        const child = this.watchedNode.children[2];
+        const child = this.watchedNode.children[0];
         const message = child.innerText;
         const newValue = Number(message.split(" ")[1]);
         then = Date.now();
@@ -53,7 +52,7 @@ class CartQuantityUpdater extends Component {
         this.setState((state, props) => ({
             quantity: state.quantity + newValue
         }));
-        this.btnNode.classList.remove("btn-disabled");
+        this.props.cartBtn.classList.remove("btn-disabled");
     }
 
     render() {

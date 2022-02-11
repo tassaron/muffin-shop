@@ -21,7 +21,7 @@
                     <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
                         alt="{{ product.name }}">
                 </a>
-                <div class="card-body product-description" data-product-id="{{ product.id }}" style="border-radius: 0px;">
+                <div class="card-body product-description" style="border-radius: 0px;">
                     <h4 class="card-title product-title">
                         <a href="{{ product_url }}">{{product.name}}</a>
                     </h4>
@@ -31,6 +31,7 @@
                     {% include 'product_page_buttons.html' %}
                     <small style="font-family:serif;">${{product.price|currency}} each</small>
                 </div>
+                <div class="ProductPage-alert-area" data-product-id="{{product.id}}"></div>
             </div>
         </div>
         {% endfor %}

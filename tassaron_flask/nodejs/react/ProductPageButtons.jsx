@@ -9,11 +9,19 @@ class ProductPageButtons extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            quantity: 0
+            quantity: 0,
+            cartBtn: null
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            cartBtn: document.querySelector(`.ProductPage-cart-btn-${this.props.productId}[data-product-id='${this.props.productId}']`)
+        });
+    }
+
     render() {
+        if (this.state.cartBtn === null) return null
         function downBtnEnabled(state) {
             return state.quantity > 0;
         };
@@ -22,6 +30,11 @@ class ProductPageButtons extends Component {
             return state.quantity + props.initialQuantity < props.stock;
         };
 
+        if (this.state.quantity < 1) {
+            this.state.cartBtn.classList.add("btn-disabled");
+        } else {
+            this.state.cartBtn.classList.remove("btn-disabled");
+        }
 
         return (
             <div class="btn-group" role="group" aria-label="product quantity">
@@ -60,7 +73,7 @@ class ProductPageButtons extends Component {
                         }
                     }
                     />
-                <CartQuantityUpdater productId={this.props.productId} initialQuantity={this.props.initialQuantity} />
+                <CartQuantityUpdater cartBtn={this.state.cartBtn} productId={this.props.productId} initialQuantity={this.props.initialQuantity} />
             </div>
         )
     }
