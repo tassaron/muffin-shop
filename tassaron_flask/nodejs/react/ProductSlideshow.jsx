@@ -1,4 +1,6 @@
-/* Adapted from example code in the react-slideshow-image documentation */
+/* Adapted from example code in the react-slideshow-image documentation 
+* First two images are left-aligned, afterwards they're centered
+*/
 import React, { Component } from "react";
 import { Slide } from "react-slideshow-image";
 
@@ -27,14 +29,14 @@ class ProductSlideshow extends Component {
                 background: `black url(${this.props.slideImages[i]})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                backgroundPosition: "bottom",
+                backgroundPosition: `${i < 2 ? 'left' : 'center'} bottom`,
                 height: "400px"
             });
         }
 
         if (this.props.slideImages.length == 1) {
             return (
-                <div className="lazy" style={styles[0]} alt={this.props.productName} />
+                <div style={styles[0]} alt={this.props.productName} />
             )
         } else {
             return (
@@ -45,7 +47,7 @@ class ProductSlideshow extends Component {
                                 this.props.slideImages.map(
                                     (_, index) => (
                                         <div draggable onDragStart={(e) => e.preventDefault()} key={index} className="each-slide">
-                                            <div className="lazy" style={styles[index]} alt={this.props.productName} />
+                                            <div style={styles[index]} alt={this.props.productName} />
                                         </div>
                                     )
                                 )
