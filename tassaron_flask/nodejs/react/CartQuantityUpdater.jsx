@@ -5,9 +5,6 @@ let then = Date.now();
 class CartQuantityUpdater extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            quantity: this.props.initialQuantity
-        }
         this.vanishing = false;
     }
 
@@ -49,19 +46,17 @@ class CartQuantityUpdater extends Component {
         requestAnimationFrame(
             () => this.animateVanish(child)
         );
-        this.setState((state, props) => ({
-            quantity: state.quantity + newValue
-        }));
+        this.props.setQuantityFunc(this.props.initialQuantity + newValue);
         this.props.cartBtn.classList.remove("btn-disabled");
     }
 
     render() {
         return (
             <div
-                style={{ visibility: this.state.quantity > 0 ? "visible" : "hidden" }}
+                style={{ visibility: this.props.initialQuantity > 0 ? "visible" : "hidden" }}
                 className="product-buttons-cart-indicator-text text-center">
                 <strong>
-                    {this.state.quantity}
+                    {this.props.initialQuantity}
                 </strong> in your cart
             </div>
         )

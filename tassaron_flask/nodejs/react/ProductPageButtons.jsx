@@ -9,9 +9,17 @@ class ProductPageButtons extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            quantity: 0,
+            buttonQuantity: 0,
+            cartQuantity: props.initialQuantity,
             cartBtn: null
         }
+    }
+
+    setCartQuantity = (value) => {
+        this.setState((state, props) => ({
+            cartQuantity: value,
+            buttonQuantity: Math.min(state.buttonQuantity, props.stock - value)
+        }));
     }
 
     componentDidMount() {
@@ -23,14 +31,14 @@ class ProductPageButtons extends Component {
     render() {
         if (this.state.cartBtn === null) return null
         function downBtnEnabled(state) {
-            return state.quantity > 0;
+            return state.buttonQuantity > 0;
         };
 
         function upBtnEnabled(state, props) {
-            return state.quantity + props.initialQuantity < props.stock;
+            return state.buttonQuantity + state.cartQuantity < props.stock;
         };
 
-        if (this.state.quantity < 1) {
+        if (this.state.buttonQuantity < 1) {
             this.state.cartBtn.classList.add("btn-disabled");
         } else {
             this.state.cartBtn.classList.remove("btn-disabled");
@@ -44,7 +52,7 @@ class ProductPageButtons extends Component {
                         () => {
                             this.setState((state, props) => {
                                 if (downBtnEnabled(state)) {
-                                    return {quantity: state.quantity - 1}
+                                    return {buttonQuantity: state.buttonQuantity - 1}
                                 }
                             });
                         }
@@ -59,7 +67,7 @@ class ProductPageButtons extends Component {
                     }
                     data-product-id={this.props.productId}
                     >
-                    {this.state.quantity}
+                    {this.state.buttonQuantity}
                 </div>
                 <div className={upBtnEnabled(this.state, this.props) ? "btn-enabled" : "btn-disabled"}
                     dangerouslySetInnerHTML={{__html: this.props.upBtn}}
@@ -67,13 +75,17 @@ class ProductPageButtons extends Component {
                         () => {
                             this.setState((state, props) => {
                                 if (upBtnEnabled(state, props)) {
-                                    return {quantity: state.quantity + 1}
+                                    return {buttonQuantity: state.buttonQuantity + 1}
                                 }
                             });
                         }
                     }
                     />
-                <CartQuantityUpdater cartBtn={this.state.cartBtn} productId={this.props.productId} initialQuantity={this.props.initialQuantity} />
+                <CartQuantityUpdater
+                    cartBtn={this.state.cartBtn}
+                    productId={this.props.productId}
+                    initialQuantity={this.state.cartQuantity}
+                    setQuantityFunc={this.setCartQuantity} />
             </div>
         )
     }
