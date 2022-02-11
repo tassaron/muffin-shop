@@ -100,3 +100,11 @@ span.cart-label {
     pointer-events: none;
     opacity: 0.4;
 }
+
+.product-buttons-cart-indicator-text {
+    /* world's best name */
+    position: absolute;
+    bottom: -1.375rem;
+    font-size: 0.8rem;
+    width: 100%;
+}

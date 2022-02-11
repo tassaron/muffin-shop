@@ -2,13 +2,13 @@
 * And handles the quantity of the add-to-cart helper button
 */
 import React, { Component } from "react";
+import CartQuantityUpdater from "./CartQuantityUpdater";
 
 
 class ProductPageButtons extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cartQuantity: this.props.initialQuantity,
             quantity: 0
         }
     }
@@ -19,7 +19,7 @@ class ProductPageButtons extends Component {
         };
 
         function upBtnEnabled(state, props) {
-            return state.quantity + state.cartQuantity < props.stock;
+            return state.quantity + props.initialQuantity < props.stock;
         };
 
 
@@ -60,7 +60,7 @@ class ProductPageButtons extends Component {
                         }
                     }
                     />
-                <div style={{ position: "absolute", bottom: "-1.375rem", fontSize: "0.8rem", width: "100%" }} className="text-center"><strong>{this.state.cartQuantity}</strong> in your cart</div>
+                <CartQuantityUpdater productId={this.props.productId} initialQuantity={this.props.initialQuantity} />
             </div>
         )
     }

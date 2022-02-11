@@ -16,7 +16,7 @@
         <div class="card product-card shadow p-3 pb-4 mb-4 bg-body">
             <div class="card-body p-lg-4 p-md-2">
                 <p class="card-text product-description">
-                    <span id="ProductPage-description">{{product.description}}</span>
+                    <span id="ProductPage-description" data-product-id="{{product.id}}">{{product.description}}</span>
                     <div class="text-center product-price">
                         ${{product.price|currency}} each
                     </div>
@@ -34,7 +34,7 @@
 <script>
     {% include 'cart_button_script.js' %}
     for (let node of document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')) {
-        node.onclick = () => { add_to_cart({{ product.id }}); };
+        node.onclick = (e) => { add_to_cart(e, {{ product.id }}); };
     }
 </script>
 <!-- ReactJS -->

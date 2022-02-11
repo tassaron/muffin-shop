@@ -21,7 +21,7 @@
                     <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
                         alt="{{ product.name }}">
                 </a>
-                <div class="card-body product-description" style="border-radius: 0px;">
+                <div class="card-body product-description" data-product-id="{{ product.id }}" style="border-radius: 0px;">
                     <h4 class="card-title product-title">
                         <a href="{{ product_url }}">{{product.name}}</a>
                     </h4>
@@ -44,7 +44,7 @@
     {% include 'cart_button_script.js' %}
     (function () {
         {% for product in products %}
-        document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = () => { add_to_cart({{ product.id }}); };
+        document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = (e) => { add_to_cart(e, {{ product.id }}); };
         {% endfor %}
     })();
 </script>

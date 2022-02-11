@@ -20,17 +20,27 @@ def add_product_to_cart():
         id = int(item["id"])
         quantity = int(item["quantity"])
         product = Product.query.get(id)
-        if product is None or quantity < 1 or product.stock < quantity:
+        if (product is None or
+            quantity < 1 or
+            product.stock < quantity or
+            session["cart"].get(id, 0) == product.stock
+            ):
             return {"success": False}
         else:
             if id not in session["cart"]:
+                change = quantity
                 session["cart"][id] = quantity
             else:
-                session["cart"][id] = min(product.stock, session["cart"][id] + quantity)
+                new_value = min(product.stock, session["cart"][id] + quantity)
+                change = new_value - session["cart"][id]
+                session["cart"][id] = new_value
             current_app.logger.debug(session["cart"])
             return {
                 "success": True,
                 "count": len(session["cart"]),
+                "change": change
             }
-    except:
-        return {"success": False}, 400
+    except Exception:
+        if current_app.env == "production":
+            return {"success": False}, 400
+        raise
