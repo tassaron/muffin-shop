@@ -1,6 +1,6 @@
 import { Component } from "react";
+import { animateVanish } from './util.js';
 
-let then = Date.now();
 
 class CartQuantityUpdater extends Component {
     constructor(props) {
@@ -18,21 +18,6 @@ class CartQuantityUpdater extends Component {
     componentWillUnmount() {
         clearInterval(this.timer);
     }
-    
-    animateVanish(vanisher) {
-        let delta = Math.min((Date.now() - then) / (1000 / 60), 2);
-        then = Date.now();
-        const opacity = window.getComputedStyle(vanisher).getPropertyValue("opacity");
-        if (opacity == 0.0) {
-            this.watchedNode.removeChild(vanisher);
-            this.vanishing = false;
-            return;
-        }
-        vanisher.setAttribute("style", `opacity: ${opacity - (0.05 * delta)}`);
-        requestAnimationFrame(
-            () => this.animateVanish(vanisher)
-        );
-    }
 
     tick() {
         if (this.watchedNode.childElementCount == 0 || this.vanishing) {
@@ -42,9 +27,8 @@ class CartQuantityUpdater extends Component {
         const child = this.watchedNode.children[0];
         const message = child.innerText;
         const newValue = Number(message.split(" ")[1]);
-        then = Date.now();
         requestAnimationFrame(
-            () => this.animateVanish(child)
+            () => animateVanish(child, this.watchedNode, () => this.vanishing = false)
         );
         this.props.setQuantityFunc(this.props.initialQuantity + newValue);
         this.props.cartBtn.classList.remove("btn-disabled");
