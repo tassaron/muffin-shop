@@ -35,10 +35,17 @@ A work-in-progress template for an advanced Flask webapp with admin, login syste
 1. Stop running server with `systemctl`.
 1. Go to the root of this repo.
 1. `git pull` the new code.
-1. Run `build.sh` to bundle/compile/hocuspocus the JavaScript.
+1. Run `prod-build.sh` to bundle/compile/hocuspocus the JavaScript.
 1. Activate the venv and `pip install .`
 1. `flask db upgrade` to apply any database migrations.
 1. To use the `flask` command you must have `FLASK_APP` in your environment (the `.env` file).
+
+## Development
+
+1. Run `dev-frontend.sh` to open a split-pane tmux session with live-reloading backend and frontend.
+1. Run `dev-backend.sh` for just a live-reloading backend.
+1. Run `python setup/database.py test --shop` for an example database with products in the shop.
+1. Run `dev-shop.sh` to **replace any existing db** with a shop-testing db, and run `dev-frontend.sh`
 
 ## How it works
 
