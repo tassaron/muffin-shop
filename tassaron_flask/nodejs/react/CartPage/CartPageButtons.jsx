@@ -1,92 +1,45 @@
 /* This component receives the product stock data as a prop
 * It tracks the quantity of product in the cart, from 0 to stock
-* Disables/enables the -/+ buttons and updates the CartPagePrice
+* Disables/enables the -/+ buttons and updates the displayed price
 */
 import React, { Component } from "react";
-//import CartPagePrice from "./CartPagePrice";
 
 
 class CartPageButtons extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            buttonQuantity: 0,
-            cartQuantity: props.initialQuantity,
-            cartBtn: null
-        }
-    }
-
-    setCartQuantity = (value) => {
-        this.setState((state, props) => ({
-            cartQuantity: value,
-            buttonQuantity: Math.min(state.buttonQuantity, props.stock - value)
-        }));
-    }
-
-    componentDidMount() {
-        this.setState({
-            cartBtn: document.querySelector(`.ProductPage-cart-btn-${this.props.productId}[data-product-id='${this.props.productId}']`)
-        });
-    }
-
     render() {
-        if (this.state.cartBtn === null) return null
-        function downBtnEnabled(state) {
-            return state.buttonQuantity > 0;
-        };
-
-        function upBtnEnabled(state, props) {
-            return state.buttonQuantity + state.cartQuantity < props.stock;
-        };
-
-        if (this.state.buttonQuantity < 1) {
-            this.state.cartBtn.classList.add("btn-disabled");
-        } else {
-            this.state.cartBtn.classList.remove("btn-disabled");
-        }
-
         return (
-            <div class="btn-group" role="group" aria-label="product quantity">
-                <div className={downBtnEnabled(this.state) ? "btn-enabled" : "btn-disabled"}
-                    dangerouslySetInnerHTML={{__html: this.props.downBtn}}
+            <div class="btn-group" role="group" aria-label="quantity in cart">
+                <button
+                    type="button"
                     onClick={
                         () => {
-                            this.setState((state, props) => {
-                                if (downBtnEnabled(state)) {
-                                    return {buttonQuantity: state.buttonQuantity - 1}
-                                }
-                            });
+                            if (this.props.quantity > 0) this.props.changeQuantity(-1)
                         }
                     }
-                    />
-                <div className={
-                        downBtnEnabled(this.state) || upBtnEnabled(this.state, this.props) ? (
-                            "ProductPage-quantity p-3 btn-enabled" 
+                    className={this.props.quantity > 0 ? (
+                            "CartPage-quantity-down btn btn-secondary p-3"
                         ) : (
-                            "ProductPage-quantity p-3 btn-disabled"
+                            "CartPage-quantity-down btn btn-secondary p-3 btn-disabled"
                         )
                     }
-                    data-product-id={this.props.productId}
-                    >
-                    {this.state.buttonQuantity}
-                </div>
-                <div className={upBtnEnabled(this.state, this.props) ? "btn-enabled" : "btn-disabled"}
-                    dangerouslySetInnerHTML={{__html: this.props.upBtn}}
+                    >-
+                </button>
+                <div className="CartPage-quantity p-3 text-dark">{this.props.quantity}</div>
+                <button
+                    type="button"
                     onClick={
                         () => {
-                            this.setState((state, props) => {
-                                if (upBtnEnabled(state, props)) {
-                                    return {buttonQuantity: state.buttonQuantity + 1}
-                                }
-                            });
+                            if (this.props.quantity < this.props.stock) this.props.changeQuantity(1)
                         }
                     }
-                    />
-                <CartQuantityUpdater
-                    cartBtn={this.state.cartBtn}
-                    productId={this.props.productId}
-                    initialQuantity={this.state.cartQuantity}
-                    setQuantityFunc={this.setCartQuantity} />
+                    className={this.props.quantity < this.props.stock ? (
+                        "CartPage-quantity-up btn btn-secondary p-3"
+                    ) : (
+                        "CartPage-quantity-up btn btn-secondary p-3 btn-disabled"
+                    )
+                }
+                    >+
+                </button>
             </div>
         )
     }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CartPageButtons from "./CartPageButtons";
 
 
 class CartPageRow extends Component {
@@ -11,7 +12,9 @@ class CartPageRow extends Component {
                         src={this.props.data.image} />
                 </div>
                 <div className="CartPage-price col-2">${this.props.data.price.toFixed(2)}</div>
-                <div className="CartPage-quantity col-3">{this.props.data.quantity}</div>
+                <div className="CartPage-quantity col-3">
+                    <CartPageButtons quantity={this.props.data.quantity} stock={this.props.data.stock} changeQuantity={this.props.changeQuantity} />
+                </div>
                 <div className="col-2"><a onClick={() => this.props.removeMe()} href="#" className="btn">🗑️</a></div>
             </div>
         )

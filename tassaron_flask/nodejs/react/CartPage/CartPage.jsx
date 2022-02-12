@@ -16,7 +16,8 @@ class CartPage extends Component {
                 name: node.getElementsByClassName("CartPage-name")[0].innerText,
                 image: node.getElementsByClassName("CartPage-image")[0].children[0].getAttribute("src"),
                 price: Number(node.getElementsByClassName("CartPage-price")[0].innerText.slice(1)),
-                quantity: Number(node.getElementsByClassName("CartPage-quantity")[0].innerText)
+                quantity: Number(node.getElementsByClassName("CartPage-quantity")[0].innerText),
+                stock: Number(node.getElementsByClassName("CartPage-stock")[0].innerText.split(" ")[0])
             });
             containerNode.removeChild(node);
         }
@@ -36,13 +37,31 @@ class CartPage extends Component {
         )
     }
 
+    changeQuantity(id, newValue) {
+        this.setState(
+            (state, props) => {
+                const row = state.rows.get(id);
+                row.quantity = row.quantity + newValue;
+                return {
+                    rows: state.rows
+                }
+            }
+        )
+    }
+
     render() {
         return (
             <CartPageColumn>
                 {
                     Array.from(this.state.rows.values()).map(
                         (row) => {
-                            return <CartPageRow data={row} removeMe={() => this.removeRow(row.id)} />
+                            return (
+                                <CartPageRow
+                                    data={row}
+                                    removeMe={() => this.removeRow(row.id)}
+                                    changeQuantity={(newValue) => this.changeQuantity(row.id, newValue)}
+                                    />
+                            )
                         }
                     )
                 }

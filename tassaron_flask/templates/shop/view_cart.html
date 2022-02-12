@@ -21,7 +21,10 @@
                 src="{{ url_for('static', filename=item.image) }}">
         </div>
         <div class="CartPage-price col-2">${{ item.price|currency }}</div>
-        <div class="CartPage-quantity col-3">{{ quantity }}</div>
+        <div class="d-none"><span class="CartPage-stock">{{ item.stock }}</span> in stock</div>
+        <div class="CartPage-quantity col-3">
+            {{ quantity }}
+        </div>
         <div class="col-2"><a href="#" class="btn">🗑️</a></div>
     </div>
     {% endfor %}
