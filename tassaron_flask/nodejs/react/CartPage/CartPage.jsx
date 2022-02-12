@@ -9,9 +9,9 @@ class CartPage extends Component {
         super();
         const containerNode = getNodeOrError("CartPage-container");
         const rowNodes = document.getElementsByClassName("CartPage-row");
-        const rowData = [];
+        const rowMap = new Map();
         for (let node of rowNodes) {
-            rowData.push({
+            rowMap.set(node.dataset.productId, {
                 id: node.dataset.productId,
                 name: node.getElementsByClassName("CartPage-name")[0].innerText,
                 image: node.getElementsByClassName("CartPage-image")[0].children[0].getAttribute("src"),
@@ -21,17 +21,28 @@ class CartPage extends Component {
             containerNode.removeChild(node);
         }
         this.state = {
-            rows: rowData
+            rows: rowMap
         }
+    }
+
+    removeRow(id) {
+        this.setState(
+            (state, props) => {
+                state.rows.delete(id)
+                return {
+                    rows: state.rows
+                }
+            }
+        )
     }
 
     render() {
         return (
             <CartPageColumn>
                 {
-                    this.state.rows.map(
+                    Array.from(this.state.rows.values()).map(
                         (row) => {
-                            return <CartPageRow data={row} />
+                            return <CartPageRow data={row} removeMe={() => this.removeRow(row.id)} />
                         }
                     )
                 }

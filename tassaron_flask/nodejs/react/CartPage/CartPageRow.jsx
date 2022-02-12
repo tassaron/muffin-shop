@@ -2,10 +2,6 @@ import React, { Component } from "react";
 
 
 class CartPageRow extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="CartPage-row row" data-product-id={this.props.data.id}>
@@ -16,7 +12,7 @@ class CartPageRow extends Component {
                 </div>
                 <div className="CartPage-price col-2">${this.props.data.price.toFixed(2)}</div>
                 <div className="CartPage-quantity col-3">{this.props.data.quantity}</div>
-                <div className="col-2"><a href="#" className="btn">🗑️</a></div>
+                <div className="col-2"><a onClick={() => this.props.removeMe()} href="#" className="btn">🗑️</a></div>
             </div>
         )
     }
