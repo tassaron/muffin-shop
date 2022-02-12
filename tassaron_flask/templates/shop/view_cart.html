@@ -10,33 +10,27 @@
     </div>
 </div>
 {% else %}
-<div class="container">
-    <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col" class="border-0">
-                <div class="p-2 px-3 text-uppercase">Product</div>
-              </th>
-              <th scope="col" class="border-0">
-                <div class="py-2 text-uppercase">Price</div>
-              </th>
-              <th scope="col" class="border-0">
-                <div class="py-2 text-uppercase">Quantity</div>
-              </th>
-              <th scope="col" class="border-0">
-                <div class="py-2 text-uppercase">Remove</div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item, quantity in cart %}
-            {% include 'cart_component.html' %}
-            {% endfor %}
-        </tbody>
-        </table>
+<div id="CartPage-container" class="container">
+    {% include 'js_required.html' %}
+    <div id="CartPage-root"></div> <!-- Column -->
+    {% for item, quantity in cart %}
+    <div class="CartPage-row row" data-product-id="{{ item.id }}">
+        <div class="CartPage-name col-12 text-center text-uppercase product-title">{{ item.name }}</div>
+        <div class="CartPage-image col-5">
+            <img width="fit-content" class="mr-2 img-fluid rounded shadow-sm" alt="{{ item.name }}"
+                src="{{ url_for('static', filename=item.image) }}">
+        </div>
+        <div class="CartPage-price col-2">${{ item.price|currency }}</div>
+        <div class="CartPage-quantity col-3">{{ quantity }}</div>
+        <div class="col-2"><a href="#" class="btn">🗑️</a></div>
     </div>
+    {% endfor %}
 </div>
 {% endif %}
 
+{% endblock %}
+
+{% block script %}
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}

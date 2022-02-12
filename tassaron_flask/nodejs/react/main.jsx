@@ -2,9 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ProductSlideshowFromHtml from "./ProductSlideshowFromHtml";
 import ProductPageButtons from "./ProductPageButtons";
+import CartPage from "./CartPage/CartPage";
 import { getChildOrError } from "./util";
 import "./styles.css";
  
+
 function renderIfExists(comp, elemId) {
     const node = document.getElementById(elemId);
     if (node) {
@@ -12,8 +14,13 @@ function renderIfExists(comp, elemId) {
     }
 }
 
-renderIfExists(<ProductSlideshowFromHtml />, "ProductPage-slideshow");
 
+// Render single components
+renderIfExists(<ProductSlideshowFromHtml />, "ProductPage-slideshow");
+renderIfExists(<CartPage />, "CartPage-root");
+
+
+// Render a ProductPageButtons component for each product
 const nodes = document.getElementsByClassName("ProductPage-buttons");
 for (let node of nodes) {
     const quantityNode = getChildOrError(node, "ProductPage-quantity");
