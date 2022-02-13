@@ -21,17 +21,22 @@ class Blueprint(flask.Blueprint):
         """
 
         def decorator(f):
-            new_rule = f"{ADMIN_URL}{'' if self.name == 'main' else f'/{self.name}'}{rule}"
+            new_rule = (
+                f"{ADMIN_URL}{'' if self.name == 'main' else f'/{self.name}'}{rule}"
+            )
             endpoint = options.pop("endpoint", f"{self.name}.{f.__name__}")
+
             def admin_required(f):
                 def wrapped(*args, **kwargs):
                     if not flask_login.current_user.is_admin_authenticated:
                         flask.abort(404)
                     return f(*args, **kwargs)
+
                 return wrapped
 
             def add_admin_url_rule(app):
                 app.add_url_rule(new_rule, endpoint, admin_required(f), **options)
+
             self.__admin_routes.append(add_admin_url_rule)
             return f
 
@@ -43,6 +48,7 @@ class Blueprint(flask.Blueprint):
         The exact rule of these endpoints won't be known until registration
         """
         rule = "/"
+
         def decorator(f):
             endpoint = options.pop("endpoint", None)
             self.__index_route = (endpoint, f, options)

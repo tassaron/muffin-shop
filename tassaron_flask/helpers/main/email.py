@@ -6,7 +6,12 @@ from tassaron_flask.helpers.main.plugins import db
 from huey.api import Result
 
 
-__all__ = ["OutboxFull", "Unverified", "send_email_verification_email", "send_password_reset_email"]
+__all__ = [
+    "OutboxFull",
+    "Unverified",
+    "send_email_verification_email",
+    "send_password_reset_email",
+]
 
 
 class OutboxFull(Exception):
@@ -31,17 +36,17 @@ def send_email(subj, body, send_to, force=False):
     if not force:
         user = User.query.filter_by(email=send_to).first()
         if user.email_verified == False:
-            current_app.logger.warning("Could not send email to %s because the address isn't verified", send_to)
+            current_app.logger.warning(
+                "Could not send email to %s because the address isn't verified", send_to
+            )
             raise Unverified
-    email_config = {
-        "ENV": current_app.env
-    }
+    email_config = {"ENV": current_app.env}
     if current_app.env == "production":
         email_config |= {
             "API_URL": current_app.config["EMAIL_API_URL"],
             "API_KEY": current_app.config["EMAIL_API_KEY"],
-            "SENDER_NAME": current_app.config['EMAIL_SENDER_NAME'],
-            "SENDER_ADDRESS": current_app.config['EMAIL_SENDER_ADDRESS'],
+            "SENDER_NAME": current_app.config["EMAIL_SENDER_NAME"],
+            "SENDER_ADDRESS": current_app.config["EMAIL_SENDER_ADDRESS"],
         }
     return huey_send_email(
         email_config,

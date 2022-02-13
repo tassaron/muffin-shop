@@ -8,6 +8,7 @@ from flask import request
 import os
 import datetime
 from typing import Optional
+
 try:
     from uwsgi import setprocname
 except ModuleNotFoundError:
@@ -49,24 +50,28 @@ def create_app():
         SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
-        SITE_NAME=(website_name := os.environ.get("SITE_NAME", "Tassaron Flask Template")),
-        SITE_DESCRIPTION=os.environ.get("SITE_DESCRIPTION", "metadescription for your website"),
+        SITE_NAME=(
+            website_name := os.environ.get("SITE_NAME", "Tassaron Flask Template")
+        ),
+        SITE_DESCRIPTION=os.environ.get(
+            "SITE_DESCRIPTION", "metadescription for your website"
+        ),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
         MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
         CLIENT_SESSIONS=boolean_from_env_var("CLIENT_SESSIONS"),
     )
-    
+
     app.unique_name = prettier_url_safe(website_name)
 
     if app.env == "production":
         # Enforce HTTPS and configure email
         try:
             app.config.update(
-                EMAIL_API_KEY = os.environ["EMAIL_API_KEY"],
-                EMAIL_API_URL = os.environ["EMAIL_API_URL"],
-                EMAIL_SENDER_NAME = os.environ["EMAIL_SENDER_NAME"],
-                EMAIL_SENDER_ADDRESS = os.environ["EMAIL_SENDER_ADDRESS"],
+                EMAIL_API_KEY=os.environ["EMAIL_API_KEY"],
+                EMAIL_API_URL=os.environ["EMAIL_API_URL"],
+                EMAIL_SENDER_NAME=os.environ["EMAIL_SENDER_NAME"],
+                EMAIL_SENDER_ADDRESS=os.environ["EMAIL_SENDER_ADDRESS"],
                 SESSION_COOKIE_SECURE=True,
                 REMEMBER_COOKIE_SECURE=True,
                 SESSION_COOKIE_HTTPONLY=True,
@@ -78,11 +83,12 @@ def create_app():
         app.logger.warning("Email is disabled because FLASK_ENV != production")
 
     from tassaron_flask.controllers.main.routes import main_routes
+
     app.register_blueprint(main_routes)
     return app
 
 
-def init_app(app, modules: Optional[dict]=None):
+def init_app(app, modules: Optional[dict] = None):
     """
     Import and create the Flask plugins, and call init_app for each of them.
     Then register the extra template modules as defined in MODULES_CONFIG json
@@ -92,12 +98,14 @@ def init_app(app, modules: Optional[dict]=None):
     If `modules` is defined, update the modules dictionary after reading json
     """
     from tassaron_flask.helpers.main.plugins import db, migrate, bcrypt, login_manager
+
     for plugin in (db, bcrypt, login_manager):
         plugin.init_app(app)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
     from tassaron_flask.helpers.main.session_interface import TassaronSessionInterface
+
     app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
 
@@ -105,7 +113,9 @@ def init_app(app, modules: Optional[dict]=None):
         # Enable Monitoring Dashboard only in production
         import flask_monitoringdashboard as monitor
 
-        monitor.config.init_from(file=os.environ.get("MONITOR_CONFIG", "config/monitor.cfg"))
+        monitor.config.init_from(
+            file=os.environ.get("MONITOR_CONFIG", "config/monitor.cfg")
+        )
         try:
             monitor.config.username = os.environ["MONITOR_USERNAME"]
             monitor.config.password = os.environ["MONITOR_PASSWORD"]
@@ -127,13 +137,15 @@ def init_app(app, modules: Optional[dict]=None):
     )
 
     from flask_uploads import configure_uploads
-    #FIXME
+
+    # FIXME
     from tassaron_flask.controllers.main.images import Images
 
     configure_uploads(app, Images)
 
     def inject_vars():
         import flask_login
+
         return {
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
@@ -151,7 +163,9 @@ def init_app(app, modules: Optional[dict]=None):
             body_info = f"{(sum(map(len, response.iter_encoded())) / 1024):.2f} kb"
         else:
             body_info = "streamed" if response.is_streamed else "likely-streamed"
-        app.logger.info(f"{response.status} -> {request.method} {request.url} ({body_info})")
+        app.logger.info(
+            f"{response.status} -> {request.method} {request.url} ({body_info})"
+        )
         return response
 
     app.context_processor(inject_vars)

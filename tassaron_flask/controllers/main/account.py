@@ -49,7 +49,9 @@ def login():
 
             if not current_app.config["CLIENT_SESSIONS"]:
                 # restore a user's shopping cart session or assign a user id to an anonymous session
-                restored_session_data = current_app.session_interface.get_user_session(user.id)
+                restored_session_data = current_app.session_interface.get_user_session(
+                    user.id
+                )
                 if restored_session_data is None:
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
@@ -59,7 +61,9 @@ def login():
                 else:
                     # assign this session as the user's new "existing session" & nullify the old one
                     # so future logins with empty cart will inherit the latest full cart
-                    current_app.session_interface.set_user_session(restored_session_data[0], None)
+                    current_app.session_interface.set_user_session(
+                        restored_session_data[0], None
+                    )
                     current_app.session_interface.set_user_session(session.sid, user.id)
 
             flask_login.login_user(user, remember=form.rememberme.data)
@@ -89,9 +93,15 @@ def reset_password():
             flash("An email was sent with instructions to reset your password", "info")
             return redirect(url_for(".login"))
         except OutboxFull:
-            flash("Sorry, you have to wait a few hours before requesting another email", "info")
+            flash(
+                "Sorry, you have to wait a few hours before requesting another email",
+                "info",
+            )
         except Unverified:
-            flash("Your email address isn't verified so the email couldn't be sent", "warning")
+            flash(
+                "Your email address isn't verified so the email couldn't be sent",
+                "warning",
+            )
     return render_template("reset_password.html", form=form)
 
 
@@ -110,7 +120,10 @@ def change_password(token):
         user.update_password(form.password.data)
         email = Models.NewEmail.query.filter_by(user_id=user.id).first()
         if email is None:
-            current_app.logger.warning("The password token should expire before the email does... user_id: %s", user.id)
+            current_app.logger.warning(
+                "The password token should expire before the email does... user_id: %s",
+                user.id,
+            )
         else:
             old_email = Models.OldEmail.from_email(email)
             db.session.add(old_email)
@@ -132,7 +145,10 @@ def verify_email(token):
         user.email_verified = True
         email = Models.NewEmail.query.filter_by(user_id=user.id).first()
         if email is None:
-            current_app.logger.warning("The email verification token should expire before the email does... user_id: %s", user.id)
+            current_app.logger.warning(
+                "The email verification token should expire before the email does... user_id: %s",
+                user.id,
+            )
         else:
             old_email = Models.OldEmail.from_email(email)
             db.session.add(old_email)
@@ -154,17 +170,19 @@ def request_email_verification():
         flash(
             "Sorry, you have to wait a few hours before requesting another email. "
             "Please remember to check your spam folder",
-            "info"
+            "info",
         )
     else:
-        flash("An email was sent to the address you provided during registration", "info")
+        flash(
+            "An email was sent to the address you provided during registration", "info"
+        )
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 
 @blueprint.route("/profile")
 @flask_login.login_required
 def user_dashboard():
-    """ Let the user manage their shipping address, change password """
+    """Let the user manage their shipping address, change password"""
     user_id = int(flask_login.current_user.get_id())
     sections = {}
     for module in current_app.modules.values():
@@ -185,9 +203,7 @@ def user_dashboard():
                 html = ""
             sections[model.__name__.lower()] = (section_name, html)
     return render_template(
-        "view_profile.html",
-        user=flask_login.current_user,
-        profile_sections=sections
+        "view_profile.html", user=flask_login.current_user, profile_sections=sections
     )
 
 
@@ -216,7 +232,9 @@ def register():
     form = ShortRegistrationForm()
     if form.validate_on_submit():
         try:
-            new_user = User(email=form.email.data, password=form.password.data, is_admin=False)
+            new_user = User(
+                email=form.email.data, password=form.password.data, is_admin=False
+            )
             db.session.add(new_user)
             db.session.commit()
         except IntegrityError:

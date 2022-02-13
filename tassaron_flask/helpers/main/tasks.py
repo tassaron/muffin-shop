@@ -6,7 +6,9 @@ import requests
 from huey import SqliteHuey
 
 
-huey = SqliteHuey(filename=os.environ.get("HUEY_DB", "db/huey.db"), immediate_use_memory=False)
+huey = SqliteHuey(
+    filename=os.environ.get("HUEY_DB", "db/huey.db"), immediate_use_memory=False
+)
 
 
 @huey.task()

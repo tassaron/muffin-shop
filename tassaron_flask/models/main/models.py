@@ -78,15 +78,14 @@ class NewEmail(db.Model):
     Email table with user IDs as the primary key, representing currently 'active' emails
     An email will be removed from this table after the recipient takes action or in a few hours
     """
-    id = db.Column(
-        db.Integer, primary_key=True, nullable=False
-    )
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(
-        db.Integer, unique=True, nullable=False #db.ForeignKey("user.id")
+        db.Integer, unique=True, nullable=False  # db.ForeignKey("user.id")
     )
     typ = db.Column(db.Integer, nullable=False)
     creation_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    
+
 
 class OldEmail(db.Model):
     """
@@ -94,19 +93,18 @@ class OldEmail(db.Model):
      0 = verification
      1 = password reset
     """
-    id = db.Column(
-        db.Integer, primary_key=True, nullable=False
-    )
-    user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id"), nullable=False
-    )
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     typ = db.Column(db.Integer, nullable=False)
     creation_time = db.Column(db.DateTime, nullable=False)
     archive_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     @classmethod
     def from_email(cls, email: NewEmail):
-        return cls(user_id=email.user_id, typ=email.typ, creation_time=email.creation_time)
+        return cls(
+            user_id=email.user_id, typ=email.typ, creation_time=email.creation_time
+        )
 
 
 # Shop Module's Profile_Models
@@ -154,5 +152,3 @@ class ShippingAddress(db.Model):
     postal_code = db.Column(db.String(6), nullable=False)
     city = db.Column(db.String(30), nullable=False)
     province = db.Column(db.String(2), nullable=False)
-
-

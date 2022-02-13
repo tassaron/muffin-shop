@@ -37,10 +37,10 @@ class Flask(flask.Flask):
         root_blueprint.template_folder = f"../../templates/{root_blueprint.name}"
         app.register_blueprint(root_blueprint)
         if not root_blueprint.is_registered_index:
-            raise ConfigurationError("The root blueprint failed to register. It must have the same name as its Python module.")
-        for blueprint in (
-            *list(others.values()),
-        ):
+            raise ConfigurationError(
+                "The root blueprint failed to register. It must have the same name as its Python module."
+            )
+        for blueprint in (*list(others.values()),):
             blueprint.static_folder = "../../static"
             blueprint.template_folder = f"../../templates{f'/{blueprint.name}' if blueprint.name != 'main' else ''}"
             app.register_blueprint(blueprint, url_prefix=f"/{blueprint.name}")
@@ -70,11 +70,10 @@ class Flask(flask.Flask):
             for blueprint in mod_list:
                 pymodule_name, blueprint_name = blueprint.split(":")
                 module = importlib.import_module(
-                    f".{pymodule_name}",
-                    f"{pkg}.{'.'.join(subpkg)}"
+                    f".{pymodule_name}", f"{pkg}.{'.'.join(subpkg)}"
                 )
                 blueprints[pymodule_name] = module.__dict__[blueprint_name]
-        
+
         blueprints = {}
         blueprints["account"] = importlib.import_module(
             f".account", "tassaron_flask.controllers.main"
@@ -85,8 +84,12 @@ class Flask(flask.Flask):
         import_python_modules(parse_pkg(main_module), data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
             if module_name not in data:
-                raise ConfigurationError(f"Non-existent '{module_name}' module in main module's 'navigation' entry")
-            import_python_modules(parse_pkg(module_name), data[module_name]["blueprints"])
+                raise ConfigurationError(
+                    f"Non-existent '{module_name}' module in main module's 'navigation' entry"
+                )
+            import_python_modules(
+                parse_pkg(module_name), data[module_name]["blueprints"]
+            )
         root_blueprint = blueprints.pop(data[main_module]["root"])
         app.config["INDEX_ROUTE"] = data[main_module]["index"]
 
@@ -104,7 +107,10 @@ class Flask(flask.Flask):
 
         app.modules = data
         app.logger.info("Found root blueprint: %s", root_blueprint.name)
-        app.logger.info("Found other blueprints: %s", ", ".join([blueprint for blueprint in blueprints]))
+        app.logger.info(
+            "Found other blueprints: %s",
+            ", ".join([blueprint for blueprint in blueprints]),
+        )
         return (root_blueprint, blueprints)
 
 
@@ -125,6 +131,7 @@ def create_env_file() -> bool:
     Return True if an existing file was mutated
     """
     mutated_env_file = False
+
     def create_ensure_env_var_func():
         default_values = {
             "FLASK_APP": "tassaron_flask.run",
@@ -134,13 +141,16 @@ def create_env_file() -> bool:
         mutation = False
         if os.path.exists(".env"):
             mutation = True
+
         def ensure_env_var(token):
             nonlocal mutated_env_file
             if token not in os.environ:
                 mutated_env_file = mutation
                 with open(".env", "a") as f:
                     f.write(f"\n{str(token)}={default_values[token]}")
+
         return ensure_env_var
+
     ensure_env_var = create_ensure_env_var_func()
     ensure_env_var("FLASK_APP")
     ensure_env_var("FLASK_ENV")
