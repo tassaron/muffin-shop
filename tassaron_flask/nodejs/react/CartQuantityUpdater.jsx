@@ -1,6 +1,5 @@
 import { Component } from "react";
-import { animateVanish } from './util.js';
-
+import { animateVanish } from "./util.js";
 
 class CartQuantityUpdater extends Component {
     constructor(props) {
@@ -9,11 +8,10 @@ class CartQuantityUpdater extends Component {
     }
 
     componentDidMount() {
-        this.watchedNode = document.querySelector(`.ProductPage-alert-area[data-product-id='${this.props.productId}']`);
-        this.timer = setInterval(
-            () => this.tick(),
-            3000
+        this.watchedNode = document.querySelector(
+            `.ProductPage-alert-area[data-product-id='${this.props.productId}']`
         );
+        this.timer = setInterval(() => this.tick(), 3000);
     }
     componentWillUnmount() {
         clearInterval(this.timer);
@@ -21,14 +19,18 @@ class CartQuantityUpdater extends Component {
 
     tick() {
         if (this.watchedNode.childElementCount == 0 || this.vanishing) {
-            return
+            return;
         }
         this.vanishing = true;
         const child = this.watchedNode.children[0];
         const message = child.innerText;
         const newValue = Number(message.split(" ")[1]);
-        requestAnimationFrame(
-            () => animateVanish(child, this.watchedNode, () => this.vanishing = false)
+        requestAnimationFrame(() =>
+            animateVanish(
+                child,
+                this.watchedNode,
+                () => (this.vanishing = false)
+            )
         );
         this.props.setQuantityFunc(this.props.initialQuantity + newValue);
         this.props.cartBtn.classList.remove("btn-disabled");
@@ -37,14 +39,16 @@ class CartQuantityUpdater extends Component {
     render() {
         return (
             <div
-                style={{ visibility: this.props.initialQuantity > 0 ? "visible" : "hidden" }}
-                className="product-buttons-cart-indicator-text text-center">
-                <strong>
-                    {this.props.initialQuantity}
-                </strong> in your cart
+                style={{
+                    visibility:
+                        this.props.initialQuantity > 0 ? "visible" : "hidden",
+                }}
+                className="product-buttons-cart-indicator-text text-center"
+            >
+                <strong>{this.props.initialQuantity}</strong> in your cart
             </div>
-        )
+        );
     }
 }
 
-export default CartQuantityUpdater
+export default CartQuantityUpdater;

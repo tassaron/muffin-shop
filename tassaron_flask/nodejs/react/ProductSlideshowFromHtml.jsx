@@ -1,10 +1,9 @@
 /* This component gets the product information from the page HTML
  * and creates the Product Slideshow.
-*/
+ */
 import React, { Component } from "react";
 import ProductSlideshow from "./ProductSlideshow";
 import { getNodeOrError } from "./util";
-
 
 class ProductSlideshowFromHtml extends Component {
     constructor() {
@@ -22,10 +21,13 @@ class ProductSlideshowFromHtml extends Component {
     render() {
         return (
             <div>
-                <ProductSlideshow slideImages={this.slideImages} productName={this.productName} />
+                <ProductSlideshow
+                    slideImages={this.slideImages}
+                    productName={this.productName}
+                />
             </div>
-        )
+        );
     }
 }
 
-export default ProductSlideshowFromHtml
+export default ProductSlideshowFromHtml;
