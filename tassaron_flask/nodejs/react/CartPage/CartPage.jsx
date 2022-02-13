@@ -31,8 +31,8 @@ class CartPage extends Component {
                         .innerText.split(" ")[0]
                 ),
             });
-            containerNode.removeChild(node);
         }
+        Array.from(rowNodes).forEach((node) => containerNode.removeChild(node));
         this.state = {
             rows: rowMap,
         };
