@@ -2,12 +2,7 @@
     height: auto;
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-@media screen and (min-width: 1080px) {
-    .bg-fixed {
-        background-attachment: fixed;
-    }
+    background-attachment: fixed;
 }
 
 footer {
@@ -38,11 +33,12 @@ div.product-card {
 
 .site-name-header span {
     font-family: serif;
+    font-weight: 700;
 }
 
+/* Style every word of the site name past the first word
 .site-name-header span:nth-of-type(1n + 2) {
-    font-weight: bold;
-}
+}*/
 
 img#cart-icon {
     width: 32px;
