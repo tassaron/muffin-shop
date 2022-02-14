@@ -83,6 +83,12 @@ def create_test_db_shop():
         )
     )
     db.session.add(
+        ProductCategory(
+            name="Baked Goods",
+            image="potato.jpg",
+        )
+    )
+    db.session.add(
         Product(
             name="Potato",
             price=1.0,
@@ -104,12 +110,22 @@ def create_test_db_shop():
     )
     db.session.add(
         Product(
+            name="Campanula",
+            price=1.5,
+            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            image="potato.jpg",
+            stock=100,
+            category_id=2,
+        )
+    )
+    db.session.add(
+        Product(
             name="Hot Cake",
             price=1.0,
             description="It sure sells like it!",
             image="potato.jpg",
             stock=0,
-            category_id=2,
+            category_id=3,
         )
     )
     db.session.commit()
