@@ -18,27 +18,33 @@ export function getChildOrError(parentNode, className) {
     return nodes[0];
 }
 
-/** 
-* Animates DOM element to reduce its opacity over time. Use callback to remove from DOM
-* @param {HTMLElement} vanisher - DOM node to operate on
-*/
-export function animateVanish(vanisher, callback) {
+/**
+ * Animates DOM element to reduce its opacity and height over time. Use callback to remove from DOM
+ * @param {HTMLElement} element - DOM node to operate on
+ */
+export function animateVanish(element, callback) {
     if (then === undefined) {
         then = Date.now();
     }
     let delta = Math.min((Date.now() - then) / (1000 / 60), 2);
     then = Date.now();
     const opacity = window
-        .getComputedStyle(vanisher)
+        .getComputedStyle(element)
         .getPropertyValue("opacity");
     if (opacity <= 0.0) {
         callback();
         return;
     }
-    let height = window
-        .getComputedStyle(vanisher)
-        .getPropertyValue("height");
+    let height = window.getComputedStyle(element).getPropertyValue("height");
     height = Number(height.substring(0, height.length - 2));
-    vanisher.setAttribute("style", `opacity: ${opacity - 0.1 * delta}; height: ${height - (height * .25) * delta}px`);
-    requestAnimationFrame(() => animateVanish(vanisher, callback));
+    const vanish = (node) => {
+        node.setAttribute(
+            "style",
+            `opacity: ${opacity - 0.1 * delta}; height: ${
+                height - height * 0.25 * delta
+            }px`
+        );
+    };
+    vanish(element);
+    requestAnimationFrame(() => animateVanish(element, callback));
 }

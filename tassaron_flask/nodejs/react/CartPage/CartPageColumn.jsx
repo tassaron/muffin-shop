@@ -1,8 +1,13 @@
-import React, { Component } from "react";
+import { Component } from "react";
+
 
 class CartPageColumn extends Component {
     render() {
-        return <>{this.props.children}</>;
+        return (
+            <>
+                {this.props.children}
+            </>
+        );
     }
 }
 
