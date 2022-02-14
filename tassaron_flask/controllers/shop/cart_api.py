@@ -13,9 +13,8 @@ blueprint = Blueprint("cart", __name__)
 @blueprint.route("/add", methods=["POST"])
 def add_product_to_cart():
     try:
-        item = request.get_json()
-        id = int(item["id"])
-        quantity = int(item["quantity"])
+        jsonData = request.get_json()
+        id, quantity = (int(jsonData["id"]), int(jsonData["quantity"]))
         product = Product.query.get(id)
         if (
             product is None
@@ -24,16 +23,34 @@ def add_product_to_cart():
             or session["cart"].get(id, 0) == product.stock
         ):
             return {"success": False}
+
+        if id not in session["cart"]:
+            change = quantity
+            session["cart"][id] = quantity
         else:
-            if id not in session["cart"]:
-                change = quantity
-                session["cart"][id] = quantity
-            else:
-                new_value = min(product.stock, session["cart"][id] + quantity)
-                change = new_value - session["cart"][id]
-                session["cart"][id] = new_value
-            current_app.logger.debug(session["cart"])
-            return {"success": True, "count": len(session["cart"]), "change": change}
+            new_value = min(product.stock, session["cart"][id] + quantity)
+            change = new_value - session["cart"][id]
+            session["cart"][id] = new_value
+        current_app.logger.debug(session["cart"])
+        return {"success": True, "count": len(session["cart"]), "change": change}
+        
     except Exception as e:
         current_app.logger.info("Invalid cart request: %s" % e)
         return {"success": False}, 400
+
+
+@blueprint.route("/del", methods=["POST"])
+def remove_product_from_cart():
+    try:
+        id = int(request.get_json()["id"])
+        product = Product.query.get(id)
+        if product is None or id not in session["cart"]:
+            return {"success": False}
+
+        session["cart"].pop(id)
+        return {"success": True}
+        
+    except Exception as e:
+        current_app.logger.info("Invalid cart request: %s" % e)
+        return {"success": False}, 400
+

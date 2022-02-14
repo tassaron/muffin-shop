@@ -3,7 +3,7 @@ from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.models.shop.inventory_models import Product, ProductCategory
 import tempfile
 import os
-from flask import json, jsonify
+from flask import json, session
 import pytest
 
 
@@ -98,3 +98,36 @@ def test_add_to_cart_api_baddata(client):
     assert resp.status_code == 400
     data = json.loads(resp.get_data(as_text=True))
     assert data["success"] == False
+
+
+def test_remove_from_cart_api_success(client):
+    with client:
+        test_add_to_cart_api_success(client)
+        resp = client.post(
+            "/cart/del",
+            data=json.dumps({"id": 1}),
+            content_type='application/json',
+        )
+        assert resp.status_code == 200
+        assert 1 not in session["cart"]
+
+
+def test_remove_from_cart_api_fail(client):
+    with client:
+        test_add_to_cart_api_success(client)
+        resp = client.post(
+            "/cart/del",
+            data=json.dumps({"id": 2}),
+            content_type='application/json',
+        )
+        assert resp.status_code == 200
+        assert 1 in session["cart"]
+
+
+def test_remove_from_cart_api_baddata(client):
+    resp = client.post(
+        "/cart/del",
+        data=json.dumps({"id":"a"}),
+        content_type='application/json',
+    )
+    assert resp.status_code == 400
