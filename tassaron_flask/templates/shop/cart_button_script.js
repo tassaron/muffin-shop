@@ -27,9 +27,10 @@ function add_to_cart(e, id) {
                 const updaterMessage = document.createElement("span");
                 updaterMessage.setAttribute(
                     "class",
-                    "p-2 text-center alert alert-success"
+                    "p-2 text-center alert alert-success cart-alert"
                 );
                 updaterMessage.innerText = `Added ${data["change"]} to your cart`;
+                updaterMessage.setAttribute("data-timestamp", Date.now());
                 descriptionNode.appendChild(updaterMessage);
             }
         });
