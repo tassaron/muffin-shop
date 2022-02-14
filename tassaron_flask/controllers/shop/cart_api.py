@@ -34,7 +34,6 @@ def add_product_to_cart():
                 session["cart"][id] = new_value
             current_app.logger.debug(session["cart"])
             return {"success": True, "count": len(session["cart"]), "change": change}
-    except Exception:
-        if current_app.env == "production":
-            return {"success": False}, 400
-        raise
+    except Exception as e:
+        current_app.logger.info("Invalid cart request: %s" % e)
+        return {"success": False}, 400
