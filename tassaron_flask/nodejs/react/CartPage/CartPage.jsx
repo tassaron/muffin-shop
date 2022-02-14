@@ -40,7 +40,6 @@ class CartPage extends Component {
         this.state = {
             rowData: rowData
         };
-        this.rootNode = React.createRef();
     }
 
     removeRow(id, ref) {
@@ -70,7 +69,6 @@ class CartPage extends Component {
 
     render() {
         return (
-            <div ref={this.rootNode}>
             <CartPageColumn rowData={this.state.rowData}>
                 {Array.from(this.state.rowData.values()).map((row) => {
                     return (
@@ -85,7 +83,6 @@ class CartPage extends Component {
                     );
                 })}
             </CartPageColumn>
-            </div>
         );
     }
 }
