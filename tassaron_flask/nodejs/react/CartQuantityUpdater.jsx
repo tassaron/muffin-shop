@@ -28,8 +28,10 @@ class CartQuantityUpdater extends Component {
         requestAnimationFrame(() =>
             animateVanish(
                 child,
-                this.watchedNode,
-                () => (this.vanishing = false)
+                () => {
+                    this.vanishing = false;
+                    this.watchedNode.removeChild(child);
+                }
             )
         );
         this.props.setQuantityFunc(this.props.initialQuantity + newValue);

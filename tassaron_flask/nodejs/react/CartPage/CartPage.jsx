@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import CartPageColumn from "./CartPageColumn";
 import CartPageRow from "./CartPageRow";
-import { getNodeOrError } from "../util";
+import { getNodeOrError, animateVanish } from "../util";
 
 class CartPage extends Component {
     constructor() {
         super();
         const containerNode = getNodeOrError("CartPage-container");
         const rowNodes = document.getElementsByClassName("CartPage-row");
-        const rowMap = new Map();
+        const rowData = new Map();
         for (let node of rowNodes) {
-            rowMap.set(node.dataset.productId, {
+            rowData.set(node.dataset.productId, {
                 id: node.dataset.productId,
                 name: node.getElementsByClassName("CartPage-name")[0].innerText,
                 image: node
@@ -32,39 +32,52 @@ class CartPage extends Component {
                 ),
             });
         }
-        Array.from(rowNodes).forEach((node) => containerNode.removeChild(node));
+        Array.from(rowNodes).forEach(
+            (node) => {
+                containerNode.removeChild(node)
+            }
+        );
         this.state = {
-            rows: rowMap,
+            rowData: rowData
         };
+        this.rootNode = React.createRef();
     }
 
-    removeRow(id) {
-        this.setState((state, props) => {
-            state.rows.delete(id);
-            return {
-                rows: state.rows,
-            };
-        });
+    removeRow(id, ref) {
+        const callback = () => {
+            this.setState((state, props) => {
+                    state.rowData.delete(id);
+                    return {
+                        rowData: state.rowData,
+                    };
+                }
+            );
+        }
+        requestAnimationFrame(
+            () => animateVanish(ref.current, callback)
+        );
     }
 
     changeQuantity(id, newValue) {
         this.setState((state, props) => {
-            const row = state.rows.get(id);
+            const row = state.rowData.get(id);
             row.quantity = row.quantity + newValue;
             return {
-                rows: state.rows,
+                rowData: state.rowData,
             };
         });
     }
 
     render() {
         return (
-            <CartPageColumn>
-                {Array.from(this.state.rows.values()).map((row) => {
+            <div ref={this.rootNode}>
+            <CartPageColumn rowData={this.state.rowData}>
+                {Array.from(this.state.rowData.values()).map((row) => {
                     return (
                         <CartPageRow
                             data={row}
-                            removeMe={() => this.removeRow(row.id)}
+                            key={row.id}
+                            removeMe={(ref) => this.removeRow(row.id, ref)}
                             changeQuantity={(newValue) =>
                                 this.changeQuantity(row.id, newValue)
                             }
@@ -72,6 +85,7 @@ class CartPage extends Component {
                     );
                 })}
             </CartPageColumn>
+            </div>
         );
     }
 }

@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import CartPageButtons from "./CartPageButtons";
 
 class CartPageRow extends Component {
+    constructor(props) {
+        super(props);
+        this.node = React.createRef();
+    }
+
     render() {
         return (
             <div
+                ref={this.node}
                 className="CartPage-row row border-top py-2"
                 data-product-id={this.props.data.id}
             >
@@ -31,8 +37,7 @@ class CartPageRow extends Component {
                 </div>
                 <div className="col-2">
                     <a
-                        onClick={() => this.props.removeMe()}
-                        href="#"
+                        onClick={() => this.props.removeMe(this.node)}
                         className="btn"
                     >
                         🗑️

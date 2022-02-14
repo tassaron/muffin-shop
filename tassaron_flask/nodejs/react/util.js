@@ -18,7 +18,11 @@ export function getChildOrError(parentNode, className) {
     return nodes[0];
 }
 
-export function animateVanish(vanisher, parent, callback) {
+/** 
+* Animates DOM element to reduce its opacity over time. Use callback to remove from DOM
+* @param {HTMLElement} vanisher - DOM node to operate on
+*/
+export function animateVanish(vanisher, callback) {
     if (then === undefined) {
         then = Date.now();
     }
@@ -27,11 +31,10 @@ export function animateVanish(vanisher, parent, callback) {
     const opacity = window
         .getComputedStyle(vanisher)
         .getPropertyValue("opacity");
-    if (opacity == 0.0) {
-        parent.removeChild(vanisher);
+    if (opacity <= 0.0) {
         callback();
         return;
     }
     vanisher.setAttribute("style", `opacity: ${opacity - 0.05 * delta}`);
-    requestAnimationFrame(() => animateVanish(vanisher, parent, callback));
+    requestAnimationFrame(() => animateVanish(vanisher, callback));
 }
