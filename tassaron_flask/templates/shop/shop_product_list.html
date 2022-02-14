@@ -13,7 +13,7 @@
         No products are in stock! Check back later :)
         {% endif %}
         {% for product in products %}
-        {% set product_url = url_for("shop.product_description", product_id=product.id) %}
+        {% set product_url = url_for("shop.product_description", title=product.name|lower, product_id=product.id) %}
         {% set quantity = product.cart_quantity %}
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card product-card" style="border-radius: 0px;">

@@ -47,21 +47,22 @@ def index():
 
 @blueprint.route("/category/<int:category_id>")
 def shop_category_index(category_id):
-    products = Product.query.filter_by(category_id=category_id).all()
+    products = Product.query.filter(
+        Product.category_id == category_id, Product.stock > 0
+    ).all()
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
-    products = list(filter(lambda prod: prod.stock > 0, products))
     return render_template(
         "shop_product_list.html",
         products=products,
     )
 
 
-@blueprint.route("/product/<int:product_id>")
-def product_description(product_id):
-    product = Product.query.filter_by(id=product_id).first_or_404()
-    if product.stock < 1:
-        abort(404)
+@blueprint.route("/<title>/<int:product_id>")
+def product_description(title, product_id):
+    product = Product.query.filter(
+        Product.id == product_id, Product.stock > 0
+    ).first_or_404()
     product.cart_quantity = session["cart"].get(product_id, 0)
     return render_template("view_product.html", product=product, title=product.name)
 
@@ -70,7 +71,7 @@ def product_description(product_id):
 def all_products():
     return render_template(
         "shop_product_list.html",
-        products=Product.query.all(),
+        products=Product.query.filter(Product.stock > 0).all(),
     )
 
 
@@ -107,8 +108,3 @@ def view_shipping_address(address):
             field_names[prop_id]: prop_value for prop_id, prop_value in data.items()
         },
     )
-
-
-@blueprint.route("/category/<category_id>")
-def category_index():
-    return ""
