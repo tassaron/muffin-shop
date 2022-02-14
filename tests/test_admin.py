@@ -40,8 +40,11 @@ def test_admin_privilege(client):
 
 
 def test_all_admin_routes(client):
-    endpoints = [url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])]
+    endpoints = [
+        url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])
+    ]
     endpoints.remove(app.config["ADMIN_URL"])
+    assert len(endpoints) != 0
     for endpoint in endpoints:
         resp = client.get(endpoint)
         assert resp.status_code == 200
