@@ -85,9 +85,12 @@ def product_description(title, product_id):
 
 @blueprint.route("/all")
 def all_products():
+    products = Product.query.filter(Product.stock > 0).all()
+    for product in products:
+        product.cart_quantity = session["cart"].get(product.id, 0)
     return render_template(
         "shop_product_list.html",
-        products=Product.query.filter(Product.stock > 0).all(),
+        products=products,
     )
 
 
