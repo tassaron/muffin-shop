@@ -46,7 +46,7 @@ class ProductPageButtons extends Component {
         }
 
         return (
-            <div class="btn-group" role="group" aria-label="product quantity">
+            <div className="btn-group" role="group" aria-label="product quantity">
                 <div
                     className={
                         downBtnEnabled(this.state)
