@@ -32,29 +32,24 @@ class CartPage extends Component {
                 ),
             });
         }
-        Array.from(rowNodes).forEach(
-            (node) => {
-                containerNode.removeChild(node)
-            }
-        );
+        Array.from(rowNodes).forEach((node) => {
+            containerNode.removeChild(node);
+        });
         this.state = {
-            rowData: rowData
+            rowData: rowData,
         };
     }
 
     removeRow(id, ref) {
         const callback = () => {
             this.setState((state, props) => {
-                    state.rowData.delete(id);
-                    return {
-                        rowData: state.rowData,
-                    };
-                }
-            );
-        }
-        requestAnimationFrame(
-            () => animateVanish(ref.current, callback)
-        );
+                state.rowData.delete(id);
+                return {
+                    rowData: state.rowData,
+                };
+            });
+        };
+        requestAnimationFrame(() => animateVanish(ref.current, callback));
     }
 
     changeQuantity(id, newValue) {
@@ -70,18 +65,28 @@ class CartPage extends Component {
     render() {
         return (
             <CartPageColumn rowData={this.state.rowData}>
-                {Array.from(this.state.rowData.values()).map((row) => {
-                    return (
-                        <CartPageRow
-                            data={row}
-                            key={row.id}
-                            removeMe={(ref) => this.removeRow(row.id, ref)}
-                            changeQuantity={(newValue) =>
-                                this.changeQuantity(row.id, newValue)
-                            }
-                        />
-                    );
-                })}
+                {this.state.rowData.size == 0 ? (
+                    <div className="row">
+                        <div className="col-4"></div>
+                        <div className="my-4 text-center p-5 fs-5">
+                            Your shopping cart is empty.
+                        </div>
+                        <div className="col-4"></div>
+                    </div>
+                ) : (
+                    Array.from(this.state.rowData.values()).map((row) => {
+                        return (
+                            <CartPageRow
+                                data={row}
+                                key={row.id}
+                                removeMe={(ref) => this.removeRow(row.id, ref)}
+                                changeQuantity={(newValue) =>
+                                    this.changeQuantity(row.id, newValue)
+                                }
+                            />
+                        );
+                    })
+                )}
             </CartPageColumn>
         );
     }

@@ -124,3 +124,7 @@ span.cart-label {
 .CartPage-row {
     height: 100%;
 }
+
+#CartPage-root {
+    min-height: 33vh;
+}
