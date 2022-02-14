@@ -35,6 +35,10 @@ export function animateVanish(vanisher, callback) {
         callback();
         return;
     }
-    vanisher.setAttribute("style", `opacity: ${opacity - 0.05 * delta}`);
+    let height = window
+        .getComputedStyle(vanisher)
+        .getPropertyValue("height");
+    height = Number(height.substring(0, height.length - 2));
+    vanisher.setAttribute("style", `opacity: ${opacity - 0.1 * delta}; height: ${height - (height * .25) * delta}px`);
     requestAnimationFrame(() => animateVanish(vanisher, callback));
 }
