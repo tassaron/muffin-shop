@@ -5,7 +5,7 @@
 
 <ul>
 {% for product in products %}
-    <li><a href="{{ url_for('shop.product_description', product_id=product.id) }}">{{ product.name }}</a>
+    <li><a href="{{ url_for('shop.product_description', title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) }}">{{ product.name }}</a>
     <a href="{{ url_for('inventory.edit_product', id=product.id) }}">edit</a>
     <a href="{{ url_for('inventory.delete_product', id=product.id) }}">delete</a></li>
 {% endfor %}

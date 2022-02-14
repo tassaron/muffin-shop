@@ -36,7 +36,7 @@
         No products are in stock! Check back later :)
         {% endif %}
         {% for category in product_categories %}
-        {% set category_url = url_for("shop.shop_category_index", category_id=category.id) %}
+        {% set category_url = url_for("shop.shop_category_index", title=category.name|lower|replace(" ","")|urlencode, category_id=category.id|obfuscate) %}
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
                 <a href="{{ category_url }}">

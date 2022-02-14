@@ -16,6 +16,21 @@ blueprint = Blueprint(
 )
 
 
+@blueprint.app_template_filter("obfuscate")
+def obfuscate_number(x):
+    return int(
+        (x / 2) * 9038 if ((x / 7) * 7890 if x % 7 == 0 else x % 2) == 0 else x * 3770
+    )
+
+
+def deobfuscate_number(x):
+    return int(
+        (x / 9038) * 2
+        if ((x / 7890) * 7 if x % 7890 == 0 else x % 9038) == 0
+        else x / 3770
+    )
+
+
 @blueprint.app_context_processor
 def inject_cart_vars():
     return {
@@ -45,10 +60,10 @@ def index():
     )
 
 
-@blueprint.route("/category/<int:category_id>")
-def shop_category_index(category_id):
+@blueprint.route("/<title>/category/<int:category_id>")
+def shop_category_index(title, category_id):
     products = Product.query.filter(
-        Product.category_id == category_id, Product.stock > 0
+        Product.category_id == deobfuscate_number(category_id), Product.stock > 0
     ).all()
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
@@ -60,6 +75,7 @@ def shop_category_index(category_id):
 
 @blueprint.route("/<title>/<int:product_id>")
 def product_description(title, product_id):
+    product_id = deobfuscate_number(product_id)
     product = Product.query.filter(
         Product.id == product_id, Product.stock > 0
     ).first_or_404()
