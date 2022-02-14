@@ -7,7 +7,7 @@ import React, { Component } from "react";
 class CartPageButtons extends Component {
     render() {
         return (
-            <div class="btn-group" role="group" aria-label="quantity in cart">
+            <div className="btn-group" role="group" aria-label="quantity in cart">
                 <button
                     type="button"
                     onClick={() => {
