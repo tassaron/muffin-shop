@@ -49,6 +49,24 @@ class CartPage extends Component {
                 };
             });
         };
+        fetch("/cart/del", {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ id: id }),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json",
+            }),
+        }).then(function (response) {
+            response.json().then(function (data) {
+                if (data["success"] === true) {
+                    const cartNumberNode =
+                        document.getElementById("cart-number");
+                    cartNumberNode.innerText =
+                        Number(cartNumberNode.innerText) - 1;
+                }
+            });
+        });
         requestAnimationFrame(() => animateVanish(ref.current, callback));
     }
 
