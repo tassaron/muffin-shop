@@ -1,3 +1,7 @@
+body {
+    font-family: "Roboto Serif", sans-serif;
+}
+
 .bg-fixed {
     height: auto;
     background-size: cover;
@@ -32,7 +36,7 @@ div.product-card {
 }
 
 .site-name-header span {
-    font-family: serif;
+    font-family: "Noto Serif", serif;
     font-weight: 700;
 }
 
@@ -61,7 +65,8 @@ span.cart-label {
 
 .slogan-text {
     font-size: x-large;
-    font-family: serif;
+    font-family: "Noto Serif", serif;
+    text-shadow: 0 0 0.5rem #ccc;
 }
 
 .map-bg {
@@ -72,7 +77,15 @@ span.cart-label {
 
 .product-title {
     font-variant: small-caps;
-    font-family: serif;
+    font-family: "Noto Serif", serif;
+    line-height: 1.7;
+    letter-spacing: 0.075rem;
+    text-shadow: 0 0 0.5rem #ccc;
+}
+
+.product-title a {
+    text-decoration: none;
+    color: #222;
 }
 
 #ProductPage-slides {
@@ -148,4 +161,8 @@ span.cart-label {
 .btn-next {
     background-color: #bdc8ff;
     border: #9aacfc 2px solid;
+}
+
+.nav-link {
+    font-family: "Roboto", "Ubuntu", "PT Sans", "Tahoma", sans-serif;
 }
