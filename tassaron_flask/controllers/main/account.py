@@ -82,12 +82,7 @@ def login():
 
 @blueprint.route("/reset_password", methods=["GET", "POST"])
 def reset_password():
-    if flask_login.current_user.is_authenticated:
-        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
-
-    form = RequestPasswordResetForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+    def do_reset(user):
         try:
             result = send_password_reset_email(user)
             flash("An email was sent with instructions to reset your password", "info")
@@ -102,6 +97,15 @@ def reset_password():
                 "Your email address isn't verified so the email couldn't be sent",
                 "warning",
             )
+
+    if flask_login.current_user.is_authenticated:
+        do_reset(flask_login.current_user)
+        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
+
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        do_reset(user)
     return render_template("reset_password.html", form=form)
 
 
