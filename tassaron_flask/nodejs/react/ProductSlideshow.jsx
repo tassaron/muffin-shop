@@ -30,7 +30,7 @@ class ProductSlideshow extends Component {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: `${i < 2 ? "left" : "center"} bottom`,
-                height: "400px",
+                height: "300px",
             });
         }
 
