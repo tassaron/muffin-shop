@@ -10,7 +10,13 @@
     {% include 'js_required.html' %}
     <div class="row">
         {% if products|length == 0 %}
-        No products are in stock! Check back later :)
+        <div class="row" style="min-height: 33vh">
+            <div class="col-4"></div>
+            <div class="my-4 text-center p-5 fs-5">
+                This product is currently out of stock.
+            </div>
+            <div class="col-4"></div>
+        </div>
         {% endif %}
         {% for product in products %}
         {% set product_url = url_for("shop.product_description", title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) %}
