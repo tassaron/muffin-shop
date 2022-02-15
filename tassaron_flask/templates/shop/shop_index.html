@@ -33,7 +33,13 @@
 <div class="container pt-2">
     <div class="row justify-content-center">
         {% if product_categories|length == 0 %}
-        No products are in stock! Check back later :)
+        <div class="row" style="min-height: 33vh">
+            <div class="col-4"></div>
+            <div class="my-4 text-center p-5 fs-5">
+                The shop is currently out of stock.
+            </div>
+            <div class="col-4"></div>
+        </div>
         {% endif %}
         {% for category in product_categories %}
         {% set category_url = url_for("shop.shop_category_index", title=category.name|lower|replace(" ","")|urlencode, category_id=category.id|obfuscate) %}
