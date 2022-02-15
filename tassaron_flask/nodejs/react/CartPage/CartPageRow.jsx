@@ -41,7 +41,7 @@ class CartPageRow extends Component {
                     <button
                         type="button"
                         onClick={() => this.props.removeMe(this.node)}
-                        className="btn-default"
+                        className="btn-default btn-round shadow-sm p-1"
                     >
                         🗑️
                     </button>

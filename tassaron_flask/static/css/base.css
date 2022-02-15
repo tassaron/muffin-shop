@@ -123,8 +123,28 @@ span.cart-label {
 
 .CartPage-row {
     height: 100%;
+    line-height: 1.7;
 }
 
 #CartPage-root {
     min-height: 33vh;
+}
+
+.btn-default {
+    border: #aaa 2px solid;
+    min-width: 2.4rem;
+}
+
+.btn-secondary {
+    border: #666 2px solid;
+}
+
+.btn-round {
+    border-radius: 33%;
+    padding: 1rem;
+}
+
+.btn-next {
+    background-color: #bdc8ff;
+    border: #9aacfc 2px solid;
 }

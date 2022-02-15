@@ -7,7 +7,11 @@ import React, { Component } from "react";
 class CartPageButtons extends Component {
     render() {
         return (
-            <div className="btn-group" role="group" aria-label="quantity in cart">
+            <div
+                className="btn-group"
+                role="group"
+                aria-label="quantity in cart"
+            >
                 <button
                     type="button"
                     onClick={() => {
@@ -16,8 +20,8 @@ class CartPageButtons extends Component {
                     }}
                     className={
                         this.props.quantity > 0
-                            ? "CartPage-quantity-down btn btn-secondary p-3"
-                            : "CartPage-quantity-down btn btn-secondary p-3 btn-disabled"
+                            ? "CartPage-quantity-down btn btn-secondary shadow-sm p-3"
+                            : "CartPage-quantity-down btn btn-secondary shadow-sm p-3 btn-disabled"
                     }
                 >
                     -

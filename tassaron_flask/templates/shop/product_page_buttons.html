@@ -1,16 +1,16 @@
 <div class="col-5">
-    <div class="ProductPage-buttons btn-group" role="group" aria-label="product quantity">
+    <div class="ProductPage-buttons">
         <div class="d-none"><span class="ProductPage-stock">{{ product.stock }}</span> in stock</div>
         <div class="btn-group" role="group" aria-label="product quantity">
-            <button type="button" class="ProductPage-quantity-down btn btn-secondary p-3">-</button>
+            <button type="button" aria-label="decrease {{product.name|lower}}" class="ProductPage-quantity-down btn btn-secondary p-3 shadow-sm">-</button>
             <div class="ProductPage-quantity p-3 text-dark" data-product-id="{{product.id}}">{{product.cart_quantity}}</div>
-            <button type="button" class="ProductPage-quantity-up btn btn-secondary p-3">+</button>
+            <button type="button" aria-label="increase {{product.name|lower}}" class="ProductPage-quantity-up btn btn-secondary p-3 shadow-sm">+</button>
         </div>
     </div>
 </div>
 <div class="col-2"></div>
 <div class="col-5">
-    <button type="button" class="ProductPage-cart-btn-{{product.id}} btn btn-dark p-3 text-white" data-product-id="{{product.id}}">
+    <button type="button" aria-label="add {{product.name|lower}} to cart" class="ProductPage-cart-btn-{{product.id}} btn btn-dark p-3 text-white" data-product-id="{{product.id}}">
         <img src={{url_for('static', filename='img/cart_white.png')}} id="cart-icon">
         Add to Cart
     </button>
