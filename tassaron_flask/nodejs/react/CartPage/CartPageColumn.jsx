@@ -1,6 +1,27 @@
+/* Child of CartPage, parent of CartPageRows.
+ * Handles the Total Price and Submit buttons
+ */
 import { Component } from "react";
 
 class CartPageColumn extends Component {
+    submitCart() {
+        fetch("/cart/submit", {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify(Array.from(this.props.rowData.values())),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json",
+            }),
+        }).then(function (response) {
+            response.json().then(function (data) {
+                if (data["success"] === true) {
+                    console.log(data);
+                }
+            });
+        });
+    }
+
     render() {
         return (
             <>
@@ -19,8 +40,7 @@ class CartPageColumn extends Component {
                             <div className="col-8 d-flex justify-content-end">
                                 <button
                                     onClick={() => {
-                                        window.location.href =
-                                            "https://tassaron.com";
+                                        this.submitCart();
                                     }}
                                     type="button"
                                     className="btn-default btn-next btn-round shadow-sm"

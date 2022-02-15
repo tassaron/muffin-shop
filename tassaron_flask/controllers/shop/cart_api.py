@@ -2,7 +2,7 @@
 POST to these Cart endpoints in order to manipulate the Cart Session Cookie
 Each endpoint returns a response of success or not, to update the client-side record
 """
-from flask import Blueprint, request, session, current_app
+from flask import Blueprint, request, session, current_app, url_for
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.models.shop.inventory_models import Product
 
@@ -33,7 +33,7 @@ def add_product_to_cart():
             session["cart"][id] = new_value
         current_app.logger.debug(session["cart"])
         return {"success": True, "count": len(session["cart"]), "change": change}
-        
+
     except Exception as e:
         current_app.logger.info("Invalid cart request: %s" % e)
         return {"success": False}, 400
@@ -49,8 +49,53 @@ def remove_product_from_cart():
 
         session["cart"].pop(id)
         return {"success": True}
-        
+
     except Exception as e:
         current_app.logger.info("Invalid cart request: %s" % e)
         return {"success": False}, 400
 
+
+@blueprint.route("/submit", methods=["POST"])
+def submit_cart():
+    products = request.get_json()
+    products = list(filter(lambda p: p["quantity"] > 0, products))
+    db_products = [
+        Product.query.filter(
+            Product.id == product["id"], Product.stock >= product["quantity"]
+        ).first()
+        for product in products
+    ]
+    # TODO: check for stock >0 but <quantity, or nonexistent products
+
+    extras = [
+        (
+            product.description,
+            [
+                url_for("static", filename=p, _external=True)
+                for p in product.image.split(",")
+            ],
+        )
+        for product in db_products
+    ]
+
+    # Stripe API https://stripe.com/docs/api/checkout/sessions
+    line_items = (
+        [
+            {
+                "price_data": {
+                    "currency": "cad",
+                    "product_data": {
+                        "name": product["name"],
+                        "description": extra[0],
+                        "images": extra[1],
+                    },
+                    "unit_amount": int(product["price"] * 100),
+                },
+                "quantity": product["quantity"],
+                "description": extra[0],
+            }
+        ]
+        for product, extra in zip(products, extras)
+    )
+    print(list(line_items))
+    return {"success": True}

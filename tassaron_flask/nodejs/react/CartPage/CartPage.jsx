@@ -1,3 +1,7 @@
+/* This component is the root of the Cart View. It gets the initial cart data
+ * from the HTML. It owns all state and the methods to change state are passed as props
+ * to the CartPageColumn and its children, the CartPageRows.
+ */
 import React, { Component } from "react";
 import CartPageColumn from "./CartPageColumn";
 import CartPageRow from "./CartPageRow";
@@ -83,6 +87,7 @@ class CartPage extends Component {
     render() {
         return (
             <CartPageColumn
+                rowData={this.state.rowData}
                 totalPrice={Array.from(this.state.rowData.values()).reduce(
                     (prev, curr) => prev + curr.price * curr.quantity,
                     0
