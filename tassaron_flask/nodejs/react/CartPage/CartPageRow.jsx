@@ -24,7 +24,7 @@ class CartPageRow extends Component {
                         src={this.props.data.image}
                     />
                 </div>
-                <div className="CartPage-price col-2 pt-3">
+                <div className="CartPage-price d-flex justify-content-center col-2 pt-3">
                     $
                     {(this.props.data.price * this.props.data.quantity).toFixed(
                         2
@@ -38,12 +38,13 @@ class CartPageRow extends Component {
                     />
                 </div>
                 <div className="col-2">
-                    <a
+                    <button
+                        type="button"
                         onClick={() => this.props.removeMe(this.node)}
-                        className="btn"
+                        className="btn-default"
                     >
                         🗑️
-                    </a>
+                    </button>
                 </div>
             </div>
         );
