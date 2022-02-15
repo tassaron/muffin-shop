@@ -82,7 +82,12 @@ class CartPage extends Component {
 
     render() {
         return (
-            <CartPageColumn rowData={this.state.rowData}>
+            <CartPageColumn
+                totalPrice={Array.from(this.state.rowData.values()).reduce(
+                    (prev, curr) => prev + curr.price * curr.quantity,
+                    0
+                )}
+            >
                 {this.state.rowData.size == 0 ? (
                     <div className="row">
                         <div className="col-4"></div>

@@ -17,7 +17,7 @@
     <div id="CartPage-root"></div> <!-- Column -->
     {% for item, quantity in cart %}
     <div class="CartPage-row row" data-product-id="{{ item.id }}">
-        <div class="CartPage-name col-12 text-center text-uppercase product-title">{{ item.name }}</div>
+        <div class="CartPage-name col-12 text-center product-title">{{ item.name }}</div>
         <div class="CartPage-image col-5">
             <img width="fit-content" class="mr-2 img-fluid rounded shadow-sm" alt="{{ item.name }}"
                 src="{{ url_for('static', filename=item.image) }}">

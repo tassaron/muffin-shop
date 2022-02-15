@@ -11,10 +11,10 @@ class CartPageRow extends Component {
         return (
             <div
                 ref={this.node}
-                className="CartPage-row row border-top py-2"
+                className="CartPage-row row border-top d-flex align-items-center justify-content-center py-2"
                 data-product-id={this.props.data.id}
             >
-                <div className="CartPage-name col-12 text-center text-uppercase product-title">
+                <div className="CartPage-name col-12 text-center fs-3 product-title">
                     {this.props.data.name}
                 </div>
                 <div className="CartPage-image col-md-5 col-3">
@@ -24,8 +24,11 @@ class CartPageRow extends Component {
                         src={this.props.data.image}
                     />
                 </div>
-                <div className="CartPage-price col-2">
-                    ${this.props.data.price.toFixed(2)}
+                <div className="CartPage-price col-2 pt-3">
+                    $
+                    {(this.props.data.price * this.props.data.quantity).toFixed(
+                        2
+                    )}
                 </div>
                 <div className="CartPage-quantity col-md-3 col-5">
                     <CartPageButtons
