@@ -6,6 +6,7 @@
 *.html text
 *.css text
 *.js text
+*.jsx text
 *.md text
 *.in text
 *.cfg text
@@ -13,10 +14,17 @@
 *.sh text
 *.mako text
 *.json text
+*.svg text
+*.xml text
+*.webmanifest text
+*.example text
 Dockerfile text
 LICENSE text
 setup/* text
+.gitattributes text
+.gitignore text
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary
+*.ico binary
