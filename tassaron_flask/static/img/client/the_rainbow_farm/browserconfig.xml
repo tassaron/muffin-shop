@@ -3,7 +3,7 @@
     <msapplication>
         <tile>
             <square150x150logo src="/static/img/client/the_rainbow_farm/mstile-150x150.png"/>
-            <TileColor>#bdc6cf</TileColor>
+            <TileColor>#bdc8ff</TileColor>
         </tile>
     </msapplication>
 </browserconfig>
