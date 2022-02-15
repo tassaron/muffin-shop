@@ -44,13 +44,13 @@
         {% for category in product_categories %}
         {% set category_url = url_for("shop.shop_category_index", title=category.name|lower|replace(" ","")|urlencode, category_id=category.id|obfuscate) %}
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 product-card rounded shadow-sm">
                 <a href="{{ category_url }}">
                     <img class="card-img-top" src="{{ url_for('static', filename=category.image) }}"
                         alt="{{ category.name }}">
                 </a>
                 <div class="card-body">
-                    <h4 class="card-title">
+                    <h4 class="card-title product-title text-center fs-3">
                         <a href="{{ category_url }}">{{category.name}}</a>
                     </h4>
                 </div>
