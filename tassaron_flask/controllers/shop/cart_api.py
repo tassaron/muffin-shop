@@ -4,6 +4,7 @@ Each endpoint returns a response of success or not, to update the client-side re
 """
 from flask import Blueprint, request, session, current_app, url_for
 from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.helpers.shop.payment import PaymentAdapter, PaymentSession
 from tassaron_flask.models.shop.inventory_models import Product
 
 
@@ -78,24 +79,10 @@ def submit_cart():
         for product in db_products
     ]
 
-    # Stripe API https://stripe.com/docs/api/checkout/sessions
-    line_items = (
-        [
-            {
-                "price_data": {
-                    "currency": "cad",
-                    "product_data": {
-                        "name": product["name"],
-                        "description": extra[0],
-                        "images": extra[1],
-                    },
-                    "unit_amount": int(product["price"] * 100),
-                },
-                "quantity": product["quantity"],
-                "description": extra[0],
-            }
-        ]
-        for product, extra in zip(products, extras)
-    )
-    print(list(line_items))
+    for product, extra in zip(products, extras):
+        product["description"] = extra[0]
+        product["images"] = extra[1]
+
+    products = PaymentAdapter(products).convert()
+    print(list(products))
     return {"success": True}
