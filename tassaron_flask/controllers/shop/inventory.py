@@ -59,6 +59,7 @@ def edit_product(id):
         product.image = form.image.data
         product.stock = form.stock.data
         product.category_id = form.category_id.data
+        product.payment_id = None
         db.session.add(product)
         db.session.commit()
         flash(f"Updated {product.name}!", "success")
