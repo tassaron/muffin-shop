@@ -26,7 +26,7 @@ class CartPageColumn extends Component {
         }).then(function (response) {
             response.json().then(function (data) {
                 if (data["success"] === true) {
-                    console.log(data);
+                    window.location.href = data["session_url"];
                 }
             });
         });

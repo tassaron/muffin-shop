@@ -29,7 +29,8 @@
         "blueprints": [
             "inventory:blueprint",
             "shop:blueprint",
-            "cart_api:blueprint"
+            "cart_api:blueprint",
+            "checkout:blueprint"
         ],
         "root": "shop",
         "index": "shop.index"

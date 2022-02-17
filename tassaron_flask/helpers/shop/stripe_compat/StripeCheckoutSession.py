@@ -1,3 +1,6 @@
+import stripe
+
+
 class StripeCheckoutSession:
     """
     Start a Stripe Checkout session.
@@ -10,5 +13,11 @@ class StripeCheckoutSession:
     Stripe Documentation: https://stripe.com/docs/api/checkout/sessions
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, success_url, cancel_url, line_items, mode):
+        self.session = stripe.checkout.Session.create(
+            success_url="%s?session_id={CHECKOUT_SESSION_ID}" % success_url,
+            cancel_url=cancel_url,
+            line_items=line_items,
+            mode=mode,
+            payment_method_types=["card"],
+        )

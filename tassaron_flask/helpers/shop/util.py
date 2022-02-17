@@ -15,6 +15,7 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
         ).first()
         for product_id, quantity in products.items()
     ]
+    products = {str(key): value for key, value in products.items()}
 
     return [
         {
@@ -26,7 +27,7 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
                 url_for("static", filename=p, _external=True)
                 for p in db_product.image.split(",")
             ],
-            "quantity": products.get(int(db_product.id), 0),
+            "quantity": products[str(db_product.id)],
             "price": db_product.price,
         }
         for db_product in db_products
