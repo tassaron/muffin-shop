@@ -12,6 +12,7 @@ def client():
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
+    app.config["SERVER_NAME"] = "0.0.0.0:5000"
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -42,7 +43,7 @@ def test_add_to_cart_api_success(client):
     resp = client.post(
         "/cart/add",
         data=json.dumps({"id": 1, "quantity": 1}),
-        content_type='application/json',
+        content_type="application/json",
     )
     assert resp.status_code == 200
     data = json.loads(resp.get_data(as_text=True))
@@ -53,7 +54,7 @@ def test_add_to_cart_api_nonexistent(client):
     resp = client.post(
         "/cart/add",
         data=json.dumps({"id": 2, "quantity": 1}),
-        content_type='application/json',
+        content_type="application/json",
     )
     assert resp.status_code == 200
     data = json.loads(resp.get_data(as_text=True))
@@ -74,7 +75,7 @@ def test_add_to_cart_api_failed_outofstock(client):
     resp = client.post(
         "/cart/add",
         data=json.dumps({"id": 2, "quantity": 1}),
-        content_type='application/json',
+        content_type="application/json",
     )
     assert resp.status_code == 200
     data = json.loads(resp.get_data(as_text=True))
@@ -85,7 +86,7 @@ def test_add_to_cart_api_baddata(client):
     resp = client.post(
         "/cart/add",
         data=json.dumps({"id": "a", "quantity": 1}),
-        content_type='application/json',
+        content_type="application/json",
     )
     assert resp.status_code == 400
     data = json.loads(resp.get_data(as_text=True))
@@ -93,7 +94,7 @@ def test_add_to_cart_api_baddata(client):
     resp = client.post(
         "/cart/add",
         data=json.dumps({"wrong": 1}),
-        content_type='application/json',
+        content_type="application/json",
     )
     assert resp.status_code == 400
     data = json.loads(resp.get_data(as_text=True))
@@ -106,7 +107,7 @@ def test_remove_from_cart_api_success(client):
         resp = client.post(
             "/cart/del",
             data=json.dumps({"id": 1}),
-            content_type='application/json',
+            content_type="application/json",
         )
         assert resp.status_code == 200
         assert 1 not in session["cart"]
@@ -118,7 +119,7 @@ def test_remove_from_cart_api_fail(client):
         resp = client.post(
             "/cart/del",
             data=json.dumps({"id": 2}),
-            content_type='application/json',
+            content_type="application/json",
         )
         assert resp.status_code == 200
         assert 1 in session["cart"]
@@ -127,7 +128,7 @@ def test_remove_from_cart_api_fail(client):
 def test_remove_from_cart_api_baddata(client):
     resp = client.post(
         "/cart/del",
-        data=json.dumps({"id":"a"}),
-        content_type='application/json',
+        data=json.dumps({"id": "a"}),
+        content_type="application/json",
     )
     assert resp.status_code == 400
