@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 from os import path
+import stripe
 
 
 try:
@@ -33,13 +34,14 @@ setup(
         "python-dotenv",
         "requests",
         "huey",
+        "stripe",
     ],
-    url="https://github.com/tassaron/flask-template",
+    url="https://github.com/tassaron/flask-shop",
     license="MIT",
-    description="my template for an advanced Flask app",
+    description="a reuseable Flask template with shop module",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords="flask uwsgi modular template",
+    keywords="flask uwsgi modular template shop",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
