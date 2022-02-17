@@ -4,11 +4,21 @@
 import { Component } from "react";
 
 class CartPageColumn extends Component {
+    rowData_to_CartData() {
+        const cartData = {};
+
+        for (let row of this.props.rowData.values()) {
+            cartData[row.id] = row.quantity;
+        }
+
+        return cartData;
+    }
+
     submitCart() {
         fetch("/cart/submit", {
             method: "POST",
             credentials: "same-origin",
-            body: JSON.stringify(Array.from(this.props.rowData.values())),
+            body: JSON.stringify(this.rowData_to_CartData()),
             cache: "no-cache",
             headers: new Headers({
                 "content-type": "application/json",
