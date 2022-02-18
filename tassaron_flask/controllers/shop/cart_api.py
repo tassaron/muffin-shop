@@ -2,7 +2,7 @@
 POST to these Cart endpoints in order to manipulate the Cart Session Cookie
 Each endpoint returns a response of success or not, to update the client-side record
 """
-from flask import Blueprint, request, session, current_app, url_for
+from flask import Blueprint, request, session, current_app, url_for, session
 from tassaron_flask.helpers.main.plugins import db
 from tassaron_flask.helpers.shop.payment import PaymentAdapter
 from tassaron_flask.helpers.shop.util import (
@@ -64,7 +64,7 @@ def remove_product_from_cart():
 def submit_cart():
     products = request.get_json()
     products = convert_raw_cart_data_to_products(products)
-    products, changed_quantities = verify_stock_before_checkout(products)
+    changed_quantities = verify_stock_before_checkout(products)
     if not products or changed_quantities:
         # Either the cart was empty or stock changed
         # Alert the customer so they can decide how to proceed
@@ -74,14 +74,17 @@ def submit_cart():
         }
 
     # Start a session with the payment processor
-    session = PaymentAdapter(products).start_session(
+    payment_session = PaymentAdapter(products).start_session(
         url_for("checkout.successful_checkout", _external=True),
         url_for("checkout.cancel_checkout", _external=True),
         "payment",
     )
+    session["transaction_id"] = payment_session.id
+    session["transaction_cart"] = dict(session["cart"])
+    session["cart"] = {}
 
     # Redirect the client to complete the checkout session
     return {
         "success": True,
-        "session_url": session.url,
+        "session_url": payment_session.url,
     }

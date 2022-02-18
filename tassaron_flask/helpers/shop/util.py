@@ -10,10 +10,7 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
     with full product info from the database
     """
     db_products = [
-        Product.query.filter(
-            Product.id == product_id, Product.stock >= quantity
-        ).first()
-        for product_id, quantity in products.items()
+        Product.query.get(product_id) for product_id, quantity in products.items()
     ]
     products = {str(key): value for key, value in products.items()}
 
@@ -29,14 +26,16 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
             ],
             "quantity": products[str(db_product.id)],
             "price": db_product.price,
+            "stock": db_product.stock,
         }
         for db_product in db_products
         if products[str(db_product.id)] > 0
     ]
 
 
-def verify_stock_before_checkout(products: List[dict]) -> Tuple[List[dict], dict]:
-    changed_quantities = {1: 1}
-    # TODO: check if stock has changed
-
-    return products, changed_quantities
+def verify_stock_before_checkout(products: List[dict]) -> dict:
+    """Returns a dictionary of products whose quantities are higher than the inventory allows"""
+    return {
+        product["id"]: product["stock"]
+        for product in filter(lambda prod: prod["stock"] < prod["quantity"], products)
+    }

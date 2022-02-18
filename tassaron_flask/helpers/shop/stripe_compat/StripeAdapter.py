@@ -26,7 +26,7 @@ class StripeAdapter:
         self.products = convert_to_line_items(products)
 
     def start_session(
-        self, success_url: str, cancel_url: str, line_items: List[dict], mode: str
+        self, success_url: str, cancel_url: str, mode: str
     ) -> stripe.checkout.Session:
         """
         Start a Stripe Checkout session.
@@ -35,7 +35,7 @@ class StripeAdapter:
         self.session = stripe.checkout.Session.create(
             success_url="%s?session_id={CHECKOUT_SESSION_ID}" % success_url,
             cancel_url=cancel_url,
-            line_items=line_items,
+            line_items=self.products,
             mode=mode,
             payment_method_types=["card"],
         )
