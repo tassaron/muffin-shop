@@ -48,6 +48,7 @@ def successful_checkout():
         )
         db.session.rollback()
     del session["transaction_cart"]
+    del session["transaction_expiration"]
     return render_template(
         "success.html",
         products=[(product, product["images"][0]) for product in products],
@@ -56,5 +57,23 @@ def successful_checkout():
 
 @blueprint.route("/cancel")
 def cancel_checkout():
-    # we could restore the abandoned cart or something else here
+    try:
+        session_id = request.args["session_id"]
+        transaction_id = session["transaction_id"]
+    except KeyError:
+        current_app.logger.info("no transaction session")
+        return render_template("cancel.html")
+
+    if session_id != transaction_id:
+        current_app.logger.error("broken transaction session")
+        abort(400)
+
+    try:
+        del session["transaction_id"]
+        session["cart"] = dict(session["transaction_cart"])
+        del session["transaction_cart"]
+        del session["transaction_expiration"]
+    except KeyError:
+        current_app.logger.error("Failed to cancel a nonexistent payment session")
+
     return render_template("cancel.html")

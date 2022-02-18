@@ -5,6 +5,7 @@ from tassaron_flask.models.main.models import ShippingAddress
 from tassaron_flask.decorators import hidden_route
 from tassaron_flask.models.shop.inventory_models import Product, ProductCategory
 import logging
+import time
 
 
 LOG = logging.getLogger(__package__)
@@ -44,6 +45,18 @@ def create_cart_session():
         session["cart"] = {
             # int product_id: int quantity
         }
+
+    # Delete any in-progress transaction that expired due to timeout
+    if (
+        "transaction_expiration" in session
+        and session["transaction_expiration"] < time.time()
+    ):
+        try:
+            del session["transaction_id"]
+            del session["transaction_cart"]
+            del session["transaction_expiration"]
+        except KeyError:
+            pass
 
 
 @blueprint.app_template_filter("currency")

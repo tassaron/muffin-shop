@@ -35,7 +35,7 @@ class StripeAdapter:
         """
         self.session = stripe.checkout.Session.create(
             success_url="%s?session_id={CHECKOUT_SESSION_ID}" % success_url,
-            cancel_url=cancel_url,
+            cancel_url="%s?session_id={CHECKOUT_SESSION_ID}" % cancel_url,
             line_items=self.products,
             mode=mode,
             expires_at=int(time.time() + 3600),

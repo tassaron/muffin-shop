@@ -10,6 +10,7 @@ from tassaron_flask.helpers.shop.util import (
     verify_stock_before_checkout,
 )
 from tassaron_flask.models.shop.inventory_models import Product
+import time
 
 
 blueprint = Blueprint("cart", __name__)
@@ -62,6 +63,15 @@ def remove_product_from_cart():
 
 @blueprint.route("/submit", methods=["POST"])
 def submit_cart():
+    if "transaction_id" in session:
+        current_app.logger.info(
+            "Failed cart submission because a transaction is still in progress"
+        )
+        return {
+            "success": False,
+            "changed_quantities": {},
+        }
+
     products = request.get_json()
     products = convert_raw_cart_data_to_products(products)
     changed_quantities = verify_stock_before_checkout(products)
@@ -80,6 +90,7 @@ def submit_cart():
         "payment",
     )
     session["transaction_id"] = payment_session.id
+    session["transaction_expiration"] = int(time.time() + 3600)
     session["transaction_cart"] = dict(session["cart"])
     session["cart"] = {}
 
