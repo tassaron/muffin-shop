@@ -3,6 +3,7 @@ from flask import current_app
 from tassaron_flask.models.shop.inventory_models import Product
 from tassaron_flask.helpers.main.plugins import db
 from typing import List
+import time
 
 
 class StripeAdapter:
@@ -37,6 +38,7 @@ class StripeAdapter:
             cancel_url=cancel_url,
             line_items=self.products,
             mode=mode,
+            expires_at=int(time.time() + 3600),
             payment_method_types=["card"],
         )
         return self.session
