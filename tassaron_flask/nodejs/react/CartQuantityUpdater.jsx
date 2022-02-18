@@ -39,9 +39,11 @@ class CartQuantityUpdater extends Component {
         // Trigger animation ANIMSPEED milliseconds after node creation
         setTimeout(
             doAnimation,
-            Math.min(
-                Date.now() - (Number(child.dataset.timestamp) + ANIMSPEED),
-                0
+            Math.abs(
+                Math.min(
+                    Date.now() - (Number(child.dataset.timestamp) + ANIMSPEED),
+                    0
+                )
             )
         );
     }
