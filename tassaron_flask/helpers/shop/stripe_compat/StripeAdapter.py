@@ -7,22 +7,14 @@ from typing import List
 
 class StripeAdapter:
     """
-    Turn our data format into Stripe's line_items API.
-
-    To accomplish this we must locate any existing Products or Prices registered on Stripe,
-    or create them if they do not exist already.
-
-    A Stripe Price is an object on Stripe that contains the price of 1 product;
-    the Price object itself contains the Product object.
-    The `line_items` output is a bundling of Prices, Products, and quantities
-    for one specific checkout session.
-
-    Stripe Documentation: https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
+    Should be an abstraction for the Stripe API, although it's currently a pretty leaky abstraction :)
     """
 
     def __init__(self, products: List[dict]):
         if not stripe.api_key:
-            current_app.logger.info("Failed to initialize StripeAdapter (no API key)")
+            current_app.logger.critical(
+                "Failed to initialize StripeAdapter (no API key)"
+            )
             return
 
         # Register/update product/price combos that don't exist on Stripe yet
@@ -30,27 +22,37 @@ class StripeAdapter:
             if not product["payment_id"]:
                 product["payment_id"] = create_or_update_product_on_stripe(product)
 
-        self.line_items = [
-            {
-                "price": product["payment_id"],
-                "quantity": product["quantity"],
-            }
-            for product in products
-        ]
+        # Convert our data format to Stripe's line_items format
+        self.products = convert_to_line_items(products)
 
-    def convert(self):
-        return self.line_items
+    def start_session(
+        self, success_url: str, cancel_url: str, line_items: List[dict], mode: str
+    ) -> stripe.checkout.Session:
+        """
+        Start a Stripe Checkout session.
+        Documentation: https://stripe.com/docs/api/checkout/sessions
+        """
+        self.session = stripe.checkout.Session.create(
+            success_url="%s?session_id={CHECKOUT_SESSION_ID}" % success_url,
+            cancel_url=cancel_url,
+            line_items=line_items,
+            mode=mode,
+            payment_method_types=["card"],
+        )
+        return self.session
 
 
-def create_or_update_product_on_stripe(my_product):
+def create_or_update_product_on_stripe(my_product) -> str:
     """
     Create a Product+Price using Stripe
     https://stripe.com/docs/products-prices/getting-started#import-products-prices
     """
 
-    def create_product():
-        """This function is called first.
-        Throws an exception if Stripe already has this product in their system"""
+    def create_product() -> stripe.Price:
+        """
+        This function is called first.
+        Throws an exception if Stripe already has this product in their system
+        """
         stripe_product = stripe.Product.create(
             id=my_product["id"],
             name=my_product["name"],
@@ -64,9 +66,11 @@ def create_or_update_product_on_stripe(my_product):
         )
         return stripe_price
 
-    def update_product():
-        """If the payment_id is blank but we fail to create the product
-        then it means we need to update the Product, potentially creating a new Price"""
+    def update_product() -> stripe.Price:
+        """
+        If the payment_id is blank but we fail to create the product
+        then it means we need to update the Product, potentially creating a new Price
+        """
         stripe.Product.modify(
             str(my_product["id"]),
             name=my_product["name"],
@@ -105,3 +109,26 @@ def create_or_update_product_on_stripe(my_product):
     db.session.add(db_product)
     db.session.commit()
     return stripe_price.id
+
+
+def convert_to_line_items(my_products: List[dict]) -> List[dict]:
+    """
+    Turn our data format into Stripe's line_items API.
+
+    To accomplish this we must locate any existing Products or Prices registered on Stripe,
+    or create them if they do not exist already.
+
+    A Stripe Price is an object on Stripe that contains the price of 1 product;
+    the Price object itself contains the Product object.
+    The `line_items` output is a bundling of Prices, Products, and quantities
+    for one specific checkout session.
+
+    Documentation: https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
+    """
+    return [
+        {
+            "price": product["payment_id"],
+            "quantity": product["quantity"],
+        }
+        for product in my_products
+    ]

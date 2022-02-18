@@ -14,9 +14,9 @@ def test_payment_adapter_stripe_payment_id(client):
             content_type="application/json",
         )
         data = session["cart"]
-    first_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).convert()
+    first_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).products
     assert first_line_items[0]["quantity"] == 1
-    second_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).convert()
+    second_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).products
     assert first_line_items[0] == second_line_items[0]
     first_payment_id = first_line_items[0]["price"]
 
@@ -27,9 +27,7 @@ def test_payment_adapter_stripe_payment_id(client):
     product.payment_id = None
     db.session.add(product)
     db.session.commit()
-    updated_line_items = StripeAdapter(
-        convert_raw_cart_data_to_products(data)
-    ).convert()
+    updated_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).products
     assert updated_line_items[0]["price"] == first_payment_id
     product = Product.query.get(1)
     assert product.payment_id is not None
@@ -41,7 +39,5 @@ def test_payment_adapter_stripe_payment_id(client):
     product.payment_id = None
     db.session.add(product)
     db.session.commit()
-    updated_line_items = StripeAdapter(
-        convert_raw_cart_data_to_products(data)
-    ).convert()
+    updated_line_items = StripeAdapter(convert_raw_cart_data_to_products(data)).products
     assert updated_line_items[0]["price"] != first_payment_id

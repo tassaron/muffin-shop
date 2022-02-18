@@ -4,7 +4,7 @@ Each endpoint returns a response of success or not, to update the client-side re
 """
 from flask import Blueprint, request, session, current_app, url_for
 from tassaron_flask.helpers.main.plugins import db
-from tassaron_flask.helpers.shop.payment import PaymentAdapter, PaymentSession
+from tassaron_flask.helpers.shop.payment import PaymentAdapter
 from tassaron_flask.helpers.shop.util import (
     convert_raw_cart_data_to_products,
     verify_stock_before_checkout,
@@ -73,17 +73,14 @@ def submit_cart():
             "changed_quantities": changed_quantities,
         }
 
-    # Adapt our data format into the payment processor's
-    products = PaymentAdapter(products).convert()
-    print(list(products))
-    session = PaymentSession(
+    # Start a session with the payment processor
+    session = PaymentAdapter(products).start_session(
         url_for("checkout.successful_checkout", _external=True),
         url_for("checkout.cancel_checkout", _external=True),
-        products,
         "payment",
-    ).session
+    )
 
-    # Begin a session with the payment processor and redirect the client
+    # Redirect the client to complete the checkout session
     return {
         "success": True,
         "session_url": session.url,
