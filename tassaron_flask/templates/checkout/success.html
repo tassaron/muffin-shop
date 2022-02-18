@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Purchase Completed!{% endblock %}
+
+{% block content %}
+
+<div id="CartPage-container" class="container">
+    <div class="row" style="min-height: 15vh">
+        <div class="col-4"></div>
+        <div class="my-4 text-center p-5 fs-5">
+            Thanks for shopping with us!
+        </div>
+        <div class="col-4"></div>
+    </div>
+    {% for item, image in products %}
+    <div class="CartPage-row row" data-product-id="{{ item.id }}">
+        <div class="CartPage-name col-12 text-center product-title">{{ item.name }}</div>
+        <div class="CartPage-image col-8">
+            <img width="fit-content" class="mr-2 img-fluid rounded shadow-sm" alt="{{ item.name }}"
+                src="{{image}}">
+        </div>
+        <div class="CartPage-quantity col-4">
+            You bought {{ item.quantity }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

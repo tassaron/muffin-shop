@@ -31,6 +31,7 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
             "price": db_product.price,
         }
         for db_product in db_products
+        if products[str(db_product.id)] > 0
     ]
 
 
