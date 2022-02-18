@@ -16,7 +16,7 @@ class CartPageButtons extends Component {
                     type="button"
                     onClick={() => {
                         if (this.props.quantity > 0)
-                            this.props.changeQuantity(-1);
+                            this.props.setQuantityRelative(-1);
                     }}
                     className={
                         this.props.quantity > 0
@@ -26,14 +26,20 @@ class CartPageButtons extends Component {
                 >
                     -
                 </button>
-                <div className="CartPage-quantity p-3 text-dark">
-                    {this.props.quantity}
+                <div className="CartPage-quantity p-3 fs-5">
+                    {this.props.changed ? (
+                        <span className="text-danger">
+                            {this.props.quantity}
+                        </span>
+                    ) : (
+                        <span className="text-dark">{this.props.quantity}</span>
+                    )}
                 </div>
                 <button
                     type="button"
                     onClick={() => {
                         if (this.props.quantity < this.props.stock)
-                            this.props.changeQuantity(1);
+                            this.props.setQuantityRelative(1);
                     }}
                     className={
                         this.props.quantity < this.props.stock

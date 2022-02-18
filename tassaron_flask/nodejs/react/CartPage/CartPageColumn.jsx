@@ -23,10 +23,17 @@ class CartPageColumn extends Component {
             headers: new Headers({
                 "content-type": "application/json",
             }),
-        }).then(function (response) {
-            response.json().then(function (data) {
+        }).then((response) => {
+            response.json().then((data) => {
                 if (data["success"] === true) {
                     window.location.href = data["session_url"];
+                } else {
+                    // The product stock must've changed!
+                    for (const [id, quantity] of Object.entries(
+                        data["changed_quantities"]
+                    )) {
+                        this.props.setQuantity(id, quantity);
+                    }
                 }
             });
         });

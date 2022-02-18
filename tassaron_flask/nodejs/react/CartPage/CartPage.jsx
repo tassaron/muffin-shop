@@ -34,6 +34,7 @@ class CartPage extends Component {
                         .getElementsByClassName("CartPage-stock")[0]
                         .innerText.split(" ")[0]
                 ),
+                changed: false,
             });
         }
         Array.from(rowNodes).forEach((node) => {
@@ -74,10 +75,23 @@ class CartPage extends Component {
         requestAnimationFrame(() => animateVanish(ref.current, callback));
     }
 
-    changeQuantity(id, newValue) {
+    setQuantityRelative(id, newValue) {
         this.setState((state, props) => {
             const row = state.rowData.get(id);
             row.quantity = row.quantity + newValue;
+            row.changed = false;
+            return {
+                rowData: state.rowData,
+            };
+        });
+    }
+
+    setQuantity(id, newValue) {
+        this.setState((state, props) => {
+            const row = state.rowData.get(id);
+            row.quantity = newValue;
+            row.stock = newValue;
+            row.changed = true;
             return {
                 rowData: state.rowData,
             };
@@ -92,6 +106,7 @@ class CartPage extends Component {
                     (prev, curr) => prev + curr.price * curr.quantity,
                     0
                 )}
+                setQuantity={(id, newValue) => this.setQuantity(id, newValue)}
             >
                 {this.state.rowData.size == 0 ? (
                     <div className="row">
@@ -108,8 +123,8 @@ class CartPage extends Component {
                                 data={row}
                                 key={row.id}
                                 removeMe={(ref) => this.removeRow(row.id, ref)}
-                                changeQuantity={(newValue) =>
-                                    this.changeQuantity(row.id, newValue)
+                                setQuantityRelative={(newValue) =>
+                                    this.setQuantityRelative(row.id, newValue)
                                 }
                             />
                         );

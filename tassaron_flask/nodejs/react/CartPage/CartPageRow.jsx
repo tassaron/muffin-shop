@@ -34,7 +34,8 @@ class CartPageRow extends Component {
                     <CartPageButtons
                         quantity={this.props.data.quantity}
                         stock={this.props.data.stock}
-                        changeQuantity={this.props.changeQuantity}
+                        changed={this.props.data.changed}
+                        setQuantityRelative={this.props.setQuantityRelative}
                     />
                 </div>
                 <div className="col-2">

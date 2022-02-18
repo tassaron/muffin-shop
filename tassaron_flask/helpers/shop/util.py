@@ -35,8 +35,8 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
     ]
 
 
-def verify_stock_before_checkout(products: List[dict]) -> Tuple[List[dict], List[int]]:
-    changed_quantities = []
+def verify_stock_before_checkout(products: List[dict]) -> Tuple[List[dict], dict]:
+    changed_quantities = {1: 1}
     # TODO: check if stock has changed
 
     return products, changed_quantities
