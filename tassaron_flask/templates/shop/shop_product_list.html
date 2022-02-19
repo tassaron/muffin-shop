@@ -23,7 +23,7 @@
         {% set product_url = url_for("shop.product_description", title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) %}
         {% set quantity = product.cart_quantity %}
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card product-card floating-product-card" style="border-radius: 0px;">
+            <div tabindex="0" class="card product-card floating-product-card" style="border-radius: 0px;">
                 <a href="{{ product_url }}">
                     <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
                         alt="{{ product.name }}">

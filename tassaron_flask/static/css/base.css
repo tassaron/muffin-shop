@@ -42,7 +42,8 @@ div.floating-product-card {
     position: relative;
 }
 
-div.floating-product-card:hover {
+div.floating-product-card:hover,
+div.floating-product-card:focus {
     transform: scale(1.1);
     box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.25);
 }
