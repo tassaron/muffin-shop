@@ -24,15 +24,40 @@ div.portrait-container {
     background: url("/static/img/client/the_rainbow_farm/brianna.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.25);
 }
 
 div.product-card {
-    border-radius: 5rem;
+    border-radius: 1rem;
     background: url("/static/img/client/the_rainbow_farm/flower-bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
-    min-height: 350px;
+    box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+div.floating-product-card {
+    transition: transform 300ms, box-shadow 300ms;
+    position: relative;
+}
+
+div.floating-product-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.25);
+}
+
+.product-title {
+    color: #222;
+}
+
+.product-link {
+    text-decoration: none;
+}
+
+.product-title a {
+    color: #222;
+    text-decoration: none;
 }
 
 .site-name-header span {
@@ -75,17 +100,23 @@ span.cart-label {
     background-repeat: no-repeat;
 }
 
+.product-img div {
+    box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+}
+
+.floating-container {
+    box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
 .product-title {
     font-variant: small-caps;
     font-family: "Noto Serif", serif;
     line-height: 1.7;
     letter-spacing: 0.075rem;
     text-shadow: 0 0 0.5rem #ccc;
-}
-
-.product-title a {
-    text-decoration: none;
-    color: #222;
 }
 
 #ProductPage-slides {

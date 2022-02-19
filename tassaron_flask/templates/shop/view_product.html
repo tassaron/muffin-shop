@@ -8,12 +8,12 @@
     {{ url_for('static', filename=product.image) }}
 </span>
 <div class="row">
-    <div class="col-md-7 col-lg-6" id="ProductPage-slideshow"></div>
+    <h1 class="col-12 product-title mt-sm-0 text-center border-bottom">
+        <span id="ProductPage-name">{{product.name}}</span>
+    </h1>
+    <div class="col-md-7 col-lg-6 product-img mb-3" id="ProductPage-slideshow"></div>
     <div class="col-md-5 col-lg-6">
-        <h1 class="product-title mt-sm-0 text-center border-bottom">
-            <span id="ProductPage-name">{{product.name}}</span>
-        </h1>
-        <div class="card product-card shadow p-3 pb-4 mb-4 bg-body">
+        <div style="min-height:300px;" class="card product-card shadow p-3 pb-4 mb-4 bg-body">
             <div class="card-body p-lg-4 p-md-2">
                 <p class="card-text product-description">
                     {{product.description}}
