@@ -19,7 +19,7 @@ class CartPageRow extends Component {
                 </div>
                 <div className="CartPage-image col-md-5 col-3">
                     <img
-                        className="mr-2 img-fluid rounded shadow-sm"
+                        className="me-2 img-fluid rounded shadow-sm"
                         alt={this.props.data.name}
                         src={this.props.data.image}
                     />
