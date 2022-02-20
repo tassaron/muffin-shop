@@ -11,7 +11,7 @@
 <div class="col-2"></div>
 <div class="col-5">
     <button type="button" aria-label="add {{product.name|lower}} to cart" class="ProductPage-cart-btn-{{product.id}} btn btn-dark p-3 text-white" data-product-id="{{product.id}}">
-        <img src={{url_for('static', filename='img/cart_white.png')}} id="cart-icon">
+        <img src={{url_for('static', filename='img/cart_white.png')}} style="width:32px;height:32px">
         Add to Cart
     </button>
 </div>

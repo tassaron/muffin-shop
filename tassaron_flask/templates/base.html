@@ -31,7 +31,7 @@
 <body style="background: transparent">
     <!-- Navigation -->
     <nav>
-    <div class="container" style="background: linear-gradient(to bottom, rgba(255,0,0,0), whitesmoke);">
+    <div class="container" style="background: linear-gradient(to bottom, rgba(255,255,255,0), whitesmoke);">
         <header class="px-3">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
@@ -44,13 +44,13 @@
                         </span>
                     </a>
             
-                    <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                        <li class="nav-item"><a href="{{ url_for('about_page') }}" class="nav-link{% if selected == 1 %} active" aria-current="page{% endif %}">About</a></li>
-                        <li class="nav-item"><a href="{{ url_for('shop.all_products') }}" class="nav-link{% if selected == 2 %} active" aria-current="page{% endif %}">Shop</a></li>
+                    <ul class="nav nav-pills fs-5 col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                        <li class="nav-item"><a href="{{ url_for('about_page') }}" class="nav-link{% if selected == 1 %} shadow-sm active" aria-current="page{% endif %}">About</a></li>
+                        <li class="nav-item"><a href="{{ url_for('shop.all_products') }}" class="nav-link{% if selected == 2 %} shadow-sm active" aria-current="page{% endif %}">Shop</a></li>
                         {% if not logged_in %}
-                        <li class="nav-item"><a href="{{ url_for('account.register') }}" class="nav-link{% if selected == 3 %} active" aria-current="page{% endif %}">Sign Up</a></li>
+                        <li class="nav-item"><a href="{{ url_for('account.register') }}" class="nav-link{% if selected == 3 %} shadow-sm active" aria-current="page{% endif %}">Sign Up</a></li>
                         {% else %}
-                        <li class="nav-item"><a href="{{ url_for('account.user_dashboard') }}" class="nav-link{% if selected == 3 %} active" aria-current="page{% endif %}">Account</a></li>
+                        <li class="nav-item"><a href="{{ url_for('account.user_dashboard') }}" class="nav-link{% if selected == 3 %} shadow-sm active" aria-current="page{% endif %}">Account</a></li>
                         {% endif %}
                         <li class="nav-item">
                             <a class="nav-link cart-link" href="{{ url_for('shop.view_cart') }}">
