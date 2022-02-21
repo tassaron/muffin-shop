@@ -111,9 +111,6 @@ def reset_password():
 
 @blueprint.route("/reset_password/<token>", methods=["GET", "POST"])
 def change_password(token):
-    if flask_login.current_user.is_authenticated:
-        return redirect(url_for(current_app.config["INDEX_ROUTE"]))
-
     user = User.verify_json_web_token(token)
     if user is None:
         flash("That is an invalid or expired token", "warning")
@@ -133,7 +130,7 @@ def change_password(token):
             db.session.add(old_email)
             db.session.delete(email)
         db.session.commit()
-        flash("Your password has been updated! Now you can log in")
+        flash("Your password has been updated!", "success")
         return redirect(url_for(".login"))
 
     return render_template("change_password.html", form=form)
@@ -211,12 +208,6 @@ def user_dashboard():
     )
 
 
-@blueprint.route("/profile/edit")
-@flask_login.login_required
-def edit_user():
-    return ""
-
-
 @blueprint.route("/logout")
 @flask_login.login_required
 def logout():
@@ -225,6 +216,7 @@ def logout():
         # generate unique session id so the old session isn't overwritten
         session.sid = current_app.session_interface._generate_sid()
     session["cart"] = {}
+    flash("Logged out", "info")
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 
