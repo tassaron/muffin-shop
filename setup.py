@@ -23,6 +23,7 @@ setup(
         "Flask",
         "Bcrypt-Flask",
         "Flask-Login",
+        "Flask-Limiter",
         "Flask-Migrate",
         "Flask-MonitoringDashboard",
         "Flask-Reuploaded",

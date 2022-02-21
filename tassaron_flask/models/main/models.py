@@ -1,11 +1,8 @@
-from tassaron_flask.helpers.main.plugins import plugins
+from tassaron_flask.helpers.main.plugins import db, migrate, bcrypt, login_manager
 import jwt
 import time
 from datetime import datetime
 from flask import current_app
-
-# plugins = create_plugins()
-db, migrate, bcrypt, login_manager = plugins
 
 
 class User(db.Model):

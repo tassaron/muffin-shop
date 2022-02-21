@@ -2,7 +2,7 @@ import os
 import tempfile
 import pytest
 from tassaron_flask.helpers.main.app_factory import create_app, init_app
-from tassaron_flask.helpers.main.plugins import plugins
+from tassaron_flask.helpers.main.plugins import db, migrate, bcrypt, login_manager
 from tassaron_flask.models.main.models import User
 from tassaron_flask.controllers.main.routes import all_base_urls
 
@@ -11,7 +11,6 @@ from tassaron_flask.controllers.main.routes import all_base_urls
 def client():
     global app, db, bcrypt, login_manager
     app = create_app()
-    db, migrate, bcrypt, login_manager = plugins
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False

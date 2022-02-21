@@ -97,9 +97,15 @@ def init_app(app, modules: Optional[dict] = None):
     Give the application some global wrappers for logging and Jinja context
     If `modules` is defined, update the modules dictionary after reading json
     """
-    from tassaron_flask.helpers.main.plugins import db, migrate, bcrypt, login_manager
+    from tassaron_flask.helpers.main.plugins import (
+        db,
+        migrate,
+        bcrypt,
+        login_manager,
+        rate_limiter,
+    )
 
-    for plugin in (db, bcrypt, login_manager):
+    for plugin in (db, bcrypt, login_manager, rate_limiter):
         plugin.init_app(app)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"

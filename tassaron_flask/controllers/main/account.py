@@ -15,7 +15,7 @@ from flask import (
 import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
-from tassaron_flask.helpers.main.plugins import db
+from tassaron_flask.helpers.main.plugins import db, rate_limiter
 from tassaron_flask.forms.main.forms import (
     ShortRegistrationForm,
     LoginForm,
@@ -37,6 +37,7 @@ blueprint = Blueprint(
 
 
 @blueprint.route("/login", methods=["POST", "GET"])
+@rate_limiter.limit("6/minute")
 def login():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))
@@ -56,6 +57,7 @@ def login():
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
                 elif session["cart"] == {}:
+                    # FIXME main module directly manipulates shop module
                     # cart is empty so copy the other session that has a full cart
                     session["cart"] = restored_session_data[1]["cart"]
                 else:
@@ -81,6 +83,7 @@ def login():
 
 
 @blueprint.route("/reset_password", methods=["GET", "POST"])
+@rate_limiter.limit("6/minute")
 def reset_password():
     def do_reset(user):
         try:
@@ -110,6 +113,7 @@ def reset_password():
 
 
 @blueprint.route("/reset_password/<token>", methods=["GET", "POST"])
+@rate_limiter.limit("6/minute")
 def change_password(token):
     user = User.verify_json_web_token(token)
     if user is None:
@@ -215,12 +219,15 @@ def logout():
     if not current_app.config["CLIENT_SESSIONS"]:
         # generate unique session id so the old session isn't overwritten
         session.sid = current_app.session_interface._generate_sid()
+
+    # FIXME main module directly manipulates shop module
     session["cart"] = {}
     flash("Logged out", "info")
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
 
 @blueprint.route("/register", methods=["GET", "POST"])
+@rate_limiter.limit("6/minute")
 def register():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for(current_app.config["INDEX_ROUTE"]))

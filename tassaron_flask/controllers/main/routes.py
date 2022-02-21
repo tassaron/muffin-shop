@@ -8,6 +8,7 @@ from werkzeug.exceptions import (
     RequestEntityTooLarge,
     UnsupportedMediaType,
     InternalServerError,
+    TooManyRequests,
 )
 from werkzeug.routing import BuildError
 from functools import lru_cache
@@ -103,6 +104,12 @@ def too_large_upload_error(error):
 def unsupported_filetype_error(error):
     flash(f"Unsupported file format", "danger")
     return render_template("error.html", title=error.name), 415
+
+
+@main_routes.app_errorhandler(TooManyRequests)
+def too_many_requests_error(error):
+    flash("You're sending too many requests. Come back later.", "danger")
+    return render_template("error.html", title=error.name), 429
 
 
 @main_routes.app_errorhandler(InternalServerError)
