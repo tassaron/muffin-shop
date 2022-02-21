@@ -46,7 +46,7 @@ class User(db.Model):
             user_id = jwt.decode(
                 token,
                 current_app.config["SECRET_KEY"],
-                algorithm=current_app.config.get("JWT_ALGO", "HS256"),
+                algorithms=[current_app.config.get("JWT_ALGO", "HS256")],
             )["user_id"]
         except (KeyError, jwt.exceptions.InvalidTokenError):
             return None
