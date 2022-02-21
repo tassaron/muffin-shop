@@ -1,5 +1,6 @@
 from tassaron_flask.helpers.main.plugins import plugins
-from itsdangerous import TimedJSONWebSignatureSerializer
+import jwt
+import time
 from datetime import datetime
 from flask import current_app
 
@@ -36,17 +37,21 @@ class User(db.Model):
         self.email_verified = False
 
     def create_json_web_token(self):
-        serializer = TimedJSONWebSignatureSerializer(
-            current_app.config["SECRET_KEY"], 1800
+        return jwt.encode(
+            {"exp": int(time.time() + 1800), "user_id": self.id},
+            current_app.config["SECRET_KEY"],
+            algorithm=current_app.config.get("JWT_ALGO", "HS256"),
         )
-        return serializer.dumps({"user_id": self.id}).decode("utf-8")
 
     @staticmethod
     def verify_json_web_token(token):
-        serializer = TimedJSONWebSignatureSerializer(current_app.config["SECRET_KEY"])
         try:
-            user_id = serializer.loads(token)["user_id"]
-        except KeyError:
+            user_id = jwt.decode(
+                token,
+                current_app.config["SECRET_KEY"],
+                algorithm=current_app.config.get("JWT_ALGO", "HS256"),
+            )["user_id"]
+        except (KeyError, jwt.exceptions.InvalidTokenError):
             return None
         return User.query.get(user_id)
 

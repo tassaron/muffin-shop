@@ -28,6 +28,7 @@ setup(
         "Flask-Reuploaded",
         "Flask-SQLAlchemy",
         "Flask-WTF",
+        "PyJWT",
         "email_validator",
         "is_safe_url",
         "mistune",
