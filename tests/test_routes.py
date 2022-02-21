@@ -10,7 +10,7 @@ from tassaron_flask.controllers.main.routes import all_base_urls
 
 def nav_selected_bytes(route):
     return bytes(
-        f'<a href="{route}" class="nav-link active" aria-current="page">',
+        f'<a href="{route}" class="nav-link shadow-sm active" aria-current="page">',
         "utf-8",
     )
 
@@ -50,7 +50,7 @@ def test_404_page(client):
 
 
 def test_login_success(client):
-    
+
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -64,7 +64,7 @@ def test_login_success(client):
 
 
 def test_login_failure(client):
-    
+
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -78,7 +78,7 @@ def test_login_failure(client):
 
 
 def test_registration_success(client):
-    
+
     assert User.query.filter_by(email="test@example.com").first() is None
     resp = client.post(
         "/account/register",
@@ -93,7 +93,7 @@ def test_registration_success(client):
 
 
 def test_registration_failure(client):
-    
+
     assert User.query.filter_by(email="test@example.com").first() is None
     resp = client.post(
         "/account/register",
@@ -118,7 +118,7 @@ def test_registration_failure(client):
 
 
 def test_anonymous_user(client):
-    
+
     anon1 = login_manager.anonymous_user()
     anon2 = login_manager.anonymous_user()
     db.session.add(anon1)
@@ -142,7 +142,7 @@ def test_reregistration_failure(client):
 
 
 def test_user_privilege(client):
-    
+
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -165,7 +165,9 @@ def test_user_privilege(client):
 
 def test_all_anonymous_user_routes(client):
     client.get("/")
-    endpoints = [url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])]
+    endpoints = [
+        url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])
+    ]
     try:
         endpoints.remove("/view_shipping_address")
         endpoints.remove("/view_cart")
@@ -177,7 +179,7 @@ def test_all_anonymous_user_routes(client):
 
 
 def test_all_logged_in_user_routes(client):
-    
+
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
@@ -186,7 +188,9 @@ def test_all_logged_in_user_routes(client):
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
     )
-    endpoints = [url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])]
+    endpoints = [
+        url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])
+    ]
     try:
         endpoints.remove("/view_shipping_address")
         endpoints.remove("/view_cart")
@@ -200,7 +204,9 @@ def test_all_logged_in_user_routes(client):
     for endpoint in endpoints:
         resp = client.get(endpoint)
         assert resp.status_code == 200
-    endpoints = [url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])]
+    endpoints = [
+        url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])
+    ]
     for endpoint in endpoints:
         resp = client.get(endpoint)
         assert resp.status_code == 404
