@@ -81,18 +81,20 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 
 ## Project Structure
 
+### /static
+
+-   Files that can be cached / files served traditionally by the web server (_e.g._, images, CSS, JavaScript)
+
+### /config
+
+-   Site-specific configuration including logging, modules, html templates, markdown
+-   This is only for configuration that can be committed to source control
+-   **Note:** Site-specific _secrets_ should be in .env files (_e.g._, `.env.my_site.production`)
+
 ### /src
 
 -   Core pieces of the module system needed by every module
 -   Entrypoint: `run.py`
-
-### /src/static
-
--   Files served traditionally by the web server (_e.g._, images, CSS, JavaScript)
-
-### /src/templates/`<module>`
-
--   HTML files to be parsed by Jinja templating engine
 
 ### /src/controllers/`<module>`
 
