@@ -52,7 +52,7 @@ def test_inventory_create_product(client):
 def test_inventory_edit_product(client):
     product = Product(
         name="Spinach",
-        price=1.0,
+        price=100,
         description="this is a test",
         image="potato.jpg",
         stock=1,

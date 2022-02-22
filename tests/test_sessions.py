@@ -33,7 +33,7 @@ def client():
         db.session.add(
             Product(
                 name="Potato",
-                price=1.0,
+                price=100,
                 description="Tuber from the ground",
                 image="potato.jpg",
                 stock=1,
@@ -53,7 +53,7 @@ def test_session_is_restored(client):
         client.post(
             "/cart/add",
             data=json.dumps({"id": 1, "quantity": 1}),
-            content_type='application/json',
+            content_type="application/json",
         )
         assert session["cart"] == {1: 1}
         client.post(
@@ -76,7 +76,7 @@ def test_session_doesnt_overwrite(client):
         db.session.add(
             Product(
                 name="Potato",
-                price=1.0,
+                price=100,
                 description="Tuber from the ground",
                 image="potato.jpg",
                 stock=1,
@@ -93,14 +93,14 @@ def test_session_doesnt_overwrite(client):
         client.post(
             "/cart/add",
             data=json.dumps({"id": 1, "quantity": 1}),
-            content_type='application/json',
+            content_type="application/json",
         )
         assert session["cart"] == {1: 1}
         client.get("/account/logout")
         client.post(
             "/cart/add",
             data=json.dumps({"id": 2, "quantity": 1}),
-            content_type='application/json',
+            content_type="application/json",
         )
         client.post(
             "/account/login",

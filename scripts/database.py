@@ -8,6 +8,7 @@ from muffin_shop.models.main.models import *
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.main.session_interface import TassaronSessionInterface
 from muffin_shop.models.shop.inventory_models import *
+from muffin_shop.models.shop.checkout_models import *
 import os
 import string
 import random
@@ -58,19 +59,6 @@ def create_test_db_shop():
     db.create_all()
     add_test_users()
     db.session.add(
-        ShippingAddress(
-            user_id=2,
-            first_name="Bri",
-            last_name="Rainey",
-            phone="5550005555",
-            address1="123 Fake St",
-            address2="Apt 9",
-            postal_code="A0B1C2",
-            city="Anytown",
-            province="ON",
-        )
-    )
-    db.session.add(
         ProductCategory(
             name="Veggies",
             image="potato.jpg",
@@ -91,7 +79,7 @@ def create_test_db_shop():
     db.session.add(
         Product(
             name="Potato",
-            price=1.0,
+            price=100,
             description="Tuber from the ground",
             image="potato.jpg",
             stock=1,
@@ -101,7 +89,7 @@ def create_test_db_shop():
     db.session.add(
         Product(
             name="Tomato",
-            price=1.0,
+            price=100,
             description="Fruit from a lovely friend",
             image="potato.jpg",
             stock=10,
@@ -111,7 +99,7 @@ def create_test_db_shop():
     db.session.add(
         Product(
             name="Campanula",
-            price=1.5,
+            price=150,
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             image="potato.jpg",
             stock=100,
@@ -121,7 +109,7 @@ def create_test_db_shop():
     db.session.add(
         Product(
             name="Hot Cake",
-            price=1.0,
+            price=100,
             description="It sure sells like it!",
             image="potato.jpg",
             stock=0,
@@ -132,7 +120,14 @@ def create_test_db_shop():
 
 
 def add_test_users():
-    db.session.add(User(email="admin@example.com", email_verified=True, password="password", is_admin=True))
+    db.session.add(
+        User(
+            email="admin@example.com",
+            email_verified=True,
+            password="password",
+            is_admin=True,
+        )
+    )
     db.session.add(User(email="user@example.com", password="password", is_admin=False))
 
 
@@ -140,6 +135,7 @@ def main():
     """
     Run commandline argument parser
     """
+
     def prompt_deletion(func):
         dirname = os.path.abspath(os.path.dirname(args.db).split(":///", 1)[1])
         basename = os.path.basename(args.db)
@@ -163,7 +159,9 @@ def main():
         "test", help="create a new db with filler data for testing", nargs="?"
     )
     parser.add_argument(
-        "--yes", "-y", "-f",
+        "--yes",
+        "-y",
+        "-f",
         help="assume yes (delete the database)",
         default=False,
         action="store_true",

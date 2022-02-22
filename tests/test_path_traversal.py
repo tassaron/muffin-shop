@@ -22,7 +22,7 @@ def test_product_image_safe_path():
         )
         product_with_path_traversal_image = Product(
             name="Potato",
-            price=1.0,
+            price=100,
             description="Tuber from the ground",
             image="../../logo.png",
             stock=1,
@@ -30,7 +30,7 @@ def test_product_image_safe_path():
         )
         normal_product = Product(
             name="Potato",
-            price=1.0,
+            price=100,
             description="Tuber from the ground",
             image="logo.png",
             stock=1,

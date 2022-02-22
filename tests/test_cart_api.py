@@ -25,7 +25,7 @@ def client():
         db.session.add(
             Product(
                 name="Potato",
-                price=1.0,
+                price=100,
                 description="Tuber from the ground",
                 image="potato.jpg",
                 stock=1,
@@ -65,7 +65,7 @@ def test_add_to_cart_api_failed_outofstock(client):
     db.session.add(
         Product(
             name="Potato",
-            price=1.0,
+            price=100,
             description="Tuber from the ground",
             image="potato.jpg",
             stock=0,

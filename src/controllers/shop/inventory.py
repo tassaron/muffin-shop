@@ -22,7 +22,7 @@ def create_product():
     if form.validate_on_submit():
         kwargs = {
             "name": form.name.data,
-            "price": form.price.data,
+            "price": int(form.price.data * 100),
             "description": form.description.data,
             "image": form.image.data,
             "stock": form.stock.data,
@@ -56,7 +56,7 @@ def edit_product(id):
     form = ProductForm()
     if form.validate_on_submit():
         product.name = form.name.data
-        product.price = form.price.data
+        product.price = int(form.price.data * 100)
         product.description = form.description.data
         product.image = form.image.data
         product.stock = form.stock.data
@@ -68,7 +68,7 @@ def edit_product(id):
         return redirect(url_for(".list_products"))
     filled_form = {
         "name": product.name,
-        "price": product.price,
+        "price": product.price / 100,
         "description": product.description,
         "image": product._image,
         "stock": product.stock,

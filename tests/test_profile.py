@@ -5,7 +5,7 @@ import flask_login
 from flask import url_for
 from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import db, bcrypt, login_manager
-from muffin_shop.models.main.models import User, ShippingAddress
+from muffin_shop.models.main.models import User
 
 
 @pytest.fixture
@@ -36,32 +36,10 @@ def client():
 
 def test_reset_password_button_exists_on_profile(client):
     resp = client.get("/account/profile")
-    assert bytes(
-        f'<a href=\"{url_for("account.reset_password")}\" class="btn btn-outline-primary">Reset Password</a>',
-        "utf-8"
-    ) in resp.data
-
-
-def test_blank_shipping_address(client):
-    resp = client.get("/account/profile")
-    for text in ShippingAddress.names().values():
-        assert bytes(text, "utf-8") in resp.data
-
-
-def test_existent_shipping_address(client):
-    db.session.add(
-        ShippingAddress(
-            user_id=1,
-            first_name="Bri",
-            last_name="Rainey",
-            phone="5550005555",
-            address1="123 Fake St",
-            address2="Apt 9",
-            postal_code="A0B1C2",
-            city="Anytown",
-            province="ON",
+    assert (
+        bytes(
+            f'<a href="{url_for("account.reset_password")}" class="btn btn-outline-primary">Reset Password</a>',
+            "utf-8",
         )
+        in resp.data
     )
-    db.session.commit()
-    resp = client.get("/account/profile")
-    assert bytes("123 Fake St", "utf-8") in resp.data
