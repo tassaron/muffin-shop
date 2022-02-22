@@ -57,12 +57,12 @@ def test_inventory_edit_product(client):
         image="potato.jpg",
         stock=1,
         category_id=1,
-        payment_id="this should get deleted",
+        payment_uuid="this should get deleted",
     )
     db.session.add(product)
     db.session.commit()
     product = Product.query.get(1)
-    assert product.payment_id is not None
+    assert product.payment_uuid is not None
     resp = client.post(
         f"{app.config['ADMIN_URL']}/inventory/edit/1",
         data={
@@ -77,4 +77,4 @@ def test_inventory_edit_product(client):
     )
     assert resp.status_code == 200
     product = Product.query.get(1)
-    assert product.payment_id is None
+    assert product.payment_uuid is None

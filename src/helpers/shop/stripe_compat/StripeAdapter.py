@@ -20,8 +20,8 @@ class StripeAdapter:
 
         # Register/update product/price combos that don't exist on Stripe yet
         for product in products:
-            if not product["payment_id"]:
-                product["payment_id"] = create_or_update_product_on_stripe(product)
+            if not product["payment_uuid"]:
+                product["payment_uuid"] = create_or_update_product_on_stripe(product)
 
         # Convert our data format to Stripe's line_items format
         self.products = convert_to_line_items(products)
@@ -104,7 +104,7 @@ def create_or_update_product_on_stripe(my_product) -> str:
 
     def update_product() -> stripe.Price:
         """
-        If the payment_id is blank but we fail to create the product
+        If the payment_uuid is blank but we fail to create the product
         then it means we need to update the Product, potentially creating a new Price
         """
         stripe.Product.modify(
@@ -139,9 +139,9 @@ def create_or_update_product_on_stripe(my_product) -> str:
         else:
             raise e
 
-    # Put new payment_id in the database for next time
+    # Put new payment_uuid in the database for next time
     db_product = Product.query.get(my_product["id"])
-    db_product.payment_id = stripe_price.id
+    db_product.payment_uuid = stripe_price.id
     db.session.add(db_product)
     db.session.commit()
     return stripe_price.id
@@ -163,7 +163,7 @@ def convert_to_line_items(my_products: List[dict]) -> List[dict]:
     """
     return [
         {
-            "price": product["payment_id"],
+            "price": product["payment_uuid"],
             "quantity": product["quantity"],
         }
         for product in my_products

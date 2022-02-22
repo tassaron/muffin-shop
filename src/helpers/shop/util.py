@@ -17,7 +17,7 @@ def convert_raw_cart_data_to_products(products: dict) -> List[dict]:
     return [
         {
             "id": db_product.id,
-            "payment_id": db_product.payment_id,
+            "payment_uuid": db_product.payment_uuid,
             "name": db_product.name,
             "description": db_product.description,
             "images": [

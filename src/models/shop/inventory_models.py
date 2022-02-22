@@ -31,4 +31,4 @@ class Product(ModelWithImage, db.Model):
     category_id = db.Column(
         db.Integer, db.ForeignKey("product_category.id"), nullable=False
     )
-    payment_id = db.Column(db.String(60), nullable=True)
+    payment_uuid = db.Column(db.String(60), nullable=True)
