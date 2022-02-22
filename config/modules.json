@@ -22,9 +22,7 @@
             "ShippingAddress": "shop.edit_shipping_address"
         },
         "env": [
-            "STRIPE_PUBLISHABLE_KEY",
-            "STRIPE_SECRET_KEY",
-            "STRIPE_WEBHOOK"
+            "STRIPE_API_KEY"
         ],
         "blueprints": [
             "inventory:blueprint",
