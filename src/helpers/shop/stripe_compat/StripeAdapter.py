@@ -1,8 +1,10 @@
 import stripe
 from flask import current_app, request, abort
 from muffin_shop.models.shop.inventory_models import Product
+from muffin_shop.models.shop.checkout_models import Transaction
 from muffin_shop.helpers.main.plugins import db
 from typing import List, Optional
+from sqlalchemy.exc import IntegrityError
 import time
 
 
@@ -42,9 +44,10 @@ class StripeAdapter:
             cancel_url="%s?session_id={CHECKOUT_SESSION_ID}" % cancel_url,
             line_items=self.products,
             mode=mode,
-            email_address=email_address,
+            customer_email=email_address,
             expires_at=int(time.time() + 3600),
             payment_method_types=["card"],
+            phone_number_collection={"enabled": True},
             shipping_address_collection={
                 "allowed_countries": ["CA"],
             },
@@ -71,9 +74,29 @@ class StripeAdapter:
             abort(400)
 
         if event.type == "checkout.session.completed":
-            current_app.logger.debug(event["data"])
+            response = event["data"]["object"]
+            current_app.logger.debug(f"Checkout session completed: {response}")
+            transaction_uuid = response["id"]
+            transaction = Transaction.query.filter_by(
+                uuid=transaction_uuid
+            ).first_or_404()
+            transaction.price = response["amount_total"]
+            transaction.email_address = response["customer_details"]["email"]
+            transaction.phone_number = response["customer_details"]["phone"]
+            transaction.shipping_address = str(response["shipping"]["address"])
+            transaction.customer_name = response["shipping"]["name"]
+            try:
+                db.session.add(transaction)
+                db.session.commit()
+            except IntegrityError as e:
+                current_app.logger.critical(
+                    "Critical error occurred while trying to update a transaction record: %s",
+                    e,
+                )
+                db.session.rollback()
+                abort(400)
         else:
-            current_app.logger.info(f"Unhandled Stripe event type {event.type}")
+            current_app.logger.debug(f"Unhandled Stripe event type {event.type}")
 
         return "", 204
 
@@ -97,7 +120,7 @@ def create_or_update_product_on_stripe(my_product) -> str:
         )
         stripe_price = stripe.Price.create(
             product=stripe_product.id,
-            unit_amount=int(my_product["price"] * 100),
+            unit_amount=my_product["price"],
             currency="cad",
         )
         return stripe_price
@@ -121,10 +144,10 @@ def create_or_update_product_on_stripe(my_product) -> str:
         assert len(existing_prices.data) == 1
         existing_price = existing_prices.data[0]
         # Check whether price has changed, in which case existing_price needs to be replaced
-        if existing_price.unit_amount != int(my_product["price"] * 100):
+        if existing_price.unit_amount != my_product["price"]:
             new_price = stripe.Price.create(
                 product=my_product["id"],
-                unit_amount=int(my_product["price"] * 100),
+                unit_amount=my_product["price"],
                 currency="cad",
             )
             stripe.Price.modify(existing_price.id, active=False)

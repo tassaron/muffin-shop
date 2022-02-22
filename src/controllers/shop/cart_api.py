@@ -11,6 +11,7 @@ from muffin_shop.helpers.shop.util import (
     verify_stock_before_checkout,
 )
 from muffin_shop.models.shop.inventory_models import Product
+from muffin_shop.models.shop.checkout_models import Transaction
 import time
 
 
@@ -89,8 +90,29 @@ def submit_cart():
         url_for("checkout.successful_checkout", _external=True),
         url_for("checkout.cancel_checkout", _external=True),
         "payment",
-        None if not flask_login.current_user.is_authenticated else flask_login.current_user.email
+        None
+        if not flask_login.current_user.is_authenticated
+        else flask_login.current_user.email,
     )
+
+    # Record beginning of the transaction for our internal records
+    new_transaction = Transaction(
+        uuid=payment_session.id,
+        products=str(products),
+        user_id=None
+        if not flask_login.current_user.is_authenticated
+        else int(flask_login.current_user.get_id()),
+    )
+    try:
+        db.session.add(new_transaction)
+        db.session.commit()
+    except IntegrityError as e:
+        current_app.logger.critical(
+            "Critical error occurred while trying to create a new transaction record: %s",
+            e,
+        )
+        db.session.rollback()
+
     session["transaction_id"] = payment_session.id
     session["transaction_expiration"] = int(time.time() + 3600)
     session["transaction_cart"] = dict(session["cart"])

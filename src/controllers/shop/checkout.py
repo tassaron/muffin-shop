@@ -12,6 +12,7 @@ from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from muffin_shop.helpers.shop.payment import PaymentAdapter
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.shop.inventory_models import Product
+from muffin_shop.models.shop.checkout_models import Transaction
 from sqlalchemy.exc import IntegrityError
 
 
@@ -19,6 +20,12 @@ blueprint = Blueprint(
     "checkout",
     __name__,
 )
+
+
+@blueprint.admin_route("/transactions")
+def show_transactions():
+    transactions = Transaction.query.all()
+    return render_template("checkout/transactions.html", transactions=transactions)
 
 
 @blueprint.route("/success")

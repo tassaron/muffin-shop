@@ -1,0 +1,8 @@
+{% extends '/base.html' %}
+{% block title %}Transaction Record{% endblock %}
+{% block content %}
+<h4>Transactions</h4>
+{% for transaction in transactions %}
+<p>{{ transaction.uuid }}: {{transaction.products}} - {{transaction.price}}</p>
+{% endfor %}
+{% endblock %}
