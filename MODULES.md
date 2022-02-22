@@ -1,4 +1,4 @@
-# Modules for Tassaron's Flask Template
+# Modules for Muffin Shop
 
 ### In JSON
 1. `name`: The human-readable name of the module which will be displayed on the tab that navigates to this module's index

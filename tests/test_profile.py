@@ -3,9 +3,9 @@ import tempfile
 import pytest
 import flask_login
 from flask import url_for
-from tassaron_flask.helpers.main.app_factory import create_app, init_app
-from tassaron_flask.helpers.main.plugins import db, bcrypt, login_manager
-from tassaron_flask.models.main.models import User, ShippingAddress
+from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.plugins import db, bcrypt, login_manager
+from muffin_shop.models.main.models import User, ShippingAddress
 
 
 @pytest.fixture

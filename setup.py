@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 from os import path
-import stripe
+import re
 
 
 try:
@@ -12,11 +12,20 @@ except Exception:
     long_description = "missing README.md"
 
 
+PACKAGE_NAME = 'muffin_shop'
+SOURCE_DIRECTORY = 'src'
+SOURCE_PACKAGE_REGEX = re.compile(rf'^{SOURCE_DIRECTORY}')
+
+source_packages = find_packages(include=[SOURCE_DIRECTORY, f'{SOURCE_DIRECTORY}.*'])
+proj_packages = [SOURCE_PACKAGE_REGEX.sub(PACKAGE_NAME, name) for name in source_packages]
+
+
 setup(
-    name="tassaron flask",
+    name=PACKAGE_NAME,
     author="tassaron",
     version="0.0.0",
-    packages=find_packages(),
+    packages=proj_packages,
+    package_dir={PACKAGE_NAME: SOURCE_DIRECTORY},
     include_package_data=True,
     install_requires=[
         "uWSGI",
@@ -38,9 +47,9 @@ setup(
         "huey",
         "stripe",
     ],
-    url="https://github.com/tassaron/flask-shop",
+    url="https://github.com/tassaron/muffin-shop",
     license="MIT",
-    description="a reuseable Flask template with shop module",
+    description="a Flask app for small ecommerce sites",
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords="flask uwsgi modular template shop",

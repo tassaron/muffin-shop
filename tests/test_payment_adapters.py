@@ -1,7 +1,7 @@
-from tassaron_flask.helpers.main.plugins import db
-from tassaron_flask.models.shop.inventory_models import Product
-from tassaron_flask.helpers.shop.stripe_compat import StripeAdapter
-from tassaron_flask.helpers.shop.util import convert_raw_cart_data_to_products
+from muffin_shop.helpers.main.plugins import db
+from muffin_shop.models.shop.inventory_models import Product
+from muffin_shop.helpers.shop.stripe_compat import StripeAdapter
+from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from test_cart_api import client
 from flask import session, json, current_app
 

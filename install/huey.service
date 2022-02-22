@@ -1,0 +1,14 @@
+[Unit]
+Description=Huey Consumer Process
+After=network.target
+
+[Service]
+User=website
+Group=www-data
+WorkingDirectory=/srv/website
+Environment="PATH=/srv/website/env/bin"
+ExecStart=/srv/website/env/bin/huey_consumer.py muffin_shop.huey -s 60
+Requires=website.service
+
+[Install]
+WantedBy=multi-user.target

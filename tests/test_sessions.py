@@ -2,10 +2,10 @@ import os
 import tempfile
 import pytest
 import json
-from tassaron_flask.helpers.main.app_factory import create_app, init_app
-from tassaron_flask.helpers.main.plugins import db
-from tassaron_flask.models.main.models import User
-from tassaron_flask.models.shop.inventory_models import *
+from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.plugins import db
+from muffin_shop.models.main.models import User
+from muffin_shop.models.shop.inventory_models import *
 from flask import session
 
 

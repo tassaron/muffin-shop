@@ -1,6 +1,6 @@
-from tassaron_flask.helpers.main.app_factory import create_app, init_app
-from tassaron_flask.helpers.main.plugins import db
-from tassaron_flask.models.shop.inventory_models import Product, ProductCategory
+from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.plugins import db
+from muffin_shop.models.shop.inventory_models import Product, ProductCategory
 import tempfile
 import os
 from flask import json, session

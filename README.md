@@ -1,18 +1,18 @@
-# Tassaron's Flask Template ![](https://img.shields.io/badge/python-3.8-informational) ![](https://img.shields.io/github/license/tassaron/flask-template) ![](https://img.shields.io/github/last-commit/tassaron/flask-shop) [![Follow @brianna on Mastodon](https://img.shields.io/mastodon/follow/1?domain=https%3A%2F%2Ftassaron.com&style=social)](https://tassaron.com/@brianna)
+# Muffin Shop ![](https://img.shields.io/badge/python-3.8-informational) ![](https://img.shields.io/github/license/tassaron/muffin-shop) ![](https://img.shields.io/github/last-commit/tassaron/muffin-shop) [![Follow @brianna on Mastodon](https://img.shields.io/mastodon/follow/1?domain=https%3A%2F%2Ftassaron.com&style=social)](https://tassaron.com/@brianna)
 
-A reuseable template for Flask apps that need admin, login system, emails, and some other features that are separated into "modules". The most useful module is the **shop** used to manage ecommerce with inventory tracking and take payments using Stripe Checkout.
+A webapp for small ecommerce sites. Features include: shopping cart, inventory tracking, Stripe integration, basic admin, login system, and emails.
 
-See [MODULES.md](MODULES.md) for more information about modules.
+This is a work in progress. The functionality is somewhat modular; see [MODULES.md](MODULES.md) for more information about how modules work.
 
 ## Current Goal
 
 -   Make an online shop for _The Rainbow Farm_
 
-## Long-Term Goals
+## Long-Term Goal
 
-1. Allow different websites with similar functionality to share a codebase via git branches
-1. Simplify creation of a podcast site, blog, online shop, or any combination of these.
-1. Have well-documented setup scripts and clean upgrade paths.
+-   Allow different websites with similar functionality to share a codebase via git branches
+-   Example: _Website A_ is an online shop with a blue theme and an extra gallery page.
+-   Example: _Website B_ is an online shop with a red theme and an extra podcast (RSS feed) page.
 
 ## Dependencies
 
@@ -25,21 +25,20 @@ See [MODULES.md](MODULES.md) for more information about modules.
 1. Stripe
 1. Webpack
 1. ReactJS (only for the shop module)
-1. See [setup.py](setup.py) and [package.json](tassaron_flask/nodejs/package.json) for more detail
+1. See [setup.py](setup.py) and [package.json](src/muffin_shop/nodejs/package.json) for more detail
 
 ## Setup on Ubuntu Server 20.04
 
 1. Install npm
-1. `cd tassaron_flask/nodejs` and `npm install`.
+1. `npm install` in this directory.
 1. `npm run build` to bundle/compile static resources with Webpack.
-1. `cd` back to the project root.
 1. Create a Python virtual env, activate it.
    `sudo apt install python3-venv; python3 -m venv env; source env/bin/activate`
 1. Do `pip install .` in the root of this repo.
-1. Use `python3 setup/database.py new` to create a new database.
-1. Use the `devserver.sh` shell script to run a development uWSGI server (`localhost:5000`).
-1. OR use `python3 -m tassaron_flask` for Flask's built-in development server.
-1. See the [readme inside `/setup`](setup/README.md) for help with setting up a production server.
+1. Use `python3 scripts/database.py new` to create a new database.
+1. Use the `scripts/dev-backend.sh` shell script to run a development uWSGI server (`localhost:5000`).
+1. OR use `python3 -m muffin_shop` for Flask's built-in development server.
+1. See the [readme inside `/install`](install/README.md) for help with setting up a production server.
 
 ## Customizing
 
@@ -59,17 +58,17 @@ See [MODULES.md](MODULES.md) for more information about modules.
 
 ## Development
 
-1. Run `dev-frontend.sh` to open a split-pane tmux session with live-reloading backend and frontend.
-1. Run `dev-backend.sh` for just a live-reloading backend.
-1. Run `python setup/database.py test --shop` for an example database with products in the shop.
-1. Run `dev-shop.sh` to **replace any existing db** with a shop-testing db, and run `dev-frontend.sh`
+1. Run `scripts/dev-frontend.sh` to open a split-pane tmux session with live-reloading backend and frontend.
+1. Run `scripts/dev-backend.sh` for just a live-reloading backend.
+1. Run `python scripts/database.py test --shop` for an example database with products in the shop.
+1. Run `scripts/dev-shop.sh` to **replace any existing db** with a shop-testing db, and run `scripts/dev-frontend.sh`
 
 ## How it works
 
 1. Systemd starts Nginx and uWSGI
-1. Nginx serves files from `tassaron_flask/static` directly and passes the other requests through to uWSGI
-1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `tassaron_flask/run.py`.
-1. The WSGI application is created by the Main module, specifically by `create_app` defined in `tassaron_flask/helpers/main/app_factory.py`
+1. Nginx serves files from `/static` directly and passes the other requests through to uWSGI
+1. uWSGI creates worker processes each running a Python interpreter. Each worker imports the application callable (Flask object) from `muffin_shop/run.py`.
+1. The WSGI application is created by the Main module, specifically by `create_app` defined in `muffin_shop/helpers/main/app_factory.py`
 1. When uWSGI receives a connection, it picks one of its idle workers and calls the WSGI application in that process.
 
 ## Style
@@ -82,41 +81,36 @@ See [MODULES.md](MODULES.md) for more information about modules.
 
 ## Project Structure
 
-### /tassaron_flask
+### /src
 
 -   Core pieces of the module system needed by every module
 -   Entrypoint: `run.py`
 
-### /tassaron_flask/static
+### /src/static
 
 -   Files served traditionally by the web server (_e.g._, images, CSS, JavaScript)
 
-### /tassaron_flask/templates/`<module>`
+### /src/templates/`<module>`
 
 -   HTML files to be parsed by Jinja templating engine
 
-### /tassaron_flask/controllers/`<module>`
+### /src/controllers/`<module>`
 
 -   URL endpoints (routes) which could return a view (template) or JSON
 
-### /tassaron_flask/models/`<module>`
+### /src/models/`<module>`
 
 -   Models shape data in the database (using SQLAlchemy)
 -   Models manipulate data at the request of controllers
 
-### /tassaron_flask/forms/`<module>`
+### /src/forms/`<module>`
 
 -   Server-side form validation using WTForms
 
-### /tassaron_flask/helpers/`<module>`
+### /src/helpers/`<module>`
 
 -   Extra helpers for modules such as utility functions, Flask plugins, asynchronous tasks
 
-### /tassaron_flask/nodejs
-
--   NodeJS project root including the `package.json` and Webpack config
--   Here is where you run `npm run build` to create working JavaScript for distribution
-
-### /tassaron_flask/nodejs/react
+### /src/react
 
 -   React components to be bundled by Webpack (outputs into `/static/js/dist`)

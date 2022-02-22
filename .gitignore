@@ -11,4 +11,4 @@ build/
 *.egg-info
 static/uploads/*
 static/js/dist/*
-tassaron_flask/nodejs/node_modules/*
+node_modules/*

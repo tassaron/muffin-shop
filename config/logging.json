@@ -38,7 +38,7 @@
         "root": {
             "handlers": ["error_log"]
         },
-        "tassaron_flask": {
+        "muffin_shop": {
             "handlers": ["console", "error_log"]
         },
         "sqlalchemy.engine.base.Engine": {

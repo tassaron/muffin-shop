@@ -1,0 +1,31 @@
+[uwsgi]
+module = muffin_shop.run
+master = true
+enable-threads = true
+single-interpreter = true
+
+socket = website.sock
+chmod-socket = 660
+vacuum = true
+need-app = true
+auto-procname = true
+die-on-term = true
+
+disable-logging = true
+log-4xx = true
+log-5xx = true
+
+; Scale workers slightly according to load
+cheaper-algo = busyness
+processes = 12
+cheaper = 4
+cheaper-overload = 1
+; length of cycle in seconds
+cheaper-step = 2
+; new workers to spawn in a cycle
+cheaper-busyness-multiplier = 30
+; how long to wait before killing extra workers
+cheaper-busyness-min = 4
+; kill extra workers if request load is less than
+cheaper-busyness-max = 12
+; spawn more workers if load is higher than this
