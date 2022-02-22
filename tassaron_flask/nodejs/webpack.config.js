@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const config = {
     entry:  __dirname + '/react/main.jsx',
     output: {
-        path: __dirname + '/../static/js/dist',
+        path: __dirname + '/../../static/js/dist',
         filename: 'bundle.js',
     },
     resolve: {

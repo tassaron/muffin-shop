@@ -8,6 +8,8 @@ from flask import request
 import os
 import datetime
 from typing import Optional
+from jinja2 import PrefixLoader, FileSystemLoader
+
 
 try:
     from uwsgi import setprocname
@@ -25,7 +27,7 @@ def create_app():
     The WSGI application is returned with no plugins initialized nor extra modules imported
     """
     mutated_env_file = create_env_file()
-    app = Flask("tassaron_flask")
+    app = Flask("tassaron_flask", static_folder=f"{os.getcwd()}/static")
     app.logger.info("Created Flask instance")
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
@@ -41,7 +43,7 @@ def create_app():
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
         ADMIN_URL=os.environ.get("ADMIN_URL", "/admin"),
-        UPLOADS_DEFAULT_DEST="tassaron_flask/static/uploads",
+        UPLOADS_DEFAULT_DEST="static/uploads",
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
@@ -57,8 +59,7 @@ def create_app():
             "SITE_DESCRIPTION", "metadescription for your website"
         ),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
-        MODULES_CONFIG=os.environ.get("MODULES_CONFIG", "config/modules.json"),
-        MARKDOWN_PATH=os.environ.get("MARKDOWN_PATH", "config/markdown/"),
+        CONFIG_PATH=os.environ.get("CONFIG_PATH", "config"),
         CLIENT_SESSIONS=boolean_from_env_var("CLIENT_SESSIONS"),
     )
 
@@ -82,6 +83,17 @@ def create_app():
     else:
         app.logger.warning("Email is disabled because FLASK_ENV != production")
 
+    # TODO: remove hardcoded paths
+    app.jinja_loader = PrefixLoader({
+        "": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates"),
+        "about": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/about"),
+        "account": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/account"),
+        "checkout": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"),
+        "huey": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/huey"),
+        "inventory": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/inventory"),
+        "shop": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/shop"),
+    })
+
     from tassaron_flask.controllers.main.routes import main_routes
 
     app.register_blueprint(main_routes)
@@ -91,7 +103,7 @@ def create_app():
 def init_app(app, modules: Optional[dict] = None):
     """
     Import and create the Flask plugins, and call init_app for each of them.
-    Then register the extra template modules as defined in MODULES_CONFIG json
+    Then register the extra template modules as defined in CONFIG_PATH/modules.json
     In production mode the Monitoring Dashboard is bound to the application
     Configure the Flask-Login's LoginManager, then configure Flask-Uploads
     Give the application some global wrappers for logging and Jinja context
@@ -120,7 +132,7 @@ def init_app(app, modules: Optional[dict] = None):
         import flask_monitoringdashboard as monitor
 
         monitor.config.init_from(
-            file=os.environ.get("MONITOR_CONFIG", "config/monitor.cfg")
+            file=f"{os.environ.get('CONFIG_PATH', 'config')}/monitor.cfg"
         )
         try:
             monitor.config.username = os.environ["MONITOR_USERNAME"]

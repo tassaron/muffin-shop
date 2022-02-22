@@ -1,5 +1,5 @@
 {% set selected = 2 %}
-{% extends 'base.html' %}
+{% extends '/base.html' %}
 
 {% block title %}
 {{ site_name }}
@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container">
     <div class="ProductPage-alert-area"></div>
-    {% include 'js_required.html' %}
+    {% include 'shop/js_required.html' %}
     <div class="row">
         {% if products|length == 0 %}
         <div class="row" style="min-height: 33vh">
@@ -35,7 +35,7 @@
                     <p class="card-text">{{product.description}}</p>
                 </div>
                 <div class="card-footer row">
-                    {% include 'product_page_buttons.html' %}
+                    {% include 'shop/product_page_buttons.html' %}
                     <small style="font-family:serif;">${{product.price|currency}} each</small>
                 </div>
             </div>
@@ -48,7 +48,7 @@
 
 {% block script %}
 <script>
-    {% include 'cart_button_script.js' %}
+    {% include 'shop/cart_button_script.js' %}
     (function () {
         {% for product in products %}
         document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = (e) => { add_to_cart(e, {{ product.id }}); };

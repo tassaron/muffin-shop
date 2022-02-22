@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 class ModelWithImage:
     @property
     def image(self):
-        return Images.path(self._image).split("/", 2)[2]
+        return Images.path(self._image).split("/", 1)[1]
 
     @image.setter
     def image(self, new_image):

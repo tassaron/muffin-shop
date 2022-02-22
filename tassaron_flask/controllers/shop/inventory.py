@@ -13,7 +13,7 @@ blueprint = Blueprint("inventory", __name__)
 
 @blueprint.admin_route("")
 def list_products():
-    return render_template("list_products.html", products=Product.query.all())
+    return render_template("inventory/list_products.html", products=Product.query.all())
 
 
 @blueprint.admin_route("/create", methods=["GET", "POST"])
@@ -36,7 +36,7 @@ def create_product():
         db.session.commit()
         flash(f"Added {product.name}!", "success")
         return redirect(url_for(".list_products"))
-    return render_template("edit_product.html", title="Create New Product", form=form)
+    return render_template("inventory/edit_product.html", title="Create New Product", form=form)
 
 
 @blueprint.admin_route("/delete/<int:id>")
@@ -73,4 +73,4 @@ def edit_product(id):
         "category_id": product.category_id,
     }
     form = ProductForm(formdata=MultiDict(filled_form))
-    return render_template("edit_product.html", title=f"Edit {product.name}", form=form)
+    return render_template("inventory/edit_product.html", title=f"Edit {product.name}", form=form)

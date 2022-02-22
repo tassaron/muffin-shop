@@ -27,7 +27,7 @@ def successful_checkout():
         transaction_id = session["transaction_id"]
     except KeyError:
         current_app.logger.info("no transaction session")
-        return render_template("success.html", products=[])
+        return render_template("checkout/success.html", products=[])
 
     if session_id != transaction_id:
         current_app.logger.error("broken transaction session")
@@ -50,7 +50,7 @@ def successful_checkout():
     del session["transaction_cart"]
     del session["transaction_expiration"]
     return render_template(
-        "success.html",
+        "checkout/success.html",
         products=[(product, product["images"][0]) for product in products],
     )
 
@@ -62,7 +62,7 @@ def cancel_checkout():
         transaction_id = session["transaction_id"]
     except KeyError:
         current_app.logger.info("no transaction session")
-        return render_template("cancel.html")
+        return render_template("checkout/cancel.html")
 
     if session_id != transaction_id:
         current_app.logger.error("broken transaction session")
@@ -76,4 +76,4 @@ def cancel_checkout():
     except KeyError:
         current_app.logger.error("Failed to cancel a nonexistent payment session")
 
-    return render_template("cancel.html")
+    return render_template("checkout/cancel.html")

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '/base.html' %}
 {% block title %}Your Shopping Cart{% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
 </div>
 {% else %}
 <div id="CartPage-container" class="container">
-    {% include 'js_required.html' %}
+    {% include 'shop/js_required.html' %}
     <div id="CartPage-root"></div> <!-- Column -->
     {% for item, quantity in cart %}
     <div class="CartPage-row row" data-product-id="{{ item.id }}">

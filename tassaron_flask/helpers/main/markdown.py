@@ -9,7 +9,7 @@ md_to_unsafe_html = create_markdown(
 
 def render_markdown(filename):
     try:
-        with open(f"{current_app.config['MARKDOWN_PATH']}{filename}", "r") as f:
+        with open(f"{current_app.config['CONFIG_PATH']}/markdown/{filename}", "r") as f:
             string = f.read()
     except:
         if current_app.env == "production":

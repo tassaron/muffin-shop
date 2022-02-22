@@ -79,7 +79,7 @@ def login():
         else:
             flash("Wrong email or password.", "danger")
 
-    return render_template("login.html", form=form)
+    return render_template("account/login.html", form=form)
 
 
 @blueprint.route("/reset_password", methods=["GET", "POST"])
@@ -109,7 +109,7 @@ def reset_password():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         do_reset(user)
-    return render_template("reset_password.html", form=form)
+    return render_template("account/reset_password.html", form=form)
 
 
 @blueprint.route("/reset_password/<token>", methods=["GET", "POST"])
@@ -137,7 +137,7 @@ def change_password(token):
         flash("Your password has been updated!", "success")
         return redirect(url_for(".login"))
 
-    return render_template("change_password.html", form=form)
+    return render_template("account/change_password.html", form=form)
 
 
 @blueprint.route("/verify_email/<token>")
@@ -208,7 +208,7 @@ def user_dashboard():
                 html = ""
             sections[model.__name__.lower()] = (section_name, html)
     return render_template(
-        "view_profile.html", user=flask_login.current_user, profile_sections=sections
+        "account/view_profile.html", user=flask_login.current_user, profile_sections=sections
     )
 
 
@@ -248,4 +248,4 @@ def register():
             send_email_verification_email(new_user)
         return redirect(url_for("account.login"))
 
-    return render_template("register.html", form=form)
+    return render_template("account/register.html", form=form)

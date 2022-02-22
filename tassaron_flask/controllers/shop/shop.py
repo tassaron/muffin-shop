@@ -68,7 +68,7 @@ def float_to_str_currency(num):
 @blueprint.index_route()
 def index():
     return render_template(
-        "shop_index.html",
+        "shop/shop_index.html",
         product_categories=ProductCategory.query.all(),
     )
 
@@ -81,7 +81,7 @@ def shop_category_index(title, category_id):
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
     return render_template(
-        "shop_product_list.html",
+        "shop/shop_product_list.html",
         products=products,
     )
 
@@ -93,7 +93,7 @@ def product_description(title, product_id):
         Product.id == product_id, Product.stock > 0
     ).first_or_404()
     product.cart_quantity = session["cart"].get(product_id, 0)
-    return render_template("view_product.html", product=product, title=product.name)
+    return render_template("shop/view_product.html", product=product, title=product.name)
 
 
 @blueprint.route("/all")
@@ -102,7 +102,7 @@ def all_products():
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
     return render_template(
-        "shop_product_list.html",
+        "shop/shop_product_list.html",
         products=products,
     )
 
@@ -110,7 +110,7 @@ def all_products():
 @blueprint.route("/view_cart")
 def view_cart():
     return render_template(
-        "view_cart.html",
+        "shop/view_cart.html",
         cart=[
             (Product.query.get(id), quantity)
             for id, quantity in session["cart"].items()
@@ -135,7 +135,7 @@ def view_shipping_address(address):
             data[prop_id] = data_[prop_id]
 
     return render_template(
-        "view_profile_section.html",
+        "account/view_profile_section.html",
         items={
             field_names[prop_id]: prop_value for prop_id, prop_value in data.items()
         },
