@@ -3,6 +3,7 @@ POST to these Cart endpoints in order to manipulate the Cart Session Cookie
 Each endpoint returns a response of success or not, to update the client-side record
 """
 from flask import Blueprint, request, session, current_app, url_for, session
+import flask_login
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.shop.payment import PaymentAdapter
 from muffin_shop.helpers.shop.util import (
@@ -88,6 +89,7 @@ def submit_cart():
         url_for("checkout.successful_checkout", _external=True),
         url_for("checkout.cancel_checkout", _external=True),
         "payment",
+        None if not flask_login.current_user.is_authenticated else flask_login.current_user.email
     )
     session["transaction_id"] = payment_session.id
     session["transaction_expiration"] = int(time.time() + 3600)

@@ -1,8 +1,8 @@
 import stripe
-from flask import current_app
+from flask import current_app, request, abort
 from muffin_shop.models.shop.inventory_models import Product
 from muffin_shop.helpers.main.plugins import db
-from typing import List
+from typing import List, Optional
 import time
 
 
@@ -27,7 +27,11 @@ class StripeAdapter:
         self.products = convert_to_line_items(products)
 
     def start_session(
-        self, success_url: str, cancel_url: str, mode: str
+        self,
+        success_url: str,
+        cancel_url: str,
+        mode: str,
+        email_address: Optional[str] = None,
     ) -> stripe.checkout.Session:
         """
         Start a Stripe Checkout session.
@@ -38,10 +42,40 @@ class StripeAdapter:
             cancel_url="%s?session_id={CHECKOUT_SESSION_ID}" % cancel_url,
             line_items=self.products,
             mode=mode,
+            email_address=email_address,
             expires_at=int(time.time() + 3600),
             payment_method_types=["card"],
+            shipping_address_collection={
+                "allowed_countries": ["CA"],
+            },
+            shipping_options=[
+                {
+                    "shipping_rate_data": {
+                        "type": "fixed_amount",
+                        "fixed_amount": {
+                            "amount": 0,
+                            "currency": "cad",
+                        },
+                        "display_name": "Local Delivery",
+                    },
+                },
+            ],
         )
         return self.session
+
+    @staticmethod
+    def webhook():
+        try:
+            event = stripe.Event.construct_from(request.get_json(), stripe.api_key)
+        except ValueError as e:
+            abort(400)
+
+        if event.type == "checkout.session.completed":
+            current_app.logger.debug(event["data"])
+        else:
+            current_app.logger.info(f"Unhandled Stripe event type {event.type}")
+
+        return "", 204
 
 
 def create_or_update_product_on_stripe(my_product) -> str:

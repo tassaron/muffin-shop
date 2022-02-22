@@ -9,6 +9,7 @@ from flask import (
     url_for,
 )
 from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
+from muffin_shop.helpers.shop.payment import PaymentAdapter
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.shop.inventory_models import Product
 from sqlalchemy.exc import IntegrityError
@@ -77,3 +78,8 @@ def cancel_checkout():
         current_app.logger.error("Failed to cancel a nonexistent payment session")
 
     return render_template("checkout/cancel.html")
+
+
+@blueprint.route("/webhook", methods=["POST"])
+def payment_webhook():
+    return PaymentAdapter.webhook()
