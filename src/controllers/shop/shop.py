@@ -1,7 +1,6 @@
 from flask import *
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
-from muffin_shop.models.main.models import ShippingAddress
 from muffin_shop.decorators import hidden_route
 from muffin_shop.models.shop.inventory_models import Product, ProductCategory
 import logging
@@ -60,9 +59,8 @@ def create_cart_session():
 
 
 @blueprint.app_template_filter("currency")
-def float_to_str_currency(num):
-    maj, min = str(num).split(".")
-    return str(num) if len(min) == 2 else ".".join((maj, f"{min}0"))
+def int_cents_to_str_currency(cents):
+    return "%.2f" % (cents / 100)
 
 
 @blueprint.index_route()
@@ -93,7 +91,9 @@ def product_description(title, product_id):
         Product.id == product_id, Product.stock > 0
     ).first_or_404()
     product.cart_quantity = session["cart"].get(product_id, 0)
-    return render_template("shop/view_product.html", product=product, title=product.name)
+    return render_template(
+        "shop/view_product.html", product=product, title=product.name
+    )
 
 
 @blueprint.route("/all")
@@ -115,28 +115,4 @@ def view_cart():
             (Product.query.get(id), quantity)
             for id, quantity in session["cart"].items()
         ],
-    )
-
-
-@blueprint.route("/view_shipping_address")
-@hidden_route
-def view_shipping_address(address):
-    field_names = ShippingAddress.names()
-    if address is None:
-        data = ShippingAddress.default()
-    else:
-        data_ = {}
-        for prop in address.__dict__:
-            if prop in field_names:
-                data_[prop] = address.__dict__[prop]
-        data = {}
-        desired_order = list(field_names.keys())
-        for prop_id in desired_order:
-            data[prop_id] = data_[prop_id]
-
-    return render_template(
-        "account/view_profile_section.html",
-        items={
-            field_names[prop_id]: prop_value for prop_id, prop_value in data.items()
-        },
     )

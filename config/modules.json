@@ -12,15 +12,6 @@
     },
     ".shop": {
         "name": "Shop",
-        "profile_models": {
-            "Shipping Address": "ShippingAddress"
-        },
-        "model_views": {
-            "ShippingAddress": "shop.view_shipping_address"
-        },
-        "model_forms": {
-            "ShippingAddress": "shop.edit_shipping_address"
-        },
         "env": [
             "STRIPE_API_KEY"
         ],
