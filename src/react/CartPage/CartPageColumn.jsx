@@ -22,6 +22,7 @@ class CartPageColumn extends Component {
             cache: "no-cache",
             headers: new Headers({
                 "content-type": "application/json",
+                "X-CSRFToken": this.props.token,
             }),
         }).then((response) => {
             response.json().then((data) => {

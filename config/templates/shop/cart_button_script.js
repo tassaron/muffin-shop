@@ -17,6 +17,7 @@ function add_to_cart(e, id) {
         cache: "no-cache",
         headers: new Headers({
             "content-type": "application/json",
+            "X-CSRFToken": "{{ csrf_token() }}"
         }),
     }).then(function (response) {
         response.json().then(function (data) {

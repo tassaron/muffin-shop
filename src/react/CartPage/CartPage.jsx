@@ -42,6 +42,7 @@ class CartPage extends Component {
         });
         this.state = {
             rowData: rowData,
+            token: containerNode.dataset.csrfToken,
         };
     }
 
@@ -61,6 +62,7 @@ class CartPage extends Component {
             cache: "no-cache",
             headers: new Headers({
                 "content-type": "application/json",
+                "X-CSRFToken": this.state.token
             }),
         }).then(function (response) {
             response.json().then(function (data) {
@@ -107,6 +109,7 @@ class CartPage extends Component {
                     0
                 )}
                 setQuantity={(id, newValue) => this.setQuantity(id, newValue)}
+                token={this.state.token}
             >
                 {this.state.rowData.size == 0 ? (
                     <div className="row">

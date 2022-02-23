@@ -12,7 +12,7 @@
     <div class="col-4"></div>
 </div>
 {% else %}
-<div id="CartPage-container" class="container">
+<div id="CartPage-container" class="container" data-csrf-token="{{ csrf_token() }}">
     {% include 'shop/js_required.html' %}
     <div id="CartPage-root"></div> <!-- Column -->
     {% for item, quantity in cart %}

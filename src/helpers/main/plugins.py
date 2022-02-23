@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect
 
 
 def create_plugins():
@@ -14,7 +15,13 @@ def create_plugins():
         Bcrypt(),
         LoginManager(),
         Limiter(key_func=get_remote_address),
+        CSRFProtect(),
     )
 
 
-db, migrate, bcrypt, login_manager, rate_limiter = create_plugins()
+db, migrate, bcrypt, login_manager, rate_limiter, anti_csrf = create_plugins()
+
+
+def init_plugins(app):
+    for plugin in (db, bcrypt, login_manager, rate_limiter, anti_csrf):
+        plugin.init_app(app)

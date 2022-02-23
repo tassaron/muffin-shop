@@ -13,6 +13,8 @@ def client():
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["SERVER_NAME"] = "0.0.0.0:5000"
+    app.config["WTF_CSRF_ENABLED"] = False
+    app.config["TESTING"] = True
     app = init_app(app)
     with app.app_context():
         db.create_all()

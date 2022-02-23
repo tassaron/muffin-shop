@@ -9,6 +9,9 @@ import os
 import datetime
 from typing import Optional
 from jinja2 import PrefixLoader, FileSystemLoader
+from muffin_shop.helpers.main.plugins import db, login_manager, migrate, init_plugins
+from muffin_shop.helpers.main.session_interface import TassaronSessionInterface
+from muffin_shop.models.main.models import User
 
 
 try:
@@ -123,20 +126,11 @@ def init_app(app, modules: Optional[dict] = None):
     Give the application some global wrappers for logging and Jinja context
     If `modules` is defined, update the modules dictionary after reading json
     """
-    from muffin_shop.helpers.main.plugins import (
-        db,
-        migrate,
-        bcrypt,
-        login_manager,
-        rate_limiter,
-    )
 
-    for plugin in (db, bcrypt, login_manager, rate_limiter):
-        plugin.init_app(app)
+    init_plugins(app)
     login_manager.login_view = "account.login"
     login_manager.login_message_category = "info"
     app.register_modules(modules)
-    from muffin_shop.helpers.main.session_interface import TassaronSessionInterface
 
     app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
@@ -157,8 +151,6 @@ def init_app(app, modules: Optional[dict] = None):
             )
         monitor.config.security_token = os.urandom(24)
         monitor.bind(app)
-
-    from ...models.main.models import User
 
     @login_manager.user_loader
     def get_user(user_id):
