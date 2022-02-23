@@ -17,7 +17,7 @@
             <table class="table table-bordered table-hover shadow">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>user</th>
                         <th>type</th>
                         <th>creation_time</th>
                         <th></th>
@@ -26,15 +26,15 @@
                 <tbody>
                 {% for email in new_emails %}
                 <tr>
-                    <th scope="row">{{email.id}}</th>
+                    <th scope="row">{{email.user_id}}</th>
                     <td>
-                        {{email.typ}}
+                        {{email_types[email.typ]}}
                     </td>    
                     <td>
                         {{email.creation_time}}
                     </td>
                     <td>
-                        <button type="button">Archive</button>
+                        <a class="btn btn-secondary" href="{{ url_for('email.admin_force_archive_email', email_id=email.id) }}">Archive</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -55,6 +55,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>user</th>
                         <th>type</th>
                         <th>creation_time</th>
                         <th>archive_time</th>
@@ -65,7 +66,10 @@
                 <tr>
                     <th scope="row">{{email.id}}</th>
                     <td>
-                        {{email.typ}}
+                        {{email.user_id}}
+                    </td>
+                    <td>
+                        {{email_types[email.typ]}}
                     </td>    
                     <td>
                         {{email.creation_time}}

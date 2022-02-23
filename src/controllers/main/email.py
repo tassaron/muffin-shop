@@ -1,6 +1,7 @@
-from flask import render_template, request
-from muffin_shop.models.main.models import User, OldEmail, NewEmail
+from flask import render_template, request, redirect, url_for
+from muffin_shop.models.main.models import OldEmail, NewEmail, EmailTypes
 from muffin_shop.blueprint import Blueprint
+from muffin_shop.helpers.main.email import archive_email
 
 
 blueprint = Blueprint(
@@ -25,4 +26,12 @@ def admin_email_list():
         title=title,
         old_emails=old_emails,
         new_emails=new_emails,
+        email_types=EmailTypes,
     )
+
+
+@blueprint.admin_route("/archive/<int:email_id>")
+def admin_force_archive_email(email_id):
+    email = NewEmail.query.get_or_404(email_id)
+    archive_email(email)
+    return redirect(url_for(".admin_email_list"))

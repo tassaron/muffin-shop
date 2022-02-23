@@ -1,4 +1,4 @@
-from muffin_shop.helpers.main.plugins import db, migrate, bcrypt, login_manager
+from muffin_shop.helpers.main.plugins import db, bcrypt
 import jwt
 import time
 from datetime import datetime
@@ -90,12 +90,6 @@ class NewEmail(db.Model):
 
 
 class OldEmail(db.Model):
-    """
-    Valid integers for Email Types:
-     0 = verification
-     1 = password reset
-    """
-
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     typ = db.Column(db.Integer, nullable=False)
@@ -108,3 +102,9 @@ class OldEmail(db.Model):
         return cls(
             user_id=email.user_id, typ=email.typ, creation_time=email.creation_time
         )
+
+
+EmailTypes = {
+    0: "verification",
+    1: "password reset",
+}
