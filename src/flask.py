@@ -71,12 +71,11 @@ class Flask(flask.Flask):
                 blueprints[pymodule_name] = module.__dict__[blueprint_name]
 
         blueprints = {}
-        blueprints["account"] = importlib.import_module(
-            f".account", "muffin_shop.controllers.main"
-        ).__dict__["blueprint"]
-        blueprints["task_overview"] = importlib.import_module(
-            f".task_overview", "muffin_shop.controllers.main"
-        ).__dict__["blueprint"]
+        for main_blueprint_name in ("account", "task_overview", "email"):
+            blueprints[main_blueprint_name] = importlib.import_module(
+                f".{main_blueprint_name}", "muffin_shop.controllers.main"
+            ).__dict__["blueprint"]
+
         import_python_modules(parse_pkg(main_module), data[main_module]["blueprints"])
         for module_name in data["main"]["navigation"]:
             if module_name not in data:

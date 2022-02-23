@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+{% block title %}Email Records for {{site_name}}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <h2 class="heading-section">{{title}}</h2>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <h3 class="heading-section">New Emails</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>type</th>
+                        <th>creation_time</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for email in new_emails %}
+                <tr>
+                    <th scope="row">{{email.id}}</th>
+                    <td>
+                        {{email.typ}}
+                    </td>    
+                    <td>
+                        {{email.creation_time}}
+                    </td>
+                    <td>
+                        <button type="button">Archive</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <h3 class="heading-section">Old Emails</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>type</th>
+                        <th>creation_time</th>
+                        <th>archive_time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for email in old_emails %}
+                <tr>
+                    <th scope="row">{{email.id}}</th>
+                    <td>
+                        {{email.typ}}
+                    </td>    
+                    <td>
+                        {{email.creation_time}}
+                    </td>
+                    <td>
+                        {{email.archive_time}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
