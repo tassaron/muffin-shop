@@ -91,6 +91,10 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 -   This is only for configuration that can be committed to source control
 -   **Note:** Site-specific _secrets_ should be in .env files (_e.g._, `.env.my_site.production`)
 
+### /config/skel
+
+-   "Skeleton" for a new site-specific config - basically a ton of symlinks you can selectively replace
+
 ### /src
 
 -   Core pieces of the module system needed by every module

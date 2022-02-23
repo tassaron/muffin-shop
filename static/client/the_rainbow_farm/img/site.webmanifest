@@ -3,12 +3,12 @@
     "short_name": "The Rainbow Farm",
     "icons": [
         {
-            "src": "/static/img/client/the_rainbow_farm/android-chrome-192x192.png",
+            "src": "/static/client/the_rainbow_farm/img/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/static/img/client/the_rainbow_farm/android-chrome-512x512.png",
+            "src": "/static/client/the_rainbow_farm/img/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
