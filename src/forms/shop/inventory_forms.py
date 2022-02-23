@@ -1,6 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, DecimalField, IntegerField
-from wtforms.validators import DataRequired, InputRequired, Length, NumberRange
+from wtforms.validators import (
+    DataRequired,
+    InputRequired,
+    Length,
+    NumberRange,
+    Optional,
+)
 
 
 class ProductForm(FlaskForm):
@@ -20,4 +26,7 @@ class ProductForm(FlaskForm):
 class ProductCategoryForm(FlaskForm):
     name = StringField("name", validators=[DataRequired(), Length(min=1, max=20)])
     image = StringField("image", validators=[DataRequired(), Length(min=5, max=36)])
+    sorting_order = IntegerField(
+        "sorting_order", validators=[Optional(), NumberRange(min=1)]
+    )
     submit = SubmitField("Submit")

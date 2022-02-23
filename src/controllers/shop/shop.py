@@ -67,7 +67,15 @@ def int_cents_to_str_currency(cents):
 def index():
     return render_template(
         "shop/shop_index.html",
-        product_categories=ProductCategory.query.all(),
+        product_categories=[
+            category[1]
+            for category in sorted(
+                {
+                    db_category.sorting_order: db_category
+                    for db_category in ProductCategory.query.all()
+                }.items()
+            )
+        ],
     )
 
 

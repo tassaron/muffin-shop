@@ -103,6 +103,7 @@ def create_product_category():
         kwargs = {
             "name": form.name.data,
             "image": form.image.data,
+            "sorting_order": form.sorting_order.data,
         }
         try:
             category = ProductCategory(**kwargs)
@@ -133,6 +134,7 @@ def edit_product_category(id):
     if form.validate_on_submit():
         category.name = form.name.data
         category.image = form.image.data
+        category.sorting_order = form.sorting_order.data
         db.session.add(category)
         db.session.commit()
         flash(f"Updated {category.name} category!", "success")
@@ -140,6 +142,7 @@ def edit_product_category(id):
     filled_form = {
         "name": category.name,
         "image": category._image,
+        "sorting_order": category.sorting_order,
     }
     form = ProductCategoryForm(formdata=MultiDict(filled_form))
     return render_template(

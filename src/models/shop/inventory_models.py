@@ -3,6 +3,20 @@ from muffin_shop.controllers.main.images import Images
 from werkzeug.utils import secure_filename
 
 
+def create_category_sorting_order_func():
+    category_sorting_order_i = 0
+
+    def category_sorting_order():
+        nonlocal category_sorting_order_i
+        category_sorting_order_i += 10
+        return category_sorting_order_i
+
+    return category_sorting_order
+
+
+category_sorting_order = create_category_sorting_order_func()
+
+
 class ModelWithImage:
     @property
     def image(self):
@@ -17,6 +31,9 @@ class ProductCategory(ModelWithImage, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(20), nullable=False)
     _image = db.Column(db.String(36), nullable=False)
+    sorting_order = db.Column(
+        db.Integer, nullable=False, default=category_sorting_order
+    )
 
 
 class Product(ModelWithImage, db.Model):
