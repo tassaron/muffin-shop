@@ -1,0 +1,1 @@
+from .ArcadeAdapter import ArcadeAdapter
