@@ -1,29 +1,37 @@
 {% extends 'main/base.html' %}
 {% block title %}Huey Task Results{% endblock %}
 {% block content %}
-<h4>Huey Task Results</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                key
-            </th>
-            <th>
-                value
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for key, value in kv %}
-        <tr>
-            <td>
-                {{key}}
-            </td>    
-            <td>
-                <span class="truncated">{{value}}</span>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Huey Task Results</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>key</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for key, value in kv %}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>
+                        {{key}}
+                    </td>    
+                    <td class="d-inline-block overflow-scroll" style="max-width:100ch">
+                        {{value}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

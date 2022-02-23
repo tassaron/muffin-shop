@@ -224,3 +224,20 @@ span.cart-label {
 #cart-icon:focus {
     transform: scale(1.3);
 }
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.table {
+    min-width: 100px !important;
+    width: 100%;
+}
+
+.table tbody tr {
+    margin-bottom: 10px;
+}
+.table tbody th,
+.table tbody td {
+    padding-top: 0.3rem;
+}

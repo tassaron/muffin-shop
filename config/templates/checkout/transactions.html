@@ -1,8 +1,53 @@
 {% extends 'main/base.html' %}
-{% block title %}Transaction Record{% endblock %}
+{% block title %}Transaction Records{% endblock %}
 {% block content %}
-<h4>Transactions</h4>
-{% for transaction in transactions %}
-<p>{{ transaction.uuid }}: {{transaction.products}} - {{transaction.price}}</p>
-{% endfor %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Transaction Records</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>uuid</th>
+                        <th>user</th>
+                        <th>contact</th>
+                        <th>products</th>
+                        <th>price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <th scope="row">{{transaction.id}}</th>
+                    <td class="d-inline-block overflow-scroll" style="max-width:20ch">
+                        transaction_uuid: {{transaction.uuid}}<br>
+                        customer_uuid: {{transaction.customer_uuid}}
+                    </td>
+                    <td class="overflow-scroll" style="max-width:20ch">
+                        {{transaction.email_address.split("@")}}<br>
+                        (user_id:{{transaction.user_id}})
+                    </td>
+                    <td class="overflow-scroll" style="max-width:50ch; max-height:50ch">
+                        {{transaction.customer_name}}<br>
+                        {{transaction.phone_number}}<br>
+                        {{transaction.shipping_address}}
+                    </td>
+                    <td class="overflow-scroll" style="max-width:50ch; max-height:50ch">
+                        {{transaction.products}}
+                    </td>
+                    <td>
+                        {{transaction.price}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
