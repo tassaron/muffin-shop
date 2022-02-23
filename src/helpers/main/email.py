@@ -11,6 +11,7 @@ __all__ = [
     "Unverified",
     "send_email_verification_email",
     "send_password_reset_email",
+    "archive_email",
 ]
 
 
@@ -102,3 +103,12 @@ def send_password_reset_email(user: User) -> Result:
         db.session.delete(email)
         db.session.commit()
         raise
+
+
+def archive_email(email: NewEmail) -> None:
+    try:
+        db.session.add(OldEmail.from_email(email))
+        db.session.delete(email)
+        db.session.commit()
+    except IntegrityError as e:
+        current_app.logger.critical("Failed to archive email %s: %s", email.id, e)

@@ -104,6 +104,7 @@ class OldEmail(db.Model):
 
     @classmethod
     def from_email(cls, email: NewEmail):
+        """Construct an OldEmail from a NewEmail, thus adding an `archive_time`"""
         return cls(
             user_id=email.user_id, typ=email.typ, creation_time=email.creation_time
         )

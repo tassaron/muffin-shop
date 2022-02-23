@@ -26,8 +26,7 @@ from muffin_shop.blueprint import Blueprint
 
 
 import muffin_shop.models.main.models as Models
-
-User = Models.User
+from muffin_shop.models.main.models import User, NewEmail
 
 
 blueprint = Blueprint(
@@ -122,17 +121,14 @@ def change_password(token):
     form = PasswordResetForm()
     if form.validate_on_submit():
         user.update_password(form.password.data)
-        email = Models.NewEmail.query.filter_by(user_id=user.id).first()
+        email = NewEmail.query.filter_by(user_id=user.id).first()
         if email is None:
             current_app.logger.warning(
                 "The password token should expire before the email does... user_id: %s",
                 user.id,
             )
         else:
-            old_email = Models.OldEmail.from_email(email)
-            db.session.add(old_email)
-            db.session.delete(email)
-        db.session.commit()
+            archive_email(email)
         flash("Your password has been updated!", "success")
         return redirect(url_for(".login"))
 
@@ -147,17 +143,14 @@ def verify_email(token):
         flash("That is an invalid or expired token", "warning")
     else:
         user.email_verified = True
-        email = Models.NewEmail.query.filter_by(user_id=user.id).first()
+        email = NewEmail.query.filter_by(user_id=user.id).first()
         if email is None:
             current_app.logger.warning(
                 "The email verification token should expire before the email does... user_id: %s",
                 user.id,
             )
         else:
-            old_email = Models.OldEmail.from_email(email)
-            db.session.add(old_email)
-            db.session.delete(email)
-        db.session.commit()
+            archive_email(email)
         flash("Your email has been verified!", "success")
 
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
