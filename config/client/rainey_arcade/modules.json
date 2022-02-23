@@ -13,8 +13,7 @@
     ".shop": {
         "name": "Shop",
         "env": [
-            "PAYMENT_PROCESSOR",
-            "STRIPE_API_KEY"
+            "PAYMENT_PROCESSOR"
         ],
         "blueprints": [
             "inventory:blueprint",

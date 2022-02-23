@@ -14,6 +14,9 @@ from urllib.parse import quote
 
 
 load_dotenv(".env")
+instance = os.environ.get("INSTANCE", "")
+env_file = f".env{'.' if instance else ''}{instance}"
+load_dotenv(env_file)
 
 
 class ConfigurationError(ValueError):
@@ -150,7 +153,7 @@ def create_env_file() -> bool:
     ensure_env_var("FLASK_APP")
     ensure_env_var("FLASK_ENV")
     ensure_env_var("SECRET_KEY")
-    load_dotenv(".env")
+    load_dotenv(env_file)
     return mutated_env_file
 
 
