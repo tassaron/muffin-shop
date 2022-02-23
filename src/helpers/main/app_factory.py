@@ -52,9 +52,7 @@ def create_app():
         SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
-        SITE_NAME=(
-            website_name := os.environ.get("SITE_NAME", "The Muffin Shop")
-        ),
+        SITE_NAME=(website_name := os.environ.get("SITE_NAME", "The Muffin Shop")),
         SITE_DESCRIPTION=os.environ.get(
             "SITE_DESCRIPTION", "metadescription for your website"
         ),
@@ -84,15 +82,31 @@ def create_app():
         app.logger.warning("Email is disabled because FLASK_ENV != production")
 
     # TODO: remove hardcoded paths
-    app.jinja_loader = PrefixLoader({
-        "": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates"),
-        "about": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/about"),
-        "account": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/account"),
-        "checkout": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"),
-        "huey": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/huey"),
-        "inventory": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/inventory"),
-        "shop": FileSystemLoader(f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/shop"),
-    })
+    app.jinja_loader = PrefixLoader(
+        {
+            "main": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/main"
+            ),
+            "about": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/about"
+            ),
+            "account": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/account"
+            ),
+            "checkout": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"
+            ),
+            "huey": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/huey"
+            ),
+            "inventory": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/inventory"
+            ),
+            "shop": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/shop"
+            ),
+        }
+    )
 
     from muffin_shop.controllers.main.routes import main_routes
 
@@ -155,8 +169,6 @@ def init_app(app, modules: Optional[dict] = None):
     )
 
     from flask_uploads import configure_uploads
-
-    # FIXME
     from muffin_shop.controllers.main.images import Images
 
     configure_uploads(app, Images)

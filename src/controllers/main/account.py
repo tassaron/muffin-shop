@@ -57,7 +57,6 @@ def login():
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
                 elif session["cart"] == {}:
-                    # FIXME main module directly manipulates shop module
                     # cart is empty so copy the other session that has a full cart
                     session["cart"] = restored_session_data[1]["cart"]
                 else:
@@ -208,7 +207,9 @@ def user_dashboard():
                 html = ""
             sections[model.__name__.lower()] = (section_name, html)
     return render_template(
-        "account/view_profile.html", user=flask_login.current_user, profile_sections=sections
+        "account/view_profile.html",
+        user=flask_login.current_user,
+        profile_sections=sections,
     )
 
 

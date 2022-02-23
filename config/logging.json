@@ -13,7 +13,7 @@
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "level": "INFO",
+            "level": "DEBUG",
             "formatter": "short",
             "stream": "ext://flask.logging.wsgi_errors_stream"
         },

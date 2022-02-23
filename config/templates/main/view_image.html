@@ -1,4 +1,4 @@
-{% extends '/base.html' %}
+{% extends 'main/base.html' %}
 {% block title %}View Image{% endblock %}
 {% block content %}
 <nav><a href="{{ url_for('main.upload_images') }}">Upload</a> | <a href="{{ url_for('main.manage_images') }}">Manage</a></nav>

@@ -31,13 +31,13 @@ def upload_images():
         success = True
     else:
         success = False
-    return render_template("/upload_images.html", form=form, success=success)
+    return render_template("main/upload_images.html", form=form, success=success)
 
 
 @main_routes.admin_route("/images")
 def manage_images():
     files_list = get_files()
-    return render_template("/manage_images.html", files_list=files_list)
+    return render_template("main/manage_images.html", files_list=files_list)
 
 
 @main_routes.admin_route("/images/<string:filename>")
@@ -47,7 +47,7 @@ def view_image(filename):
         abort(404)
     file_path = Images.path(filename)
     return render_template(
-        "/view_image.html",
+        "main/view_image.html",
         file_url=url_for("static", filename=f"uploads/images/{filename}"),
     )
 
