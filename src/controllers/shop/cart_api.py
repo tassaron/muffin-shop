@@ -98,7 +98,10 @@ def submit_cart():
     # Record beginning of the transaction for our internal records
     new_transaction = Transaction(
         uuid=payment_session.id,
-        products=str(products),
+        products=[
+            {k: v for k, v in product.items() if k not in ("images", "description")}
+            for product in products
+        ],
         user_id=None
         if not flask_login.current_user.is_authenticated
         else int(flask_login.current_user.get_id()),

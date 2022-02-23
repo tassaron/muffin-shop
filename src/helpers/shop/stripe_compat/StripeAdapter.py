@@ -85,6 +85,7 @@ class StripeAdapter:
             transaction.phone_number = response["customer_details"]["phone"]
             transaction.shipping_address = str(response["shipping"]["address"])
             transaction.customer_name = response["shipping"]["name"]
+            transaction.customer_uuid = response["customer"]
             try:
                 db.session.add(transaction)
                 db.session.commit()

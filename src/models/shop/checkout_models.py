@@ -10,6 +10,7 @@ class Transaction(db.Model):
     price = db.Column(db.Integer, nullable=True)
     shipping_address = db.Column(db.String(1024), nullable=True)
     phone_number = db.Column(db.String(11), nullable=True)
+    email_address = db.Column(db.String(40), nullable=True)
     customer_name = db.Column(db.String(40), nullable=True)
     customer_uuid = db.Column(db.String(60), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
