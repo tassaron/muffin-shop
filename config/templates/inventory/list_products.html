@@ -1,13 +1,47 @@
 {% extends 'main/base.html' %}
 {% block title %}Manage Shop Inventory{% endblock %}
 {% block content %}
-<nav><a href="{{ url_for('inventory.create_product') }}">Create New Product</a></nav>
-
-<ul>
-{% for product in products %}
-    <li><a href="{{ url_for('shop.product_description', title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) }}">{{ product.name }}</a>
-    <a href="{{ url_for('inventory.edit_product', id=product.id) }}">edit</a>
-    <a href="{{ url_for('inventory.delete_product', id=product.id) }}">delete</a></li>
-{% endfor %}
-</ul>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center border-bottom mb-4">
+        <h2 class="heading-section">Manage Shop Inventory</h2>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <nav><a href="{{ url_for('inventory.create_product') }}">Create New Product</a></nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>product</th>
+                        <th>in stock</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                <tr>
+                    <th scope="row">{{product.id}}</th>
+                    <td>
+                        <a href="{{ url_for('inventory.edit_product', id=product.id) }}">{{ product.name }}</a>
+                        <a href="{{ url_for('shop.product_description', title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) }}" class="text-small">(product page)</a>
+                    </td>    
+                    <td>
+                        {{product.stock}}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('inventory.delete_product', id=product.id) }}">delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
