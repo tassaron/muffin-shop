@@ -1,14 +1,18 @@
-from flask import current_app, render_template, flash, redirect, url_for, abort
-from flask_login import current_user
+from flask import render_template, flash, redirect, url_for, abort
 from werkzeug.datastructures import MultiDict
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
-from muffin_shop.forms.shop.inventory_forms import ProductForm
-from muffin_shop.models.shop.inventory_models import Product
+from muffin_shop.forms.shop.inventory_forms import ProductForm, ProductCategoryForm
+from muffin_shop.models.shop.inventory_models import Product, ProductCategory
 import os
 
 
 blueprint = Blueprint("inventory", __name__)
+
+
+##############
+# PRODUCTS
+##############
 
 
 @blueprint.admin_route("")
@@ -77,4 +81,69 @@ def edit_product(id):
     form = ProductForm(formdata=MultiDict(filled_form))
     return render_template(
         "inventory/edit_product.html", title=f"Edit {product.name}", form=form
+    )
+
+
+##############
+# CATEGORIES
+##############
+
+
+@blueprint.admin_route("/categories")
+def list_product_categories():
+    return render_template(
+        "inventory/list_product_categories.html", categories=ProductCategory.query.all()
+    )
+
+
+@blueprint.admin_route("/categories/create", methods=["GET", "POST"])
+def create_product_category():
+    form = ProductCategoryForm()
+    if form.validate_on_submit():
+        kwargs = {
+            "name": form.name.data,
+            "image": form.image.data,
+        }
+        try:
+            category = ProductCategory(**kwargs)
+        except:
+            abort(400)
+        db.session.add(category)
+        db.session.commit()
+        flash(f"Added {category.name} category!", "success")
+        return redirect(url_for(".list_product_categories"))
+    return render_template(
+        "inventory/edit_product_category.html", title="Create New Category", form=form
+    )
+
+
+@blueprint.admin_route("/categories/delete/<int:id>")
+def delete_product_category(id):
+    category = ProductCategory.query.get_or_404(id)
+    flash(f"Category {category.name} deleted!", "danger")
+    db.session.delete(category)
+    db.session.commit()
+    return redirect(url_for(".list_product_categories"))
+
+
+@blueprint.admin_route("/categories/edit/<int:id>", methods=["GET", "POST"])
+def edit_product_category(id):
+    category = ProductCategory.query.get_or_404(id)
+    form = ProductCategoryForm()
+    if form.validate_on_submit():
+        category.name = form.name.data
+        category.image = form.image.data
+        db.session.add(category)
+        db.session.commit()
+        flash(f"Updated {category.name} category!", "success")
+        return redirect(url_for(".list_product_categories"))
+    filled_form = {
+        "name": category.name,
+        "image": category._image,
+    }
+    form = ProductCategoryForm(formdata=MultiDict(filled_form))
+    return render_template(
+        "inventory/edit_product_category.html",
+        title=f"Edit {category.name} Category",
+        form=form,
     )

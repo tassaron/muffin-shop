@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% block title %}Manage Shop Inventory{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center border-bottom mb-4">
+        <h2 class="heading-section">Manage Product Categories</h2>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <nav><a href="{{ url_for('inventory.create_product_category') }}">Create New Category</a></nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                <tr>
+                    <th scope="row">{{category.id}}</th>
+                    <td>
+                        <a href="{{ url_for('inventory.edit_product_category', id=category.id) }}">{{ category.name }}</a>
+                        <a href="{{ url_for('shop.shop_category_index', title=category.name|lower|replace(" ","")|urlencode, category_id=category.id|obfuscate) }}" class="text-small">(category page)</a>
+                    </td>    
+                    <td>
+                        <a href="{{ url_for('inventory.delete_product_category', id=category.id) }}">delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

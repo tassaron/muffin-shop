@@ -15,3 +15,9 @@ class ProductForm(FlaskForm):
         "category", validators=[DataRequired(), NumberRange(min=1)]
     )
     submit = SubmitField("Submit")
+
+
+class ProductCategoryForm(FlaskForm):
+    name = StringField("name", validators=[DataRequired(), Length(min=1, max=20)])
+    image = StringField("image", validators=[DataRequired(), Length(min=5, max=36)])
+    submit = SubmitField("Submit")
