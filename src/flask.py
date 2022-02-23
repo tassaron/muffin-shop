@@ -33,18 +33,12 @@ class Flask(flask.Flask):
 
     def register_modules(app, modules):
         root_blueprint, others = app.import_modules(modules)
-        #root_blueprint.static_folder = 
-        #root_blueprint.template_url_path = (
-        #    f"{app.config['CONFIG_PATH']}/templates/{root_blueprint.name}"
-        #)
         app.register_blueprint(root_blueprint)
         if not root_blueprint.is_registered_index:
             raise ConfigurationError(
                 "The root blueprint failed to register. It must have the same name as its Python module."
             )
         for blueprint in (*list(others.values()),):
-            #blueprint.static_folder = f"{os.getcwd()}/{app.config['CONFIG_PATH']}/static"
-            #blueprint.template_url_path = f"{app.config['CONFIG_PATH']}/templates{f'/{blueprint.name}' if blueprint.name != 'main' else ''}"
             app.register_blueprint(blueprint, url_prefix=f"/{blueprint.name}")
         for blueprint_index, tup in app.blueprint_index.items():
             endpoint, f, options = tup
