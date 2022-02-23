@@ -2,7 +2,6 @@
 Handles logging in/registering/editing a user account
 """
 from flask import (
-    Blueprint,
     flash,
     request,
     session,
@@ -23,6 +22,7 @@ from muffin_shop.forms.main.forms import (
     PasswordResetForm,
 )
 from muffin_shop.helpers.main.email import *
+from muffin_shop.blueprint import Blueprint
 
 
 import muffin_shop.models.main.models as Models
@@ -250,3 +250,9 @@ def register():
         return redirect(url_for("account.login"))
 
     return render_template("account/register.html", form=form)
+
+
+@blueprint.admin_route("")
+def admin_users_list():
+    users = User.query.all()
+    return render_template("account/admin_users.html", users=users)

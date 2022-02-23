@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block title %}Users of {{site_name}}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Users</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>email</th>
+                        <th>verified</th>
+                        <th>admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                <tr>
+                    <th scope="row">{{user.id}}</th>
+                    <td>
+                        <a href="{{ url_for('email.admin_email_list', user_id=user.id) }}">{{user.email}}</a>
+                    </td>    
+                    <td>
+                        {{user.email_verified}}
+                    </td>
+                    <td>
+                        {{user.is_admin}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
