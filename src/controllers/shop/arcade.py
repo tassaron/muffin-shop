@@ -1,7 +1,7 @@
 """
 This shop has an arcade inside. How cool!
 """
-from flask import session, render_template, abort
+from flask import session, render_template, abort, request
 from muffin_shop.blueprint import Blueprint
 
 
@@ -44,3 +44,12 @@ def game_page(filename):
     return render_template(
         "arcade/game_page.html", title=arcade_games[filename]["title"], filename=filename, style=f"{arcade_games['style']} {arcade_games[filename]['style']}"
     )
+
+
+@blueprint.route("/token/submit", methods=["POST"])
+def token_submit():
+    data = request.get_json()
+    if data["filename"] == "rodents-revenge":
+        return "", 204
+    else:
+        abort(400)

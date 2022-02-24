@@ -245,4 +245,6 @@ span.cart-label {
 .hidden-arcade-btn {
     display: none;
     position: absolute;
+    width: 33%;
+    height: 4rem;
 }
