@@ -1,8 +1,14 @@
 {% extends 'main/base.html' %}
-{% block title %}{{ site_name }}{% endblock %}
+{% block title %}{{ title }} - {{ site_name }}{% endblock %}
 
 {% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center border-bottom mb-4">
+        <h2 id="game_title" data-filename="{{ filename }}" class="heading-section">{{ title }}</h2>
+    </div>
+</div>
 <div class="row">
+    <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
     <div id="game" style="{{ style }}"></div>
     <button type="button" id="pause_button">Pause</button>
 </div>

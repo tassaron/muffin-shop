@@ -241,3 +241,8 @@ span.cart-label {
 .table tbody td {
     padding-top: 0.3rem;
 }
+
+.hidden-arcade-btn {
+    display: none;
+    position: absolute;
+}

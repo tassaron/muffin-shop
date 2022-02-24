@@ -5,6 +5,19 @@ from flask import session, render_template, abort
 from muffin_shop.blueprint import Blueprint
 
 
+arcade_games = {
+    "style": "--bs-gutter-x: 0; margin:auto; position: relative;",
+    "speed-limit": {
+        "title": "Speed Limit",
+        "style": "width: 640px; height: 598px;",
+    },
+    "rodents-revenge": {
+        "title": "Rodent's Revenge",
+        "style": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
+    },
+}
+
+
 blueprint = Blueprint(
     "arcade",
     __name__,
@@ -24,17 +37,10 @@ def create_arcade_session():
         session["arcade_tokens"] = 100
 
 
-styles = {
-    "speed-limit": "width: 640px; height: 598px;",
-    "rodents-revenge": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
-}
-global_style = "--bs-gutter-x: 0; margin:auto;"
-
-
 @blueprint.route("/game/<filename>")
 def game_page(filename):
     if filename not in ("rodents-revenge", "speed-limit"):
         abort(404)
     return render_template(
-        "arcade/game_page.html", filename=filename, style=f"{global_style} {styles[filename]}"
+        "arcade/game_page.html", title=arcade_games[filename]["title"], filename=filename, style=f"{arcade_games['style']} {arcade_games[filename]['style']}"
     )
