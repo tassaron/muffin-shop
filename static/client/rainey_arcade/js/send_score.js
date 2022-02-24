@@ -8,7 +8,11 @@ function send_score(filename, score, token) {
             "content-type": "application/json",
             "X-CSRFToken": token,
         }),
-    }).then((response) => {
-        if (response.ok) console.log("success");
+    }).then(
+        response => response.ok ? response.json() : null
+    ).then((response) => {
+        if (!response) return;
+        const tokenNode = document.getElementById("arcade_tokens");
+        tokenNode.innerText = Number(tokenNode.innerText) + response["payout"];
     });
 }
