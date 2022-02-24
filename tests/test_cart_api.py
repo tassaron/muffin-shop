@@ -9,6 +9,7 @@ import pytest
 
 @pytest.fixture
 def client():
+    global app
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
@@ -134,3 +135,17 @@ def test_remove_from_cart_api_baddata(client):
         content_type="application/json",
     )
     assert resp.status_code == 400
+
+
+def test_csrf_protection_cart_api(client):
+    global app
+    app.config["WTF_CSRF_ENABLED"] = True
+    try:
+        resp = client.post(
+            "/cart/add",
+            data=json.dumps({"id": 1, "quantity": 1}),
+            content_type="application/json",
+        )
+    except KeyError as e:
+        # cart should be missing from the session if csrf has failed, as it should
+        assert str(e) == "'cart'"
