@@ -1,14 +1,22 @@
 {
     "main": {
         "name": "Home",
-        "module": ".shop",
-        "navigation": [".about"]
+        "module": ".about",
+        "navigation": [".arcade", ".shop"]
     },
     ".about": {
         "name": "About",
         "blueprints": ["about:blueprint"],
         "root": "about",
         "index": "about.about_page"
+    },
+    ".arcade": {
+        "name": "Arcade",
+        "blueprints": [
+            "arcade:blueprint"
+        ],
+        "root": "arcade",
+        "index": "arcade.arcade_index"
     },
     ".shop": {
         "name": "Shop",
@@ -19,8 +27,7 @@
             "inventory:blueprint",
             "shop:blueprint",
             "cart_api:blueprint",
-            "checkout:blueprint",
-            "arcade:blueprint"
+            "checkout:blueprint"
         ],
         "root": "shop",
         "index": "shop.index"

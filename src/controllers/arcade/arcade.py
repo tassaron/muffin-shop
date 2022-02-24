@@ -1,5 +1,5 @@
 """
-This shop has an arcade inside. How cool!
+Root blueprint of the arcade module
 """
 from flask import session, render_template, abort, request
 from muffin_shop.blueprint import Blueprint
@@ -38,6 +38,11 @@ def create_arcade_session():
         session["arcade_tokens"] = 100
 
 
+@blueprint.index_route()
+def arcade_index():
+    return ""
+
+
 @blueprint.route("/game/<filename>")
 def game_page(filename):
     if filename not in ("rodents-revenge", "speed-limit"):
@@ -56,7 +61,9 @@ def token_submit():
     if data["filename"] not in arcade_games:
         abort(400)
     try:
-        new_score = int(int(data["score"]) * arcade_games[data["filename"]]["multiplier"])
+        new_score = int(
+            int(data["score"]) * arcade_games[data["filename"]]["multiplier"]
+        )
         session["arcade_tokens"] += new_score
         return {"payout": new_score}
     except (KeyError, ValueError, TypeError):
