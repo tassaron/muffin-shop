@@ -25,17 +25,16 @@ def create_arcade_session():
 
 
 styles = {
-    "breakout": "",
-    "jezzball": "",
-    "rodents-revenge": "--bs-gutter-x:0;margin:auto; background:purple; width: 912px; height: 1036px; border: 2px solid black;",
-    "speed-limit": "",
+    "speed-limit": "width: 640px; height: 598px;",
+    "rodents-revenge": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
 }
+global_style = "--bs-gutter-x: 0; margin:auto;"
 
 
 @blueprint.route("/game/<filename>")
 def game_page(filename):
-    if filename not in ("breakout", "jezzball", "rodents-revenge", "speed-limit"):
+    if filename not in ("rodents-revenge", "speed-limit"):
         abort(404)
     return render_template(
-        "arcade/game_page.html", filename=filename, style=styles[filename]
+        "arcade/game_page.html", filename=filename, style=f"{global_style} {styles[filename]}"
     )
