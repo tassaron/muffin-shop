@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div id="game" style="{{ style }}"></div>
+    <button type="button" id="pause_button">Pause</button>
+</div>
+<div class="row">
+    <a href="https://github.com/tassaron/{{ filename }}">source code on github</a>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="module" src="/static/client/rainey_arcade/js/{{ filename }}/main.js"></script>
+{% endblock %}

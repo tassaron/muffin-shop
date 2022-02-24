@@ -108,6 +108,9 @@ def create_app():
             "shop": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/shop"
             ),
+            "arcade": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/arcade"
+            ),
         }
     )
 
