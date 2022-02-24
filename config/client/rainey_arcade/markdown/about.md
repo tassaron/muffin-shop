@@ -1,1 +1,1 @@
-Write your special about page text here.
+Hi! I'm Brianna Rainey, a programmer from Ontario. I've been coding for a long time because I like making things; this website is a portfolio to show off some stuff I'm proud of. Check out the <a href="/arcade" class="btn btn-secondary">ARCADE</a> and submit your score to collect _tokens!_
