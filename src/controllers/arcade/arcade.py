@@ -3,16 +3,19 @@ Root blueprint of the arcade module
 """
 from flask import session, render_template, abort, request
 from muffin_shop.blueprint import Blueprint
+from muffin_shop.helpers.main.markdown import render_markdown
 
 
 arcade_games = {
     "speed-limit": {
         "title": "Speed Limit",
+        "blurb": "Pass cars while obeying the speed limit! 🛑",
         "style": "width: 640px; height: 598px;",
         "multiplier": 0.01,
     },
     "rodents-revenge": {
         "title": "Rodent's Revenge",
+        "blurb": "Push crates to trap the cats and collect cheese",
         "style": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
         "multiplier": 0.1,
     },
@@ -40,7 +43,11 @@ def create_arcade_session():
 
 @blueprint.index_route()
 def arcade_index():
-    return ""
+    return render_template(
+        "arcade/arcade_index.html",
+        arcade_description=render_markdown("arcade.md"),
+        games=arcade_games.items(),
+    )
 
 
 @blueprint.route("/game/<filename>")

@@ -1,0 +1,39 @@
+{% set selected = 4 %}
+{% extends 'main/base.html' %}
+{% block title %}{{ site_name }}{% endblock %}
+{% block content %}
+<div class="ms-1 row">
+    <div class="col-lg-4 d-none d-lg-block portrait-container"></div>
+    <div class="col col-lg-8 my-4 p-5 fs-5 lh-lg">
+        {{ arcade_description|safe }}
+    </div>
+</div>
+<div class="row" style="min-height: em">
+    <div class="col-4"></div>
+    <div class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-5">
+        Games
+    </div>
+    <div class="col-4"></div>
+</div>
+<div class="row">
+    {% for filename, game in games %}
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div tabindex="0" class="card h-100 floating-product-card">
+            <a class="product-link" href="{{ url_for('arcade.game_page', filename=filename) }}">
+                <img
+                    class="card-img-top"
+                    src="/static/client/rainey_arcade/img/projects/{{filename}}500x325.png"
+                    alt="{{game.title}}"
+                />
+                <div class="card-body">
+                    <h4 class="card-title">{{game.title}}</h4>
+                    <p class="card-text">
+                        {{game.blurb}}
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,1 @@
+These are some games I've made using vanilla JavaScript and HTML5 canvas. They're listed in the order I created them. I made a [template for making these games](https://github.com/tassaron/canvas-game). Feel free to use it yourself!

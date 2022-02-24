@@ -3,6 +3,10 @@
     --secondary-font: sans-serif;
 }
 
+a {
+    color: rgb(36, 1, 36);
+}
+
 html {
     background-color: plum;
 }
