@@ -30,6 +30,7 @@
             "checkout:blueprint"
         ],
         "root": "shop",
-        "index": "shop.index"
+        "index": "shop.index",
+        "ignore": ["index"]
     }
 }

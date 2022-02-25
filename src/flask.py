@@ -35,13 +35,13 @@ class Flask(flask.Flask):
             huey.immediate = True
 
     def register_modules(app, modules):
-        root_blueprint, others = app.import_modules(modules)
+        root_blueprint, other_blueprints = app.import_modules(modules)
         app.register_blueprint(root_blueprint)
         if not root_blueprint.is_registered_index:
             raise ConfigurationError(
                 "The root blueprint failed to register. It must have the same name as its Python module."
             )
-        for blueprint in (*list(others.values()),):
+        for blueprint in (*list(other_blueprints.values()),):
             app.register_blueprint(blueprint, url_prefix=f"/{blueprint.name}")
         for blueprint_index, tup in app.blueprint_index.items():
             endpoint, f, options = tup
@@ -49,6 +49,7 @@ class Flask(flask.Flask):
         app.blueprint_index = {}
         for admin_route in app.admin_routes:
             admin_route(app)
+        app.remove_ignored_routes()
 
     def import_modules(app, modules):
         """
@@ -111,6 +112,17 @@ class Flask(flask.Flask):
         )
         return (root_blueprint, blueprints)
 
+    def remove_ignored_routes(app):
+        modules_with_ignored_routes = [module for module in app.modules.values() if 'ignore' in module]
+        if not modules_with_ignored_routes:
+            return
+        for module in modules_with_ignored_routes:
+            for rule in app.url_map._rules[:]:
+                if rule.endpoint in module['ignore']:
+                    app.url_map._rules.remove(rule)
+                    del app.url_map._rules_by_endpoint[rule.endpoint]
+                    del app.view_functions[rule.endpoint]
+        app.url_map.update()
 
 def parse_pkg(string) -> tuple:
     p: list = string.split(".", 1)
