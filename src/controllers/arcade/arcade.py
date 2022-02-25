@@ -13,26 +13,26 @@ arcade_games = {
         "title": "Breakout",
         "blurb": "Bounce the ball off your paddle to destroy the bricks. Collect powerups!",
         "style": "width: 640px; height: 480px;",
-        "multiplier": 0.5,
+        "multiplier": 0.02,
     },
     "jezzball": {
         "title": "Jezzball",
         "blurb": "Place walls to entrap the balls and flood-fill the level",
         "style": "width: 720px; height: 640px;",
-        "multiplier": 0.2,
+        "multiplier": 0.02,
         "extra_html": "<button style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>",
     },
     "speed-limit": {
         "title": "Speed Limit",
         "blurb": "Pass cars while obeying the speed limit! 🛑",
         "style": "width: 640px; height: 598px;",
-        "multiplier": 0.01,
+        "multiplier": 0.0001,
     },
     "rodents-revenge": {
         "title": "Rodent's Revenge",
         "blurb": "Push crates to trap the cats and collect cheese",
         "style": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
-        "multiplier": 0.1,
+        "multiplier": 0.01,
     },
 }
 
