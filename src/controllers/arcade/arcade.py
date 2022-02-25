@@ -7,6 +7,19 @@ from muffin_shop.helpers.main.markdown import render_markdown
 
 
 arcade_games = {
+    "breakout": {
+        "title": "Breakout",
+        "blurb": "Bounce the ball off your paddle to destroy the bricks. Collect powerups!",
+        "style": "width: 640px; height: 480px;",
+        "multiplier": 0.5,
+    },
+    "jezzball": {
+        "title": "Jezzball",
+        "blurb": "Place walls to entrap the balls and flood-fill the level",
+        "style": "width: 720px; height: 640px;",
+        "multiplier": 0.2,
+        "extra_html": "<button id='swap_button' type='button'>Swap Direction</button",
+    },
     "speed-limit": {
         "title": "Speed Limit",
         "blurb": "Pass cars while obeying the speed limit! 🛑",
@@ -52,13 +65,16 @@ def arcade_index():
 
 @blueprint.route("/game/<filename>")
 def game_page(filename):
-    if filename not in ("rodents-revenge", "speed-limit"):
+    if filename not in arcade_games:
         abort(404)
     return render_template(
         "arcade/game_page.html",
         title=arcade_games[filename]["title"],
         filename=filename,
         style=f"--bs-gutter-x: 0; margin:auto; position: relative; {arcade_games[filename]['style']}",
+        extra_html=""
+        if "extra_html" not in arcade_games[filename]
+        else arcade_games[filename]["extra_html"],
     )
 
 

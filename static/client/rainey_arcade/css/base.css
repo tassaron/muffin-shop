@@ -10,3 +10,19 @@ a {
 html {
     background-color: plum;
 }
+
+#ui-layer {
+    position: absolute;
+    z-index: 3;
+    border: 2px black solid;
+}
+
+#slow-layer {
+    position: absolute;
+    z-index: 2;
+}
+
+#game-layer {
+    position: absolute;
+    z-index: 1;
+}
