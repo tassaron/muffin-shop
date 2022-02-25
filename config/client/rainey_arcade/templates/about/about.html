@@ -4,31 +4,75 @@
 {% block content %}
 <div class="ms-1 row" style="min-height: 33vh">
     <div class="col-lg-4 d-none d-lg-block portrait-container"></div>
-    <div class="col col-lg-8 my-4 p-5 fs-5 lh-lg">
-        {{ about|safe }}
+        <div class="col col-lg-8 my-4 p-5 fs-5 lh-lg">
+            {{ about|safe }}
+        </div>
     </div>
-</div>
 
-<div class="row" style="min-height: 2em">
-    <div class="col-4"></div>
-    <div class="border-bottom mt-5 mb-1 text-center product-title p-1 fs-5">
-        Some software I've made that isn't in the arcade:
+    <div class="row" style="min-height: 2em">
+        <div class="col-4"></div>
+        <div class="border-bottom mt-5 mb-1 text-center product-title p-1 fs-5">
+            Some software I've made that isn't in the arcade:
+        </div>
+        <div class="col-4"></div>
     </div>
-    <div class="col-4"></div>
-</div>
-
-<div class="row-12">
-  <div class="col-lg-3 col-md-6 mb-4">
-    <div class="card h-100">
-      <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/funtimes500x325.png" alt="Funtimes">
-      <div class="card-body">
-        <h4 class="card-title">Batch File Adventure Game as a webapp</h4>
-        <p class="card-text">This Flask application interprets the original batch files I wrote in 2008!</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://bat.tassaron.com" class="btn btn-secondary">Play Now</a>
-      </div>
+    
+    <div class="row">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div tabindex="0" class="card h-100 floating-product-card">
+                <a href="https://github.com/tassaron/muffin-shop" class="product-link">
+                    <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/rainbowfarm500x325.png" alt="The Rainbow Farm">
+                    <div class="card-body">
+                        <h4 class="card-title">Website for The Rainbow Farm</h4>
+                        <p class="card-text">An ecommerce site created for a local business. It has a shopping cart system, inventory tracking for dealing with limited stock, and integration with Stripe</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div tabindex="0" class="card h-100 floating-product-card">
+                <a href="https://github.com/tassaron/copper-lamp" class="product-link">
+                    <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/copperlamp500x325.png" alt="The Rainbow Farm">
+                    <div class="card-body">
+                        <h4 class="card-title">Copper Lamp (Minecraft Mod)</h4>
+                        <p class="card-text">My first Java project. This adds 3 new blocks to Minecraft 1.18, each adding new mechanics to the game.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div tabindex="0" class="card h-100 floating-product-card">
+                <a href="https://bat.tassaron.com" class="product-link">
+                    <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/funtimes500x325.png" alt="Funtimes">
+                    <div class="card-body">
+                        <h4 class="card-title">Batch File Interpreter for an Adventure Game</h4>
+                        <p class="card-text">Python code interprets the original batch files I wrote in 2008! Play it in a web browser or a terminal</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div tabindex="0" class="card h-100 floating-product-card">
+                <a href="https://github.com/djfun/audio-visualizer-python/tree/feature-newgui" class="product-link">
+                    <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/pyaudiovis500x325.png" alt="Funtimes">
+                    <div class="card-body">
+                        <h4 class="card-title">Python Audio Visualizer (Qt)</h4>
+                        <p class="card-text">A cross-platform desktop app for generating videos with visualizations based on an input audio file. Useful for podcasters</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div tabindex="0" class="card h-100 floating-product-card">
+                <a href="https://github.com/tassaron/tabletop-story" class="product-link">
+                    <img class="card-img-top" src="/static/client/rainey_arcade/img/projects/tabletopstory500x325.png" alt="Funtimes">
+                    <div class="card-body">
+                        <h4 class="card-title">Tabletop Story</h4>
+                        <p class="card-text">This webapp helps you play Dungeons & Dragons. Make an account, make characters, and tell a story with friends</p>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}
