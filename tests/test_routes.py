@@ -34,8 +34,8 @@ def client():
 
 
 def test_shop_nav_link(client):
-    resp = client.get("/all")
-    assert nav_selected_bytes("/all") in resp.data
+    resp = client.get("/products")
+    assert nav_selected_bytes("/products") in resp.data
     assert resp.status_code == 200
 
 

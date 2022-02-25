@@ -104,7 +104,7 @@ def product_description(title, product_id):
     )
 
 
-@blueprint.route("/all")
+@blueprint.route("/products")
 def all_products():
     products = Product.query.filter(Product.stock > 0).all()
     for product in products:
