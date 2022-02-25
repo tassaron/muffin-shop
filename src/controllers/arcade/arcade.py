@@ -47,6 +47,7 @@ blueprint = Blueprint(
 def inject_arcade_tokens():
     return {
         "arcade_tokens": session["arcade_tokens"],
+        "mobile_friendly": True,
     }
 
 
@@ -77,6 +78,7 @@ def game_page(filename):
         extra_html=""
         if "extra_html" not in arcade_games[filename]
         else arcade_games[filename]["extra_html"],
+        mobile_friendly=False,
     )
 
 
