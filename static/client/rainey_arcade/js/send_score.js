@@ -1,5 +1,5 @@
 function send_score(filename, score, token) {
-    fetch("/arcade/token/submit", {
+    fetch("/token/submit", {
         method: "POST",
         credentials: "same-origin",
         body: JSON.stringify({ filename: filename, score: score }),
@@ -14,5 +14,6 @@ function send_score(filename, score, token) {
         if (!response) return;
         const tokenNode = document.getElementById("arcade_tokens");
         tokenNode.innerText = Number(tokenNode.innerText) + response["payout"];
+        tokenNode.parentElement.classList.remove("d-none");
     });
 }
