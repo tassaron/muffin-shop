@@ -13,8 +13,9 @@
     </div>
 </div>
 <div class="row">
-    <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
-    <div id="game" style="{{ style }}"></div>
+    <div id="game" style="{{ style }}">
+        <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
+    </div>
     <div class="d-flex align-items-center justify-content-center">
         <button type="button" id="pause_button">Pause</button>
         {{ extra_html|safe }}
