@@ -1,6 +1,7 @@
 :root {
     --primary-font: "Noto Serif", serif;
     --secondary-font: "Roboto Serif", sans-serif;
+    --nav-hover-color: blue;
 }
 
 body {
@@ -212,7 +213,7 @@ span.cart-label {
 
 .cart-link:hover,
 .cart-link:focus {
-    color: blue;
+    color: var(--nav-hover-color);
     text-decoration: none;
 }
 
