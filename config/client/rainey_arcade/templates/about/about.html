@@ -8,9 +8,9 @@
         <div class="img-fluid" style="margin:auto; width: 240px; height: 240px;" id="game"></div>
         <div class="mt-1 d-flex align-items-center justify-content-center">
             <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
-                <button type="button" id="pause_button">Pause</button>
-                <button id="swap_button" type="button">Swap Direction</button><br>
-                <button type="submit">Large Version</button>
+                <button type="button" id="pause_button">Pause</button><br>
+                <button class="mt-2" id="swap_button" type="button">Swap Direction</button>
+                <button class="mt-2" type="submit">Large Version</button>
             </form>
         </div>
     </div>

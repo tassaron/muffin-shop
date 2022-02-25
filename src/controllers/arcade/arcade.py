@@ -18,7 +18,7 @@ arcade_games = {
         "blurb": "Place walls to entrap the balls and flood-fill the level",
         "style": "width: 720px; height: 640px;",
         "multiplier": 0.2,
-        "extra_html": "<button id='swap_button' type='button'>Swap Direction</button",
+        "extra_html": "<button style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>",
     },
     "speed-limit": {
         "title": "Speed Limit",
@@ -51,7 +51,7 @@ def inject_arcade_tokens():
 @blueprint.before_app_request
 def create_arcade_session():
     if "arcade_tokens" not in session:
-        session["arcade_tokens"] = 100
+        session["arcade_tokens"] = 0
 
 
 @blueprint.index_route()

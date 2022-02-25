@@ -30,3 +30,12 @@ html {
 .footer a {
     color: #ccc;
 }
+
+.product-card {
+    background: gainsboro;
+}
+
+#pause_button {
+    width: 6rem;
+    height: 3rem;
+}

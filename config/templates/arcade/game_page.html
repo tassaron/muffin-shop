@@ -3,6 +3,9 @@
 {% block title %}{{ title }} - {{ site_name }}{% endblock %}
 
 {% block content %}
+<div class="d-flex">
+    <a class="btn btn-secondary" href="{{ url_for('arcade_index') }}">❮ Back</a>
+</div>
 <div class="row justify-content-center">
     <div class="col-md-6 text-center border-bottom mb-4">
         <h2 id="game_title" data-filename="{{ filename }}" class="heading-section">{{ title }}</h2>
@@ -16,8 +19,8 @@
         {{ extra_html|safe }}
     </div>
 </div>
-<div class="row">
-    <a href="https://github.com/tassaron/{{ filename }}">source code on github</a>
+<div class="p-4 text-center">
+    <a class="nav-link" href="https://github.com/tassaron/{{ filename }}">source code on github</a>
 </div>
 {% endblock %}
 
