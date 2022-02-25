@@ -1,0 +1,34 @@
+{% set selected = 4 %}
+{% extends 'main/base.html' %}
+{% block title %}Leaderboard - {{site_name}}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-2">
+        <h2 class="heading-section">Who has the most tokens?</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-wrap">
+            <table class="table table-bordered table-hover shadow">
+                <thead>
+                    <tr>
+                        <th>user</th>
+                        <th>tokens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for id, score in users %}
+                <tr>
+                    <th scope="row">{{id}}</th>
+                    <td>
+                        {{score}}
+                    </td>    
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

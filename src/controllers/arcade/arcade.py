@@ -1,9 +1,11 @@
 """
 Root blueprint of the arcade module
 """
-from flask import session, render_template, abort, request
+from flask import session, render_template, abort, request, current_app
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.markdown import render_markdown
+from muffin_shop.models.main.models import User
+from muffin_shop.controllers.shop.shop import obfuscate_number
 
 
 arcade_games = {
@@ -91,3 +93,14 @@ def token_submit():
         return {"payout": new_score}
     except (KeyError, ValueError, TypeError):
         abort(400)
+
+
+@blueprint.route("/token/leaderboard")
+def arcade_token_leaderboard():
+    users = User.query.all()
+    server_side_sessions = [current_app.session_interface.get_user_session(user.id) for user in users]
+    server_side_sessions.remove(None)
+    return render_template(
+        "arcade/token_leaderboard.html",
+        users=[(obfuscate_number(int(sss[1]["_user_id"])), sss[1]["arcade_tokens"]) for sss in server_side_sessions]
+    )

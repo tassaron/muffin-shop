@@ -7,6 +7,7 @@ from flask.sessions import SessionInterface
 from flask.sessions import SessionMixin
 from itsdangerous import Signer, BadSignature, want_bytes
 from werkzeug.datastructures import CallbackDict
+from typing import Tuple, Optional
 
 
 class ServerSideSession(CallbackDict, SessionMixin):
@@ -83,7 +84,7 @@ class TassaronSessionInterface(SessionInterface):
             app.secret_key, salt=f"{app.unique_name}_session", key_derivation="hmac"
         )
 
-    def get_user_session(self, id):
+    def get_user_session(self, id: int) -> Optional[Tuple[str, dict]]:
         """Given a user id, return None or tuple of (session_id, unpickled session data)"""
         session = self.sql_session_model.query.filter_by(user_id=id).first()
         if session is not None:
@@ -92,7 +93,7 @@ class TassaronSessionInterface(SessionInterface):
                 self.serializer.loads(want_bytes(session.data)),
             )
 
-    def set_user_session(self, sid, uid):
+    def set_user_session(self, sid: str, uid: int) -> None:
         """Find existing session and assign a user_id to it. Can also set to None"""
         store_id = self.key_prefix + sid
         existing_session = self.sql_session_model.query.filter_by(
