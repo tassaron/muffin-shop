@@ -8,7 +8,7 @@ a {
 }
 
 html {
-    background-color: plum;
+    background-color: #4d417a;
 }
 
 #ui-layer {
@@ -25,4 +25,8 @@ html {
 #game-layer {
     position: absolute;
     z-index: 1;
+}
+
+.footer a {
+    color: #ccc;
 }
