@@ -2,12 +2,25 @@
 {% block title %}{{ site_name }}{% endblock %}
 
 {% block content %}
-<div class="ms-1 row" style="min-height: 33vh">
-    <div class="col-lg-4 d-none d-lg-block portrait-container"></div>
-        <div class="col col-lg-8 my-4 p-5 fs-5 lh-lg">
-            {{ about|safe }}
+<div class="ms-1 row" style="min-height: 25vh">
+    <div class="col col-lg-4">
+        <h2 class="text-center product-title">Featured Game:</h2>
+        <div class="img-fluid" style="margin:auto; width: 240px; height: 240px;" id="game"></div>
+        <div class="mt-1 d-flex align-items-center justify-content-center">
+            <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
+                <button type="button" id="pause_button">Pause</button>
+                <button id="swap_button" type="button">Swap Direction</button><br>
+                <button type="submit">Large Version</button>
+            </form>
         </div>
     </div>
+    {% for statement in about.split(".") %}
+    <div class="col-6 my-4 p-lg-5 p-md-3 p-3 fs-md-5 fs-5 lh-lg">
+        {{ statement|safe }}.
+    </div>
+    {% endfor %}
+</div>
+<div class="row">
 
     <div class="row" style="min-height: 2em">
         <div class="col-4"></div>
@@ -75,4 +88,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="module" src="/static/client/rainey_arcade/js/jezzball-mini/main.js"></script>
 {% endblock %}
