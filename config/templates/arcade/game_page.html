@@ -3,6 +3,7 @@
 {% block title %}{{ title }} - {{ site_name }}{% endblock %}
 
 {% block content %}
+{% include 'arcade/token_alert.html' %}
 <div class="d-flex">
     <a class="btn btn-secondary" href="{{ url_for('arcade_index') }}">❮ Back</a>
 </div>

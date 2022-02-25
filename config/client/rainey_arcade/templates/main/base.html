@@ -51,7 +51,6 @@
                         <li class="nav-item"><a href="{{ url_for('account.user_dashboard') }}" class="nav-link{% if selected == 3 %} shadow-sm active" aria-current="page{% endif %}">Account</a></li>
                         {% endif %}
                         <li class="nav-item">
-                            Tokens: <span id="arcade_tokens">{{ arcade_tokens }}</span>
                             <a class="nav-link cart-link" href="{{ url_for('shop.view_cart') }}">
                                 <img src={{url_for('static', filename='img/cart_black.png')}} id="cart-icon">
                                     <span class="cart-label" id="cart-number">{{no_of_items}}</span>
