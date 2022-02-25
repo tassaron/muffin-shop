@@ -11,6 +11,7 @@
 1. Clone repo from GitHub: `git clone https://github.com/tassaron/muffin-shop /srv/website`
 1. Make Python virtual environment: `cd ~website; python3 -m venv env`
 1. Activate virtual environment: `source env/bin/activate`
+1. Install dependencies needed to compile uWSGI: `apt install build-essential gcc python3-dev`
 1. Install using Pip: `pip install .`
 1. Edit your domain name into this file: `nano install/website.nginx`
   1. Standard practice is to name Nginx config files after the domain name, but it's not necessary
