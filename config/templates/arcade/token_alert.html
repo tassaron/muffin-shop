@@ -1,1 +1,1 @@
-<div class="alert alert-success {% if arcade_tokens < 1 %}d-none{% endif %}">You've collected <span id="arcade_tokens">{{ arcade_tokens }}</span> arcade tokens! Go <a href="{{ url_for('shop.all_products') }}">claim some prizes!</a></div>
+<div class="alert alert-success {% if arcade_tokens < 1 %}d-none{% endif %}">You've collected <span id="arcade_tokens">{{ arcade_tokens }}</span> arcade <span id="arcade_tokens_word">token{% if arcade_tokens != 1 %}s{% endif %}</span>! Go <a href="{{ url_for('shop.all_products') }}">claim some prizes!</a></div>

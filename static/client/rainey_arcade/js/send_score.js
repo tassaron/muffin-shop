@@ -13,7 +13,18 @@ function send_score(filename, score, token) {
     ).then((response) => {
         if (!response || response["payout"] < 1) return;
         const tokenNode = document.getElementById("arcade_tokens");
-        tokenNode.innerText = Number(tokenNode.innerText) + response["payout"];
+        const old_value = Number(tokenNode.innerText);
+        const new_value = old_value + response["payout"];
+        tokenNode.innerText = new_value;
+        if (new_value == 1 || old_value == 1) {
+            // pluralize/depluralize the human language (a strange one indeed)
+            const tokenWordNode = document.getElementById("arcade_tokens_word");
+            tokenWordNode.innerText = new_value == 1 ? (
+                tokenWordNode.innerText.substring(0, tokenWordNode.innerText.length - 1)
+            ) : (
+                tokenWordNode.innerText + "s"
+            )
+        }
         tokenNode.parentElement.classList.remove("d-none");
     });
 }
