@@ -8,35 +8,6 @@ from muffin_shop.models.main.models import User
 from muffin_shop.controllers.shop.shop import obfuscate_number
 
 
-arcade_games = {
-    "breakout": {
-        "title": "Breakout",
-        "blurb": "Bounce the ball off your paddle to destroy the bricks. Collect powerups!",
-        "style": "width: 640px; height: 480px;",
-        "multiplier": 0.02,
-    },
-    "jezzball": {
-        "title": "Jezzball",
-        "blurb": "Place walls to entrap the balls and flood-fill the level",
-        "style": "width: 720px; height: 640px;",
-        "multiplier": 0.02,
-        "extra_html": "<button style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>",
-    },
-    "speed-limit": {
-        "title": "Speed Limit",
-        "blurb": "Pass cars while obeying the speed limit! 🛑",
-        "style": "width: 640px; height: 598px;",
-        "multiplier": 0.0001,
-    },
-    "rodents-revenge": {
-        "title": "Rodent's Revenge",
-        "blurb": "Push crates to trap the cats and collect cheese",
-        "style": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
-        "multiplier": 0.01,
-    },
-}
-
-
 blueprint = Blueprint(
     "arcade",
     __name__,
@@ -59,6 +30,7 @@ def create_arcade_session():
 
 @blueprint.index_route()
 def arcade_index():
+    arcade_games = current_app.modules[".arcade"]["games"]
     return render_template(
         "arcade/arcade_index.html",
         arcade_description=render_markdown("arcade.md"),
@@ -68,6 +40,7 @@ def arcade_index():
 
 @blueprint.route("/game/<filename>")
 def game_page(filename):
+    arcade_games = current_app.modules[".arcade"]["games"]
     if filename not in arcade_games:
         abort(404)
     return render_template(
@@ -84,6 +57,7 @@ def game_page(filename):
 
 @blueprint.route("/token/submit", methods=["POST"])
 def token_submit():
+    arcade_games = current_app.modules[".arcade"]["games"]
     data = request.get_json()
     if data["filename"] not in arcade_games:
         abort(400)
