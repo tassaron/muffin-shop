@@ -17,9 +17,10 @@
             </form>
         </div>
     </div>
-    {% for statement in about.split(".") %}
+    {% set statements = about.split(".") %}
+    {% for statement in statements %}
     <div class="col-6 my-4 p-lg-5 p-md-3 p-3 fs-md-5 fs-5 lh-lg">
-        {{ statement|safe }}.
+        {{ statement|safe }}{% if loop.index != statements|length %}.{% endif %}
     </div>
     {% endfor %}
 </div>
