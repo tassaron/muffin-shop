@@ -16,13 +16,13 @@
     <div id="game" style="{{ style }}">
         <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
     </div>
-    <div class="d-flex align-items-center justify-content-center">
-        <button type="button" id="pause_button">Pause</button>
+    <div class="mt-2 d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-next me-2" id="pause_button">Pause</button>
         {{ extra_html|safe }}
     </div>
 </div>
 <div class="p-4 text-center">
-    <a class="nav-link" href="https://github.com/tassaron/{{ filename }}">source code on github</a>
+    <a class="product-link" href="https://github.com/tassaron/{{ filename }}">click here to see source code</a>
 </div>
 {% endblock %}
 

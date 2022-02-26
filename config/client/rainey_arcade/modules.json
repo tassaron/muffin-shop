@@ -29,7 +29,7 @@
                 "blurb": "Place walls to entrap the balls and flood-fill the level",
                 "style": "width: 720px; height: 640px;",
                 "multiplier": 0.032,
-                "extra_html": "<button style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>"
+                "extra_html": "<button class='btn btn-default' style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>"
             },
             "speed-limit": {
                 "title": "Speed Limit",
@@ -40,7 +40,7 @@
             "rodents-revenge": {
                 "title": "Rodent's Revenge",
                 "blurb": "Push crates to trap the cats and collect cheese",
-                "style": "background:purple; width: 912px; height: 1036px; border: 2px solid black;",
+                "style": "background:purple; width: 912px; height: 1036px;",
                 "multiplier": 0.0002
             }
         }

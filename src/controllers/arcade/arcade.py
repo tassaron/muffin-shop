@@ -47,7 +47,7 @@ def game_page(filename):
         "arcade/game_page.html",
         title=arcade_games[filename]["title"],
         filename=filename,
-        style=f"--bs-gutter-x: 0; margin:auto; position: relative; {arcade_games[filename]['style']}",
+        style=f"--bs-gutter-x: 0; border: 2px black solid; margin:auto; position: relative; {arcade_games[filename]['style']}",
         extra_html=""
         if "extra_html" not in arcade_games[filename]
         else arcade_games[filename]["extra_html"],
