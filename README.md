@@ -4,13 +4,17 @@ A webapp for small ecommerce sites. Features include: shopping cart, inventory t
 
 This is a work in progress. The functionality is somewhat modular; see [MODULES.md](MODULES.md) for more information about how modules work.
 
+## Live Instances
+
+-   **[Rainey Arcade](https://rainey.tech)** (shop module used for virtual products)
+
 ## Current Goal
 
--   Make an online shop for _The Rainbow Farm_
+-   Make an instance for _The Rainbow Farm_ (shop module used for real products)
 
 ## Long-Term Goal
 
--   Allow different websites with similar functionality to share a codebase via git branches
+-   Allow different websites with similar functionality to share a codebase
 -   Example: _Website A_ is an online shop with a blue theme and an extra gallery page.
 -   Example: _Website B_ is an online shop with a red theme and an extra podcast (RSS feed) page.
 
