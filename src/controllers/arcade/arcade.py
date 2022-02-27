@@ -18,6 +18,7 @@ blueprint = Blueprint(
 @blueprint.app_context_processor
 def inject_arcade_tokens():
     return {
+        "arcade_prizes": convert_raw_cart_data_to_products(session["arcade_prizes"]),
         "arcade_tokens": session["arcade_tokens"],
         "mobile_friendly": True,
     }
@@ -27,6 +28,9 @@ def inject_arcade_tokens():
 def create_arcade_session():
     if "arcade_tokens" not in session:
         session["arcade_tokens"] = 0
+    if "arcade_prizes" not in session:
+        # same format as the shopping cart
+        session["arcade_prizes"] = {}
 
 
 @blueprint.index_route()
@@ -87,13 +91,20 @@ def arcade_token_leaderboard():
 def arcade_give_prize(uuid):
     if "transaction_id" not in session or session["transaction_id"] != uuid:
         abort(400)
-    
-    total_price = sum([product["price"] * product["quantity"] for product in convert_raw_cart_data_to_products(session["transaction_cart"])])
+
+    # determine total price
+    products = convert_raw_cart_data_to_products(session["transaction_cart"])
+    total_price = sum([product["price"] * product["quantity"] for product in products])
     if total_price > session["arcade_tokens"]:
         # the player can't afford these prizes
         return redirect(url_for("checkout.cancel_checkout"))
 
     session["arcade_tokens"] -= total_price
+    for prize, quantity in session["transaction_cart"].items():
+        if prize in session["arcade_prizes"]:
+            session["arcade_prizes"][prize] += quantity
+        else:
+            session["arcade_prizes"][prize] = quantity
 
     # redirect to success page which will deplete the shop inventory
     return redirect(url_for("checkout.successful_checkout", session_id=uuid))

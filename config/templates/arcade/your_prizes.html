@@ -1,0 +1,16 @@
+<div class="row alert alert-light">
+    {% for prize in arcade_prizes %}
+    <div class="col" data-product-id="{{ prize.id }}">
+        <div class="row">
+            <div class="col-12 ms-2 text-center product-title">
+            {{ prize.name }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                {{ prize.quantity }} x <img width="100px" class="me-2 img-fluid rounded shadow-sm" alt="{{ prize.name }}" src="{{prize.images[0]}}">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

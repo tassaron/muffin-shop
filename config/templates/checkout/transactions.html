@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-{% block title %}Transaction Records{% endblock %}
+{% block title %}Transaction Records for {{ site_name }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6 text-center mb-5">
@@ -29,8 +29,8 @@
                         customer_uuid: {{transaction.customer_uuid}}
                     </td>
                     <td class="overflow-scroll" style="max-width:20ch">
-                        {{transaction.email_address.split("@")}}<br>
-                        (user_id:{{transaction.user_id}})
+                        {{'No Email' if not transaction.email_address else transaction.email_address.split("@")}}<br>
+                        (user_id: {transaction.user_id}})
                     </td>
                     <td class="overflow-scroll" style="max-width:50ch; max-height:50ch">
                         {{transaction.customer_name}}<br>
@@ -41,7 +41,7 @@
                         {{transaction.products}}
                     </td>
                     <td>
-                        {{transaction.price|currency}}
+                        {{transaction.price}}
                     </td>
                 </tr>
                 {% endfor %}
