@@ -5,8 +5,8 @@
   "main": "main.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config config/webpack.config.js",
-    "watch": "webpack --progress -d inline-source-map --config config/webpack.config.js --watch"
+    "build": "webpack --progress --mode=production --config config/webpack.config.js",
+    "watch": "webpack --progress -d inline-source-map --mode=development --config config/webpack.config.js --watch"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-slideshow-image": "^3.7.0"
+    "react-slideshow-image": "^3.7.0",
+    "terser-webpack-plugin": "^5.3.1"
   },
   "babel": {
     "presets": [
