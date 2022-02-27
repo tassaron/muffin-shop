@@ -1,9 +1,12 @@
-from flask import abort, url_for
+from flask import abort, url_for, session
 from typing import List, Optional
+from uuid import uuid4
 
 
 class ArcadeSession:
-    id = 1
+    def __init__(self):
+        self.id = uuid4().hex
+        self.url = url_for("arcade.arcade_give_prize", uuid=self.id)
 
 
 class ArcadeAdapter:
@@ -11,21 +14,11 @@ class ArcadeAdapter:
     Adapts the shop checkout system to use arcade tokens
     """
 
-    def __init__(self, products: List[dict]):
-        self.products = products
+    def __init__(self, *args):
+        pass
 
-    def start_session(
-        self,
-        success_url: str,
-        cancel_url: str,
-        mode: str,
-        email_address: Optional[str] = None,
-    ) -> ArcadeSession:
-        self.session = ArcadeSession()
-        self.session.id = str(ArcadeSession.id)
-        ArcadeSession.id += 1
-        self.session.url = url_for("about_page")
-        return self.session
+    def start_session(self, *args) -> ArcadeSession:
+        return ArcadeSession()
 
     @staticmethod
     def webhook():

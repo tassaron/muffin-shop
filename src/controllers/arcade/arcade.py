@@ -1,9 +1,10 @@
 """
 Root blueprint of the arcade module
 """
-from flask import session, render_template, abort, request, current_app
+from flask import session, render_template, abort, request, current_app, redirect, url_for
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.markdown import render_markdown
+from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from muffin_shop.models.main.models import User
 from muffin_shop.controllers.shop.shop import obfuscate_number
 
@@ -80,3 +81,19 @@ def arcade_token_leaderboard():
         "arcade/token_leaderboard.html",
         users=[(obfuscate_number(int(sss[1]["_user_id"])), sss[1]["arcade_tokens"]) for sss in server_side_sessions]
     )
+
+
+@blueprint.route("/getprize/<uuid>")
+def arcade_give_prize(uuid):
+    if "transaction_id" not in session or session["transaction_id"] != uuid:
+        abort(400)
+    
+    total_price = sum([product["price"] * product["quantity"] for product in convert_raw_cart_data_to_products(session["transaction_cart"])])
+    if total_price > session["arcade_tokens"]:
+        # the player can't afford these prizes
+        return redirect(url_for("checkout.cancel_checkout"))
+
+    session["arcade_tokens"] -= total_price
+
+    # redirect to success page which will deplete the shop inventory
+    return redirect(url_for("checkout.successful_checkout", session_id=uuid))
