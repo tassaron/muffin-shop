@@ -10,21 +10,17 @@
     </div>
 </div>
 {% if arcade_prizes|length > 0 %}
-<div class="row">
-    <div class="col-4"></div>
-    <div class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-1">
+<div class="row justify-content-center">
+    <div class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-2">
         Your Prizes
     </div>
-    <div class="col-4"></div>
 </div>
 {% include 'arcade/your_prizes.html' %}
 {% endif %}
-<div class="row">
-    <div class="col-4"></div>
-    <div class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-1">
+<div class="row justify-content-center">
+    <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-2">
         Games
-    </div>
-    <div class="col-4"></div>
+    </h1>
 </div>
 <div class="row">
     {% for filename, game in games %}
