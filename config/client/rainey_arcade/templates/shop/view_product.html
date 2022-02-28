@@ -1,0 +1,43 @@
+{% set selected = 2 %}
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{% include 'shop/js_required.html' %}
+<span id="ProductPage-slides">
+    {{ url_for('static', filename=product.image) }}
+</span>
+<div class="row">
+    <h1 class="col-12 product-title mt-sm-0 text-center border-bottom">
+        <span id="ProductPage-name">{{product.name}}</span>
+    </h1>
+    <div class="col-md-7 col-lg-6 product-img mb-3" id="ProductPage-slideshow"></div>
+    <div class="col-md-5 col-lg-6">
+        <div style="min-height:300px;" class="card product-card shadow p-3 pb-4 mb-4 bg-body">
+            <div class="card-body p-lg-4 p-md-2">
+                <p class="card-text product-description">
+                    {{product.description}}
+                    <div class="text-center product-price">
+                        {{product.price}} tokens each
+                    </div>
+                </p>
+                <div class="row-8 row-md-12 row-lg-8 d-flex">
+                    {% include 'shop/product_page_buttons.html' %}
+                </div>
+                <div class="ProductPage-alert-area" data-product-id="{{product.id}}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    {% include 'shop/cart_button_script.js' %}
+    for (let node of document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')) {
+        node.onclick = (e) => { add_to_cart(e, {{ product.id }}); };
+    }
+</script>
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+{% endblock %}

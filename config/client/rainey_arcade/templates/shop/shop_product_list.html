@@ -15,6 +15,12 @@
                 All products are currently out of stock.
             </div>
         </div>
+        {% else %}
+        <div class="row justify-content-center">
+            <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-2">
+                Prizes!
+            </h1>
+        </div>
         {% endif %}
         {% for product in products %}
         {% set product_url = url_for("shop.product_description", title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) %}
@@ -33,7 +39,7 @@
                 </div>
                 <div class="card-footer row">
                     {% include 'shop/product_page_buttons.html' %}
-                    <small style="font-family:serif;">${{product.price|currency}} each</small>
+                    <small style="font-family:serif;">{{product.price}} tokens each</small>
                 </div>
             </div>
         </div>

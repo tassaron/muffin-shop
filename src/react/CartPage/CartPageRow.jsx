@@ -25,10 +25,13 @@ class CartPageRow extends Component {
                     />
                 </div>
                 <div className="CartPage-price d-flex justify-content-center col-2 pt-3">
-                    $
-                    {(this.props.data.price * this.props.data.quantity).toFixed(
-                        2
-                    )}
+                    {this.props.data.currency == "$"
+                        ? "$" +
+                          (
+                              this.props.data.price * this.props.data.quantity
+                          ).toFixed(2)
+                        : this.props.data.price * this.props.data.quantity +
+                          this.props.data.currency}
                 </div>
                 <div className="CartPage-quantity col-md-3 col-5">
                     <CartPageButtons

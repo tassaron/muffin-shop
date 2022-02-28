@@ -14,17 +14,15 @@ class CartPage extends Component {
         const rowNodes = document.getElementsByClassName("CartPage-row");
         const rowData = new Map();
         for (let node of rowNodes) {
+            const priceNode = node.getElementsByClassName("CartPage-price")[0];
             rowData.set(node.dataset.productId, {
                 id: node.dataset.productId,
                 name: node.getElementsByClassName("CartPage-name")[0].innerText,
                 image: node
                     .getElementsByClassName("CartPage-image")[0]
                     .children[0].getAttribute("src"),
-                price: Number(
-                    node
-                        .getElementsByClassName("CartPage-price")[0]
-                        .innerText.slice(1)
-                ),
+                price: Number(priceNode.innerText),
+                currency: priceNode.dataset.currency,
                 quantity: Number(
                     node.getElementsByClassName("CartPage-quantity")[0]
                         .innerText

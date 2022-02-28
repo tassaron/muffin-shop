@@ -22,7 +22,7 @@
             <img width="fit-content" class="me-2 img-fluid rounded shadow-sm" alt="{{ item.name }}"
                 src="{{ url_for('static', filename=item.image) }}">
         </div>
-        <div class="col-2">$<span data-currency="$" class="CartPage-price">{{ item.price|currency }}</span></div>
+        <div class="col-2"><span data-currency=" tokens" class="CartPage-price">{{ item.price }}</span></div>
         <div class="d-none"><span class="CartPage-stock">{{ item.stock }}</span> in stock</div>
         <div class="CartPage-quantity col-3">
             {{ quantity }}
