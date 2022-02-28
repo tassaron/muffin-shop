@@ -6,33 +6,36 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
     <div class="ProductPage-alert-area"></div>
     {% include 'shop/js_required.html' %}
-    <div class="row">
+    <div class="row justify-content-center">
         {% if products|length == 0 %}
-        <div class="row" style="min-height: 33vh">
-            <div class="col-4"></div>
+        <div class="row justify-content-center" style="min-height: 33vh">
             <div class="my-4 text-center p-5 fs-5">
                 All products are currently out of stock.
             </div>
-            <div class="col-4"></div>
+        </div>
+        {% else %}
+        <div class="row justify-content-center">
+            <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-2">
+                Prizes!
+            </h1>
         </div>
         {% endif %}
         {% for product in products %}
         {% set product_url = url_for("shop.product_description", title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) %}
         {% set quantity = product.cart_quantity %}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div tabindex="0" class="card product-card floating-product-card" style="border-radius: 0px;">
+        <div class="col-lg-4 col-md-6 col-10 mb-4">
+            <div tabindex="0" class="card product-card floating-product-card" style="min-width:15rem; border-radius: 0px;">
                 <a href="{{ product_url }}">
-                    <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}"
+                    <img class="card-img-top center-cropped" style="height:10rem" src="{{ url_for('static', filename=product.image) }}"
                         alt="{{ product.name }}">
                 </a>
                 <div class="card-body product-description" style="border-radius: 0px;">
                     <h4 class="card-title product-title">
                         <a href="{{ product_url }}">{{product.name}}</a>
                     </h4>
-                    <p class="card-text">{{product.description}}</p>
+                    <p class="card-text text-truncate" style="max-height: 4rem;">{{product.description}}</p>
                 </div>
                 <div class="card-footer row">
                     {% include 'shop/product_page_buttons.html' %}
@@ -42,7 +45,7 @@
         </div>
         {% endfor %}
     </div>
-</div>
+
 {% endblock %}
 
 

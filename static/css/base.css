@@ -254,3 +254,8 @@ span.cart-label {
     width: 33%;
     height: 4rem;
 }
+
+.center-cropped {
+    object-fit: cover;
+    object-position: center;
+}
