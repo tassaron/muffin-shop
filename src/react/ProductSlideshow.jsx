@@ -29,7 +29,7 @@ class ProductSlideshow extends Component {
                 background: `black url(${this.props.slideImages[i]})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                backgroundPosition: `${i < 2 ? "left" : "center"} bottom`,
+                backgroundPosition: `left center`,
                 height: "300px",
             });
         }
