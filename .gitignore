@@ -11,5 +11,4 @@ build/
 *.egg-info
 static/uploads/*
 static/js/dist/*
-static/client/rainey_arcade/js/*
 node_modules/*
