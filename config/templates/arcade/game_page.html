@@ -3,6 +3,7 @@
 {% block title %}{{ title }} - {{ site_name }}{% endblock %}
 
 {% block content %}
+<div id="score-alert-area"></div>
 {% include 'arcade/token_alert.html' %}
 <div class="d-flex">
     <a class="btn btn-secondary" href="{{ url_for('arcade_index') }}">❮ Back</a>
@@ -27,6 +28,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/client/rainey_arcade/js/send_score.js"></script>
 <script type="module" src="/static/client/rainey_arcade/js/{{ filename }}/main.js"></script>
 {% endblock %}

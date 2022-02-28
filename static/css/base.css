@@ -134,13 +134,13 @@ span.cart-label {
     display: block;
 }
 
-.ProductPage-alert-area {
+.ProductPage-alert-area, #score-alert-area {
     position: fixed;
     max-width: max-content;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1;
+    z-index: 99;
 }
 
 .btn-group button {
