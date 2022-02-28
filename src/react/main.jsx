@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import ProductSlideshowFromHtml from "./ProductSlideshowFromHtml";
 import ProductPageButtons from "./ProductPageButtons";
 import CartPage from "./CartPage/CartPage";
-import { getChildOrError } from "./util";
+import { getChildOrError } from "../../static/js/util.js";
 import "./styles.css";
 
 function renderIfExists(comp, elemId) {

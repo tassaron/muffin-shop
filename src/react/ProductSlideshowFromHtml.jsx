@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react";
 import ProductSlideshow from "./ProductSlideshow";
-import { getNodeOrError } from "./util";
+import { getNodeOrError } from "../../static/js/util.js";
 
 class ProductSlideshowFromHtml extends Component {
     constructor() {

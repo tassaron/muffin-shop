@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { animateVanish } from "./util.js";
+import { animateVanish } from "../../static/js/util.js";
 
 const ANIMSPEED = 3000;
 

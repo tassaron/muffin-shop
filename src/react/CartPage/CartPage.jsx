@@ -5,7 +5,7 @@
 import React, { Component } from "react";
 import CartPageColumn from "./CartPageColumn";
 import CartPageRow from "./CartPageRow";
-import { getNodeOrError, animateVanish } from "../util";
+import { getNodeOrError, animateVanish } from "../../../static/js/util.js";
 
 class CartPage extends Component {
     constructor() {
