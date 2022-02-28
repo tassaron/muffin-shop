@@ -4,6 +4,14 @@
 import { Component } from "react";
 
 class CartPageColumn extends Component {
+    constructor(props) {
+        super(props);
+        for (let row of this.props.rowData.values()) {
+            this.currency = row.currency;
+            break
+        }
+    }
+
     rowData_to_CartData() {
         const cartData = {};
 
@@ -51,7 +59,12 @@ class CartPageColumn extends Component {
                                 total price
                             </div>
                             <div className="col-2 text-center">
-                                ${this.props.totalPrice.toFixed(2)}
+                                { this.currency == "$" ? (
+                                    "$" + this.props.totalPrice.toFixed(2)
+                                ) : (
+                                    this.props.totalPrice + this.currency
+                                )
+                                }
                             </div>
                         </div>
                         <div className="row">
