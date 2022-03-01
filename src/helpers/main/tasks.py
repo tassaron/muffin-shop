@@ -36,7 +36,7 @@ def huey_send_email(email_config, subject, body, send_to):
         print(body)
         return body.split("/")[-1]
 
-    return requests.post(
+    response = requests.post(
         email_config["API_URL"],
         auth=("api", email_config["API_KEY"]),
         data={
@@ -45,4 +45,9 @@ def huey_send_email(email_config, subject, body, send_to):
             "subject": str(subject),
             "text": str(body),
         },
-    ).json()
+    )
+
+    try:
+        return response.reason if not response.ok else response.json()
+    except requests.exceptions.JSONDecodeError as e:
+        return str(e)
