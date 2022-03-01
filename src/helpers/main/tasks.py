@@ -5,6 +5,7 @@ import os
 import requests
 from huey import SqliteHuey
 from sqlite3 import OperationalError
+from json.decoder import JSONDecodeError
 
 
 def init_huey():
@@ -49,5 +50,5 @@ def huey_send_email(email_config, subject, body, send_to):
 
     try:
         return response.reason if not response.ok else response.json()
-    except requests.exceptions.JSONDecodeError as e:
-        return str(e)
+    except JSONDecodeError as e:
+        return f"{response.reason} - {e} - {response.text}"
