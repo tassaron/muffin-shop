@@ -2,7 +2,7 @@
     "main": {
         "name": "Home",
         "module": ".about",
-        "navigation": [".arcade", ".shop"]
+        "navigation": [".arcade", ".blog", ".shop"]
     },
     ".about": {
         "name": "About",
@@ -44,6 +44,13 @@
                 "multiplier": 0.001
             }
         }
+    },
+    ".blog": {
+        "name": "Blog",
+        "env": "BLOG_PATH",
+        "blueprints": ["blog:blueprint"],
+        "root": "blog",
+        "index": "blog.blog_index"
     },
     ".shop": {
         "name": "Shop",

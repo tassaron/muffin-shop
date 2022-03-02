@@ -1,0 +1,11 @@
+{% set selected = 6 %}
+{% extends 'main/base.html' %}
+{% block title %}New Posts - {{ site_name }}'s Blog{% endblock %}
+
+{% block content %}
+{% for post in posts %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-8 col-10">{{ post["content"]|safe }}</div>
+</div>
+{% endfor %}
+{% endblock %}

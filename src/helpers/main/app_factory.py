@@ -96,6 +96,12 @@ def create_app():
             "account": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/account"
             ),
+            "arcade": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/arcade"
+            ),
+            "blog": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/blog"
+            ),
             "checkout": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"
             ),
@@ -107,9 +113,6 @@ def create_app():
             ),
             "shop": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/shop"
-            ),
-            "arcade": FileSystemLoader(
-                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/arcade"
             ),
         }
     )

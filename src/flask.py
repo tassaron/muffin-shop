@@ -101,7 +101,10 @@ class Flask(flask.Flask):
                     app.logger.warning(f"Missing {token} from environment vars")
 
         for module in data.values():
-            for env_var in module.get("env", []):
+            vars = module.get("env", [])
+            if type(vars) == str:
+                vars = [vars]
+            for env_var in vars:
                 ensure_env_var(env_var)
 
         app.modules = data

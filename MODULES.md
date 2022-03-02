@@ -28,3 +28,4 @@
 3. account.login, account.register, account.reset_password
 4. arcade.arcade_index, arcade.game_page, arcade.token_leaderboard
 5. about.bio_page
+6. blog.blog_newest_posts
