@@ -42,7 +42,7 @@ export const send_score = function(filename, score, token) {
                 "class",
                 "p-2 text-center alert alert-success cart-alert"
             );
-            alert_message = `Got ${new_value} token`;            
+            alert_message = `Got ${response["payout"]} token`;            
         }
         if (response["payout"] > 1) {
             alert_message += "s";
