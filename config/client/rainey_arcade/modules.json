@@ -20,7 +20,7 @@
         "games": {
             "breakout": {
                 "title": "Breakout",
-                "blurb": "Bounce the ball off your paddle to destroy the bricks. Collect powerups!",
+                "blurb": "Bounce the ball to destroy bricks. Collect powerups!",
                 "style": "width: 640px; height: 480px;",
                 "multiplier": 0.055
             },
