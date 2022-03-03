@@ -1,22 +1,24 @@
 <div class="row justify-content-center mb-3">
     <div class="col-md-8 col-10 shadow-sm bordered bg-light">
         <div class="row">
-            <div class="col-3">
+            {# Post details #}
+            <div class="col-lg-3 col-md-4 col-3">
                 <a id="post{{ key }}" href="#post{{ key }}">
-                    <div class="row blog-av-container mb-5" style="height:200px"></div>
+                    <div class="col-md-12 col-12 blog-av-container mb-md-5" style="height: calc(2rem + 13vw)"></div>
                 </a>
-                <div class="col text-center">
+                <div class="col-md-12 col-6 text-center">
                     {% if post['url'] == "" %}
                         Brianna
                     {% else %}
-                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna@tassaron.com</a>
+                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna</a>
                     {% endif %}
                 </div>
-                <div class="col text-center">
+                <div class="col-md-12 col-6 text-center">
                     {{ post["created_at"].split(" ", 1)[0] }}
                 </div>
             </div>
-            <div class="col-9 product-description blog-card">
+            {# Post content #}
+            <div class="col-lg-9 col-md-8 col-9 product-description blog-card">
                 {% if post["images"]|length > 0 %}
                     <div class="row pb-3">
                     {% for image_url, alt_text in post["images"] %}
