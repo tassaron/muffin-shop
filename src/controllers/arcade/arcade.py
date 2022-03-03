@@ -80,7 +80,10 @@ def token_submit():
 def arcade_token_leaderboard():
     users = User.query.all()
     server_side_sessions = [current_app.session_interface.get_user_session(user.id) for user in users]
-    server_side_sessions.remove(None)
+    try:
+        server_side_sessions.remove(None)
+    except ValueError:
+        pass
     return render_template(
         "arcade/token_leaderboard.html",
         users=[(obfuscate_number(int(sss[1]["_user_id"])), sss[1]["arcade_tokens"]) for sss in server_side_sessions]
