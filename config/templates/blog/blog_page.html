@@ -12,6 +12,7 @@
     {% set key = loop.index %}
     {% include 'blog/blog_post.html' %}
 {% endfor %}
+{% if last_page > 0 %}
 <div class="row justify-content-center">
     <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center p-1 fs-2">
         older posts
@@ -32,4 +33,5 @@
         </div>
     {% endfor %}
 </div>
+{% endif %}
 {% endblock %}
