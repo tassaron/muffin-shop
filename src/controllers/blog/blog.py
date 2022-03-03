@@ -23,7 +23,7 @@ def blog_index():
     last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages")) + 1
     return render_template(
         "blog/blog_page.html",
-        posts=posts,
+        posts=reversed(posts),
         page_range=reversed(range(max(last_page - 12, 1), last_page)),
         page_num=last_page + 1,
         last_page=0 if last_page == 2 and (len(posts) < 5 or not os.path.exists(get_json_path(1))) else last_page,
