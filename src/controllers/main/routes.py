@@ -66,6 +66,9 @@ def synchronize_server_side_sessions():
             if local_sid != upstream_sid:
                 # change session id when saving the session after the request
                 session["sync_local_to_upstream_sid"] = upstream_sid
+                if "transaction_id" in session:
+                    current_app.logger.warning("Deleting in-progress transaction from an orphaned session (%s)", local_sid)
+                    del session["transaction_id"]
 
             if "arcade_tokens" in upstream_data:
                 session["arcade_tokens"] = upstream_data["arcade_tokens"]
