@@ -1,0 +1,10 @@
+{% set selected = 6 %}
+{% extends 'main/base.html' %}
+{% block title %}New Posts - {{ site_name }}'s Blog{% endblock %}
+
+{% block content %}
+{% for post in posts %}
+    {% set key = loop.index %}
+    {% include 'blog/blog_post.html' %}
+{% endfor %}
+{% endblock %}

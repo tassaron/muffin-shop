@@ -1,15 +1,10 @@
-{% set selected = 6 %}
-{% extends 'main/base.html' %}
-{% block title %}New Posts - {{ site_name }}'s Blog{% endblock %}
-
-{% block content %}
-{% for post in posts %}
 <div class="row justify-content-center mb-3">
     <div class="col-md-8 col-10 shadow-sm bordered bg-light">
         <div class="row">
             <div class="col-3">
-                <div class="row portrait-container mb-5" style="height:200px">
-                </div>
+                <a id="post{{ key }}" href="#post{{ key }}">
+                    <div class="row portrait-container mb-5" style="height:200px"></div>
+                </a>
                 {% if post['url'] != "" %}
                     <div class="row text-center">
                         <a href="{{ post['url'] }}" class="blog-attrib">@brianna</a>
@@ -33,5 +28,3 @@
         </div>
     </div>
 </div>
-{% endfor %}
-{% endblock %}
