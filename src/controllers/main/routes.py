@@ -1,4 +1,6 @@
-from flask import render_template, flash, redirect, url_for, current_app
+from flask import render_template, flash, session, url_for, current_app
+import flask_login
+from itsdangerous import BadSignature
 from werkzeug.exceptions import (
     BadRequest,
     Unauthorized,
@@ -48,6 +50,28 @@ def all_base_urls():
         for rule in current_app.url_map.iter_rules()
         if len(rule.arguments) == 0 and "GET" in rule.methods
     ]
+
+
+@main_routes.before_app_request
+def synchronize_server_side_sessions():
+    # sync logged-in users across devices
+    if not current_app.config["CLIENT_SESSIONS"] and flask_login.current_user.is_authenticated:
+        restored_data = current_app.session_interface.get_user_session(flask_login.current_user.id)
+        if restored_data:
+            upstream_sid, upstream_data = restored_data
+            try:
+                local_sid = current_app.session_interface.unsign_sid(current_app, request.cookies.get(current_app.session_cookie_name))
+            except BadSignature:
+                local_sid = current_app.session_interface._generate_sid()
+            if local_sid != upstream_sid:
+                # change session id when saving the session after the request
+                session["sync_local_to_upstream_sid"] = upstream_sid
+
+            if "arcade_tokens" in upstream_data:
+                session["arcade_tokens"] = upstream_data["arcade_tokens"]
+            if "arcade_prizes" in upstream_data:
+                session["arcade_prizes"] = upstream_data["arcade_prizes"]
+            session["cart"] = upstream_data["cart"]
 
 
 @main_routes.admin_route("")

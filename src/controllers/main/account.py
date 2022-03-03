@@ -53,14 +53,15 @@ def login():
                 # 2) ensure a full shopping cart carries over while logging in
                 # 3) combine arcade tokens/prizes from logged-out to logged-in sessions
 
-                restored_session_id, restored_session_data = current_app.session_interface.get_user_session(
+                restored_data = current_app.session_interface.get_user_session(
                     user.id
                 )
 
-                if restored_session_data is None:
+                if restored_data is None:
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
                 else:
+                    restored_session_id, restored_session_data = restored_data
                     if session["cart"] == {}:
                         # cart is empty so copy the other session that has a full cart
                         session["cart"] = restored_session_data["cart"]

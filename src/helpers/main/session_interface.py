@@ -114,21 +114,31 @@ class TassaronSessionInterface(SessionInterface):
             self.db.session.add(existing_session)
             self.db.session.commit()
 
+    def sign_sid(self, app, sid):
+        return self._get_signer(app).sign(want_bytes(sid))
+
+    def unsign_sid(self, app, sid):
+        """Could throw BadSignature if the sid is not valid"""
+        signer = self._get_signer(app)
+        if signer is None:
+            return None
+        return signer.unsign(sid).decode()
+
     def open_session(self, app, request):
         """Original code from Flask-Session. Modified by tassaron"""
         sid = request.cookies.get(app.session_cookie_name)
         if not sid:
             sid = self._generate_sid()
             return ServerSideSession(sid=sid, permanent=self.permanent)
-        signer = self._get_signer(app)
-        if signer is None:
-            return None
+        
         try:
-            sid_as_bytes = signer.unsign(sid)
-            sid = sid_as_bytes.decode()
+            sid = self.unsign_sid(app, sid)
         except BadSignature:
             sid = self._generate_sid()
             return ServerSideSession(sid=sid, permanent=self.permanent)
+
+        if sid is None:
+            return
 
         store_id = self.key_prefix + sid
         saved_session = self.sql_session_model.query.filter_by(
@@ -166,6 +176,9 @@ class TassaronSessionInterface(SessionInterface):
                 )
             return
 
+        if "sync_local_to_upstream_sid" in session:
+            session.sid = session.pop("sync_local_to_upstream_sid")
+
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
         expires = self.get_expiration_time(app, session)
@@ -179,7 +192,8 @@ class TassaronSessionInterface(SessionInterface):
             self.db.session.add(new_session)
             self.db.session.commit()
 
-        session_id = self._get_signer(app).sign(want_bytes(session.sid))
+        session_id = self.sign_sid(app, session.sid)
+
         response.set_cookie(
             app.session_cookie_name,
             session_id,
