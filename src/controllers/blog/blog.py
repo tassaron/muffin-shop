@@ -17,9 +17,12 @@ blueprint = Blueprint(
 def blog_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
         posts = json.load(f)
+    last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages")) + 1
     return render_template(
         "blog/blog_page.html",
         posts=posts,
+        page_range=reversed(range(max(last_page - 12, 1), last_page)),
+        page_num=last_page + 1
     )
 
 
@@ -35,7 +38,18 @@ def blog_page(page_num):
         posts = json.load(f)
     if not posts:
         abort(404)
+    last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages")) + 1
+    start = page_num - 6
+    end = page_num + 6
+    if start < 1:
+        end += abs(start) + 1
+        start = 1
+    elif end > last_page:
+        start -= abs(last_page - end)
+        end = last_page
     return render_template(
         "blog/blog_page.html",
-        posts=posts,
+        posts=reversed(posts),
+        page_range=reversed(range(start, end)),
+        page_num=page_num,
     )
