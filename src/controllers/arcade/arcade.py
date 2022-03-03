@@ -100,7 +100,7 @@ def arcade_give_prize(uuid):
     total_price = sum([product["price"] * product["quantity"] for product in products])
     if total_price > session["arcade_tokens"]:
         # the player can't afford these prizes
-        return redirect(url_for("checkout.cancel_checkout"))
+        return redirect(url_for("checkout.cancel_checkout", session_id=uuid))
 
     session["arcade_tokens"] -= total_price
     for prize, quantity in session["transaction_cart"].items():
