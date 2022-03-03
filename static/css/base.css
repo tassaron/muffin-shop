@@ -259,3 +259,36 @@ span.cart-label {
     object-fit: cover;
     object-position: center;
 }
+
+.invisible {
+    display: none;
+}
+
+.ellipsis::after {
+    content: "…";
+}
+
+.blog-card {
+    background-image: url("/static/client/rainey_arcade/img/muffin.ico");
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    border-bottom-right-radius: 0;
+}
+
+.blog-content a.mention.hashtag {
+    clear: right;
+    float: right;
+    font-size: small;
+    text-decoration: none;
+    padding: 0.72rem 1rem 0 0;
+}
+
+.blog-attrib {
+    text-decoration: none;
+    font-size: smaller;
+}
+
+.blog-attrib::after {
+    font-size: xx-small;
+    content: "🔗";
+}

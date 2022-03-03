@@ -4,8 +4,34 @@
 
 {% block content %}
 {% for post in posts %}
-<div class="row justify-content-center my-4">
-    <div class="col-md-8 col-10">{{ post["content"]|safe }}</div>
+<div class="row justify-content-center mb-3">
+    <div class="col-md-8 col-10 shadow-sm bordered bg-light">
+        <div class="row">
+            <div class="col-3">
+                <div class="row portrait-container mb-5" style="height:200px">
+                </div>
+                {% if post['url'] != "" %}
+                    <div class="row text-center">
+                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-9 product-description blog-card">
+                {% if post["images"]|length > 0 %}
+                    <div class="row pb-3">
+                    {% for image_url, alt_text in post["images"] %}
+                        <div class="col-4">    
+                            <a href="{{ image_url }}"><img alt="{{ alt_text }}" src="{{ image_url }}" class="img-fluid rounded shadow-sm center-cropped"></a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="row blog-content">
+                    {{ post["content"]|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endfor %}
 {% endblock %}
