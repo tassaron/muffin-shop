@@ -5,11 +5,13 @@
                 <a id="post{{ key }}" href="#post{{ key }}">
                     <div class="row blog-av-container mb-5" style="height:200px"></div>
                 </a>
-                {% if post['url'] != "" %}
-                    <div class="col text-center">
-                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna</a>
-                    </div>
-                {% endif %}
+                <div class="col text-center">
+                    {% if post['url'] == "" %}
+                        Brianna
+                    {% else %}
+                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna@tassaron.com</a>
+                    {% endif %}
+                </div>
                 <div class="col text-center">
                     {{ post["created_at"].split(" ", 1)[0] }}
                 </div>
