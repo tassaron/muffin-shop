@@ -48,21 +48,35 @@ def login():
             flash("Logged in! ✔️", "success")
 
             if not current_app.config["CLIENT_SESSIONS"]:
-                # restore a user's shopping cart session or assign a user id to an anonymous session
-                restored_session_data = current_app.session_interface.get_user_session(
+                # Three goals in this terrifying section of code:
+                # 1) assign a user id to the current session if the user has none yet
+                # 2) ensure a full shopping cart carries over while logging in
+                # 3) combine arcade tokens/prizes from logged-out to logged-in sessions
+
+                restored_session_id, restored_session_data = current_app.session_interface.get_user_session(
                     user.id
                 )
+
                 if restored_session_data is None:
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
-                elif session["cart"] == {}:
-                    # cart is empty so copy the other session that has a full cart
-                    session["cart"] = restored_session_data[1]["cart"]
                 else:
+                    if session["cart"] == {}:
+                        # cart is empty so copy the other session that has a full cart
+                        session["cart"] = restored_session_data["cart"]
+                    if "arcade_tokens" in session and "arcade_tokens" in restored_session_data:
+                        session["arcade_tokens"] += restored_session_data["arcade_tokens"]
+                    if "arcade_prizes" in session and "arcade_prizes" in restored_session_data:
+                        for prize, quantity in restored_session_data["arcade_prizes"].items():
+                            if prize in session["arcade_prizes"]:
+                                session["arcade_prizes"][prize] += quantity
+                            else:
+                                session["arcade_prizes"][prize] = quantity
+
                     # assign this session as the user's new "existing session" & nullify the old one
                     # so future logins with empty cart will inherit the latest full cart
                     current_app.session_interface.set_user_session(
-                        restored_session_data[0], None
+                        restored_session_id, None
                     )
                     current_app.session_interface.set_user_session(session.sid, user.id)
 
@@ -179,30 +193,11 @@ def request_email_verification():
 @blueprint.route("/profile")
 @flask_login.login_required
 def user_dashboard():
-    """Let the user manage their shipping address, change password"""
-    user_id = int(flask_login.current_user.get_id())
-    sections = {}
-    for module in current_app.modules.values():
-        for section_name, model in module.get("profile_models", {}).items():
-            model_name = model
-            model = Models.__dict__[model_name]
-            section_data = model.query.filter_by(user_id=user_id).first()
-            # section_data could be None and the target could respond with defaults
-            try:
-                html = current_app.view_functions[module["model_views"][model_name]](
-                    section_data
-                )
-            except KeyError:
-                current_app.logger.critical(
-                    "module %s has profile_model %s but no corresponding model view.",
-                    (module["name"], model_name),
-                )
-                html = ""
-            sections[model.__name__.lower()] = (section_name, html)
+    """Let the user see their email address and change their password"""
     return render_template(
         "account/view_profile.html",
         user=flask_login.current_user,
-        profile_sections=sections,
+        profile_sections={},
     )
 
 
@@ -214,8 +209,13 @@ def logout():
         # generate unique session id so the old session isn't overwritten
         session.sid = current_app.session_interface._generate_sid()
 
-    # FIXME main module directly manipulates shop module
+    # empty things that the user would expect to become empty
     session["cart"] = {}
+    if "arcade_tokens" in session:
+        session["arcade_tokens"] = 0
+    if "arcade_prizes" in session:
+        session["arcade_prizes"] = {}
+
     flash("Logged out", "info")
     return redirect(url_for(current_app.config["INDEX_ROUTE"]))
 
