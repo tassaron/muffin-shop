@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{{ site_description }}">
-    <meta name="author" content="{{ site_name }}">
+    <meta name="author" content="{{ site_author }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,9 +38,7 @@
                     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                         <img src="{{ url_for('static', filename='client/the_rainbow_farm/img/logo.svg') }}" style="max-width: 180px; max-height: 100%;" alt="Logo">
                         <span class="px-2 fs-4 site-name-header">
-                            {% for site_name_word in site_name_words %}
-                                <span>{{ site_name_word }}</span>
-                            {% endfor %}
+                            {{ site_name }}
                         </span>
                     </a>
             
