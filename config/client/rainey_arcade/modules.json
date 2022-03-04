@@ -18,11 +18,17 @@
         "root": "arcade",
         "index": "arcade.arcade_index",
         "games": {
-            "breakout": {
-                "title": "Breakout",
-                "blurb": "Bounce the ball to destroy bricks. Collect powerups!",
-                "style": "width: 640px; height: 480px;",
-                "multiplier": 0.055
+            "rodents-revenge": {
+                "title": "Rodent's Revenge",
+                "blurb": "Push crates to trap the cats and collect cheese",
+                "style": "background:purple; width: 912px; height: 1036px;",
+                "multiplier": 0.001
+            },
+            "speed-limit": {
+                "title": "Speed Limit",
+                "blurb": "Pass cars while obeying the speed limit! 🛑",
+                "style": "width: 640px; height: 598px;",
+                "multiplier": 0.0007
             },
             "jezzball": {
                 "title": "Jezzball",
@@ -31,17 +37,11 @@
                 "multiplier": 0.067,
                 "extra_html": "<button class='btn btn-default' style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>"
             },
-            "speed-limit": {
-                "title": "Speed Limit",
-                "blurb": "Pass cars while obeying the speed limit! 🛑",
-                "style": "width: 640px; height: 598px;",
-                "multiplier": 0.0007
-            },
-            "rodents-revenge": {
-                "title": "Rodent's Revenge",
-                "blurb": "Push crates to trap the cats and collect cheese",
-                "style": "background:purple; width: 912px; height: 1036px;",
-                "multiplier": 0.001
+            "breakout": {
+                "title": "Breakout",
+                "blurb": "Bounce the ball to destroy bricks. Collect powerups!",
+                "style": "width: 640px; height: 480px;",
+                "multiplier": 0.055
             }
         }
     },
