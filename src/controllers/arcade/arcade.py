@@ -3,10 +3,13 @@ Root blueprint of the arcade module
 """
 from flask import session, render_template, abort, request, current_app, redirect, url_for
 from muffin_shop.blueprint import Blueprint
+from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.main.markdown import render_markdown
 from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from muffin_shop.models.main.models import User
+from muffin_shop.models.shop.checkout_models import Transaction
 from muffin_shop.controllers.shop.shop import obfuscate_number
+from sqlalchemy.exc import IntegrityError
 
 
 blueprint = Blueprint(
@@ -101,6 +104,20 @@ def arcade_give_prize(uuid):
     if total_price > session["arcade_tokens"]:
         # the player can't afford these prizes
         return redirect(url_for("checkout.cancel_checkout", session_id=uuid))
+
+    try:
+        transaction = Transaction.query.filter_by(uuid=uuid).first()
+        if transaction.price is not None:
+            abort(400)
+        transaction.price = total_price
+        db.session.add(transaction)
+        db.session.commit()
+    except AttributeError as e:
+        current_log.logger.error("No transaction?? %s", e)
+    except IntegrityError:
+        current_log.logger.error("Error updating transaction record after giving prizes")
+        db.session.rollback()
+
 
     session["arcade_tokens"] -= total_price
     for prize, quantity in session["transaction_cart"].items():
