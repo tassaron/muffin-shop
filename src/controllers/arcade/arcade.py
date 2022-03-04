@@ -113,9 +113,9 @@ def arcade_give_prize(uuid):
         db.session.add(transaction)
         db.session.commit()
     except AttributeError as e:
-        current_log.logger.error("No transaction?? %s", e)
+        current_app.logger.error("No transaction?? %s", e)
     except IntegrityError:
-        current_log.logger.error("Error updating transaction record after giving prizes")
+        current_app.logger.error("Error updating transaction record after giving prizes")
         db.session.rollback()
 
 
