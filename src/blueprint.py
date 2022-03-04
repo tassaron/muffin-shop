@@ -1,7 +1,6 @@
 import flask
-import flask_login
 import os
-from muffin_shop.flask import parse_pkg
+from muffin_shop.flask import parse_pkg, admin_required
 
 
 ADMIN_URL = os.environ.get("ADMIN_URL", "/admin")
@@ -25,14 +24,6 @@ class Blueprint(flask.Blueprint):
                 f"{ADMIN_URL}{'' if self.name == 'main' else f'/{self.name}'}{rule}"
             )
             endpoint = options.pop("endpoint", f"{self.name}.{f.__name__}")
-
-            def admin_required(f):
-                def wrapped(*args, **kwargs):
-                    if not flask_login.current_user.is_admin_authenticated:
-                        flask.abort(404)
-                    return f(*args, **kwargs)
-
-                return wrapped
 
             def add_admin_url_rule(app):
                 app.add_url_rule(new_rule, endpoint, admin_required(f), **options)

@@ -3,6 +3,7 @@ Home to Flask subclass
 """
 from muffin_shop.helpers.main.tasks import huey
 import flask
+import flask_login
 from dotenv import load_dotenv
 import os
 import logging.config
@@ -17,6 +18,18 @@ load_dotenv(".env")
 instance = os.environ.get("INSTANCE", "")
 env_file = f".env{'.' if instance else ''}{instance}"
 load_dotenv(env_file)
+
+def abort_if_not_admin():
+    if not flask_login.current_user.is_admin_authenticated:
+        flask.abort(404)
+
+
+def admin_required(f):
+    def wrapped(*args, **kwargs):
+        abort_if_not_admin()
+        return f(*args, **kwargs)
+
+    return wrapped
 
 
 class ConfigurationError(ValueError):
@@ -126,6 +139,14 @@ class Flask(flask.Flask):
                     del app.url_map._rules_by_endpoint[rule.endpoint]
                     del app.view_functions[rule.endpoint]
         app.url_map.update()
+
+    def register_blueprint(self, blueprint, **kwargs):
+        if "url_prefix" in kwargs and kwargs["url_prefix"] == "/monitor":
+            from muffin_shop.helpers.main.plugins import anti_csrf
+        
+            blueprint = anti_csrf.exempt(blueprint)
+            blueprint.before_request(abort_if_not_admin)
+        super().register_blueprint(blueprint, **kwargs)
 
 def parse_pkg(string) -> tuple:
     p: list = string.split(".", 1)
