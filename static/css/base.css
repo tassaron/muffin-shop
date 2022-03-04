@@ -1,6 +1,8 @@
 :root {
     --primary-font: "Noto Serif", serif;
     --secondary-font: "Roboto Serif", sans-serif;
+    --cursive-font: var(--primary-font);
+    --arcade-font: var(--primary-font);
     --nav-hover-color: blue;
 }
 
@@ -116,10 +118,10 @@ span.cart-label {
 
 .product-title {
     font-variant: small-caps;
-    font-family: var(--primary-font);
+    font-family: var(--cursive-font);
     line-height: 1.7;
     letter-spacing: 0.075rem;
-    text-shadow: 0 0 0.5rem #ccc;
+    text-shadow: 0 0 0.5rem rgba(204,204,204,0.5);
 }
 
 #ProductPage-slides {
@@ -291,4 +293,8 @@ span.cart-label {
 .blog-attrib::after {
     font-size: xx-small;
     content: "🔗";
+}
+
+.arcade-text {
+    font-family: var(--arcade-font);
 }
