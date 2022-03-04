@@ -3,10 +3,11 @@
 {% block title %}{{ site_name }}{% endblock %}
 {% block content %}
 {% include 'arcade/token_alert.html' %}
-<div class="ms-1 row">
+<div class="row">
     <div class="col-lg-4 d-none d-lg-block portrait-container"></div>
-    <div class="col col-lg-8 my-4 p-5 fs-5 lh-lg">
-        {{ arcade_description|safe }}
+    <div class="col col-lg-8 mb-4 p-5 fs-5 lh-lg">
+        <div class="d-lg-none d-block float-start portrait-container me-4" style="height:9rem; width: 6rem;"></div>
+        {{ arcade_header|safe }}
     </div>
 </div>
 {% if arcade_prizes|length > 0 %}
@@ -42,5 +43,10 @@
         </div>
     </div>
     {% endfor %}
+</div>
+<div class="row my-2 justify-content-center">
+    <div class="col-10 text-center fs-5">
+        {{ arcade_footer|safe }}
+    </div>
 </div>
 {% endblock %}

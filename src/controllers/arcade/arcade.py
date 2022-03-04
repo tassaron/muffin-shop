@@ -41,7 +41,8 @@ def arcade_index():
     arcade_games = current_app.modules[".arcade"]["games"]
     return render_template(
         "arcade/arcade_index.html",
-        arcade_description=render_markdown("arcade.md"),
+        arcade_header=render_markdown("arcade/header.md"),
+        arcade_footer=render_markdown("arcade/footer.md"),
         games=arcade_games.items(),
     )
 

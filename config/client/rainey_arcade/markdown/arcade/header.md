@@ -1,0 +1,1 @@
+These are some games I've made using vanilla JavaScript and HTML5 canvas. **Submit your score** after playing one! If you get enough points, you'll be able to buy [virtual prizes](/products).

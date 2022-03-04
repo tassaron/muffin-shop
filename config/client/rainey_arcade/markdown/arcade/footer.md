@@ -1,0 +1,1 @@
+I also made a [GitHub template for HTML5 games](https://github.com/tassaron/canvas-game). It has a basic scene manager and sprite components.
