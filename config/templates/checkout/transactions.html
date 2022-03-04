@@ -30,7 +30,7 @@
                     </td>
                     <td class="overflow-scroll" style="max-width:20ch">
                         {{'No Email' if not transaction.email_address else transaction.email_address.split("@")}}<br>
-                        (user_id: {transaction.user_id}})
+                        (user_id: {{transaction.user_id}})
                     </td>
                     <td class="overflow-scroll" style="max-width:50ch; max-height:50ch">
                         {{transaction.customer_name}}<br>
@@ -38,7 +38,12 @@
                         {{transaction.shipping_address}}
                     </td>
                     <td class="overflow-scroll" style="max-width:50ch; max-height:50ch">
-                        {{transaction.products}}
+                        <abbr title="{{transaction.products}}">
+                            {% for product in transaction.products.split("},") %}
+                                {{ product.split(",")[3].split(":", 1)[1] }}
+                                {{ product.split(",")[2].split(":", 1)[1][2:-1] }}{%if loop.revindex > 1 %},{%endif%} 
+                            {% endfor %}
+                        </abbr>
                     </td>
                     <td>
                         {{transaction.price}}
