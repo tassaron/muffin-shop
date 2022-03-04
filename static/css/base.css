@@ -283,7 +283,7 @@ span.cart-label {
     padding: 0.72rem 1rem 0 0;
 }
 
-.blog-attrib {
+.blog-attrib, .blog-detail {
     text-decoration: none;
     font-size: smaller;
 }

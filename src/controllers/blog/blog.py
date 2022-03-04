@@ -5,12 +5,26 @@ from flask import render_template, abort
 from muffin_shop.blueprint import Blueprint
 import os
 import json
+import datetime
 
 
 blueprint = Blueprint(
     "blog",
     __name__,
 )
+
+
+@blueprint.app_template_filter("pretty_time")
+def pretty_time_formatter(timestamp):
+    timestamp = datetime.datetime.strptime(timestamp.split(".", 1)[0], "%Y-%m-%d %H:%M:%S")
+    return timestamp.strftime("%-I:%M%p")
+
+
+@blueprint.app_template_filter("pretty_date")
+def pretty_date_formatter(timestamp):
+    timestamp = datetime.datetime.strptime(timestamp.split(".", 1)[0], "%Y-%m-%d %H:%M:%S")
+    return timestamp.strftime("%b&nbsp;%-d %Y")
+
 
 def get_json_path(page_num):
     return f"{os.environ['BLOG_PATH']}/pages/{'{:0>6d}'.format(page_num)}/posts.json"

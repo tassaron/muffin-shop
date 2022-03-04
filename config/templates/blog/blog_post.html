@@ -1,20 +1,23 @@
 <div class="row justify-content-center mb-3">
     <div class="col-md-8 col-10 shadow-sm bordered bg-light">
-        <div class="row">
+        <article class="row">
             {# Post details #}
             <div class="col-lg-3 col-md-4 col-3">
                 <a id="post{{ key }}" href="#post{{ key }}">
                     <div class="col-md-12 col-12 blog-av-container mb-md-5" style="height: calc(2rem + 13vw)"></div>
                 </a>
-                <div class="col-md-12 col-6 text-center">
+                <div class="col-12 text-center">
                     {% if post['url'] == "" %}
-                        Brianna
+                        <a href="/bio" class="blog-detail" rel="author">Brianna</a>
                     {% else %}
-                        <a href="{{ post['url'] }}" class="blog-attrib">@brianna</a>
+                        <a href="{{ post['url'] }}" class="blog-attrib" rel="author">@brianna</a>
                     {% endif %}
                 </div>
-                <div class="col-md-12 col-6 text-center">
-                    {{ post["created_at"].split(" ", 1)[0] }}
+                <div class="col-12 text-center">
+                    <time class="blog-detail" datetime="{{ post['created_at'] }}">
+                        {{ post["created_at"]|pretty_date|safe }}
+                        {{ post["created_at"]|pretty_time }}
+                    </time>
                 </div>
             </div>
             {# Post content #}
@@ -32,6 +35,6 @@
                     {{ post["content"]|safe }}
                 </div>
             </div>
-        </div>
+        </article>
     </div>
 </div>
