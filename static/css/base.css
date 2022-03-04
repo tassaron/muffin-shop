@@ -277,6 +277,10 @@ span.cart-label {
     border-bottom-right-radius: 0;
 }
 
+.blog-content {
+    font-size: clamp(0.9rem, calc(0.9rem + 0.2vw), 1.3rem);
+}
+
 .blog-content a.mention.hashtag {
     clear: right;
     float: right;
