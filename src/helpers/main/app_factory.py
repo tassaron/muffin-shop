@@ -35,13 +35,6 @@ def create_app():
     if mutated_env_file:
         app.logger.warning(".env file was modified programmatically")
 
-    def boolean_from_env_var(varname, default=False):
-        try:
-            return bool(int(os.environ.get(varname, default)))
-        except ValueError:
-            app.logger.error(f"{varname} must be a number (0 is False, otherwise True)")
-            return default
-
     app.config.update(
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
@@ -52,7 +45,7 @@ def create_app():
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_ECHO=boolean_from_env_var("LOG_RAW_SQL"),
+        SQLALCHEMY_ECHO=boolean_from_env_var(app, "LOG_RAW_SQL"),
         WTF_CSRF_ENABLED=True,
         WTF_CSRF_TIME_LIMIT=1800,
         SITE_NAME=(website_name := os.environ.get("SITE_NAME", "The Muffin Shop")),
@@ -61,7 +54,7 @@ def create_app():
         ),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
         CONFIG_PATH=os.environ.get("CONFIG_PATH", "config"),
-        CLIENT_SESSIONS=boolean_from_env_var("CLIENT_SESSIONS"),
+        CLIENT_SESSIONS=boolean_from_env_var(app, "CLIENT_SESSIONS"),
     )
 
     app.unique_name = prettier_url_safe(website_name)
@@ -141,8 +134,7 @@ def init_app(app, modules: Optional[dict] = None):
     app.session_interface = TassaronSessionInterface(app, db)
     migrate.init_app(app, db)
 
-    if app.env == "production":
-        # Enable Monitoring Dashboard only in production
+    if boolean_from_env_var(app, "MONITOR_ENABLED"):
         import flask_monitoringdashboard as monitor
 
         monitor.config.init_from(
@@ -201,3 +193,11 @@ def init_app(app, modules: Optional[dict] = None):
     app.after_request(log_response)
 
     return app
+
+
+def boolean_from_env_var(app, varname, default=False):
+    try:
+        return bool(int(os.environ.get(varname, default)))
+    except ValueError:
+        app.logger.error(f"{varname} must be a number (0 is False, otherwise True)")
+        return default
