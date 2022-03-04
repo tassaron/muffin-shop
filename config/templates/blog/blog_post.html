@@ -1,10 +1,8 @@
-<div class="row justify-content-center mb-3">
-    <div class="col-md-8 col-10 shadow-sm bordered bg-light">
-        <article class="row">
+        <article class="row pb-2">
             {# Post details #}
-            <div class="col-lg-3 col-md-4 col-3">
+            <div class="{% if key == 1 %}col-lg-4 {% endif %}col-md-3 col-3">
                 <a id="post{{ key }}" href="#post{{ key }}">
-                    <div class="col-md-12 col-12 blog-av-container mb-md-5" style="height: calc(2rem + 13vw)"></div>
+                    <div class="col-md-12 col-12 blog-av-container mb-md-5" style="height: calc({% if key > 1 %}2rem + 11vw{% else %}2rem + 13vw{% endif %})"></div>
                 </a>
                 <div class="col-12 text-center">
                     {% if post['url'] == "" %}
@@ -21,7 +19,7 @@
                 </div>
             </div>
             {# Post content #}
-            <div class="col-lg-9 col-md-8 col-9 product-description blog-card">
+            <div class="{% if key > 1 %}col-lg-9 {% endif %}col-md-8 col-9 product-description blog-card">
                 {% if post["images"]|length > 0 %}
                     <div class="row pb-3">
                     {% for image_url, alt_text in post["images"] %}
@@ -36,5 +34,4 @@
                 </div>
             </div>
         </article>
-    </div>
-</div>
+    

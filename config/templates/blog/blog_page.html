@@ -4,14 +4,18 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title p-1 fs-2">
-        Posts from <a class="text-decoration-underline" href="https://tassaron.com/@brianna">my Mastodon</a>
+    <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center product-title shadow-sm p-1 fs-2">
+        {{ site_author }}'s Blog
     </h1>
 </div>
+<div class="row justify-content-center mb-3">
 {% for post in posts %}
     {% set key = loop.index %}
-    {% include 'blog/blog_post.html' %}
+    <div class="col-10 shadow-sm bordered bg-light">
+        {% include 'blog/blog_post.html' %}
+    </div>
 {% endfor %}
+</div>
 {% if last_page > 0 %}
 <div class="row justify-content-center">
     <h1 class="border-bottom mt-1 mt-lg-5 mb-1 text-center p-1 fs-2">
