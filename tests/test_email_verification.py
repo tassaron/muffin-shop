@@ -38,7 +38,7 @@ def test_email_verification():
 
         # verify email
         result = send_email_verification_email(user)
-        client.get(f"/account/verify_email/{result()}")
+        client.get(f"/account/verify_email/{result().split('/')[-1]}")
         assert user.email_verified == True
 
         # sending email should now succeed!

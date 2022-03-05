@@ -215,5 +215,5 @@ def test_all_logged_in_user_routes(client):
 
 def test_static(client):
     # Irrelevant when using Nginx in production, but still important
-    resp = client.get("/static/img/logo.png")
+    resp = client.get("/static/img/logo.svg")
     assert resp.status_code == 200

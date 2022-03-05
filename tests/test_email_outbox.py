@@ -38,7 +38,7 @@ def test_email_outbox_for_reset_password():
             assert "Didn't raise OutboxFull" == True
 
         # visiting the reset_password view won't clear the outbox
-        client.get(f"/account/reset_password/{result()}")
+        client.get(f"/account/reset_password/{result().split('/')[-1]}")
         try:
             send_password_reset_email(user)
         except OutboxFull:
@@ -48,7 +48,7 @@ def test_email_outbox_for_reset_password():
 
         # confirming a new password will actually clear the outbox
         client.post(
-            f"/account/reset_password/{result()}",
+            f"/account/reset_password/{result().split('/')[-1]}",
             data={"password": "password", "confirm_password": "password"},
         )
         # sending email should now succeed!
