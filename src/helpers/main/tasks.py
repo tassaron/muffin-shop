@@ -34,8 +34,7 @@ def huey_send_email(email_config, subject, body, send_to):
     }
     """
     if email_config["ENV"] != "production":
-        print(body)
-        return body.split("/")[-1]
+        return body
 
     response = requests.post(
         email_config["API_URL"],
