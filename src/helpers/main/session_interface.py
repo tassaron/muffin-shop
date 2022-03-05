@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from uuid import uuid4
 import pickle
 
@@ -46,6 +46,7 @@ class TassaronSessionInterface(SessionInterface):
         self.db = db
         self.key_prefix = "session:"
         self.permanent = True
+        app.permanent_session_lifetime = timedelta(days=7)
         table = "sessions"
 
         if table not in self.db.metadata:

@@ -26,6 +26,9 @@
                     <th scope="row">{{loop.index}}</th>
                     <td>
                         {{key}}
+                        {% if statuses is defined %}
+                        {% if statuses[key] %}<br><strong>{{statuses[key]}}</strong>{% endif %}
+                        {% endif %}
                     </td>    
                     <td class="d-inline-block overflow-scroll" style="max-width:100ch">
                         {{value}}
