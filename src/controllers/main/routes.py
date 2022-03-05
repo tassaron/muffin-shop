@@ -98,7 +98,7 @@ def admin_sessions():
         sss.session_id: f"USER: {sss.user_id} - EXPIRY: {sss.expiry} - DATA: {data[sss.id]}" for sss in all_sessions
     }
     statuses = {
-        sss.session_id: f"{'active' if data[sss.id]['arcade_tokens'] > 0 or data[sss.id]['arcade_prizes'] or data[sss.id]['cart'] else 'expired' if sss.expiry <= datetime.utcnow() else 'zombie' if '_user_id' in data[sss.id] and sss.user_id is None else 'deleted' if 'csrf_token' not in data[sss.id] else ''}" for sss in all_sessions
+        sss.session_id: f"{'expired' if sss.expiry <= datetime.utcnow() else 'zombie' if '_user_id' in data[sss.id] and sss.user_id is None else 'deleted' if 'csrf_token' not in data[sss.id] else 'active' if ('arcade_tokens' in data[sss.id] and (data[sss.id]['arcade_tokens'] > 0 or data[sss.id]['arcade_prizes'])) or ('cart' in data[sss.id] and data[sss.id]['cart']) else ''}" for sss in all_sessions
     }
 
     empty_count = 0
