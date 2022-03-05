@@ -89,6 +89,9 @@ def create_app():
             "account": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/account"
             ),
+            "admin": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/admin"
+            ),
             "arcade": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/arcade"
             ),
@@ -97,9 +100,6 @@ def create_app():
             ),
             "checkout": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"
-            ),
-            "huey": FileSystemLoader(
-                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/huey"
             ),
             "inventory": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/inventory"

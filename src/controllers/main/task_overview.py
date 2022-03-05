@@ -22,4 +22,4 @@ def task_overview():
     cursor.execute("SELECT `key` FROM `kv`")
     keys = cursor.fetchall()
     connection.close()
-    return render_template("huey/task_overview.html", kv=list(zip(keys, values)))
+    return render_template("admin/admin_kv_table.html", title="Huey Task Results", kv=list(zip(keys, values)))

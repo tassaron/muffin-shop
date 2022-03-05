@@ -1,11 +1,14 @@
 {% extends 'main/base.html' %}
-{% block title %}Huey Task Results{% endblock %}
+{% block title %}{{ title }} - {{ site_name }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6 text-center mb-5">
-        <h2 class="heading-section">Huey Task Results</h2>
+    <div class="col-md-6 text-center my-2">
+        <h2 class="heading-section">{{ title }}</h2>
     </div>
 </div>
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
 <div class="row">
     <div class="col-md-12">
         <div class="table-wrap">
