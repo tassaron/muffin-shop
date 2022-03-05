@@ -15,6 +15,7 @@ from werkzeug.exceptions import (
 from werkzeug.routing import BuildError
 from functools import lru_cache
 from muffin_shop.blueprint import Blueprint
+from muffin_shop.helpers.main.plugins import db
 
 
 main_routes = Blueprint("main", __name__)
@@ -86,6 +87,15 @@ def admin_index():
     ]
     endpoints.remove(current_app.config["ADMIN_URL"])
     return render_template("main/admin.html", endpoints=endpoints)
+
+
+@main_routes.admin_route("/sessions")
+def admin_sessions():
+    all_sessions = current_app.session_interface.sql_session_model.query.all()
+    kv = {
+        sss.session_id: f"USER: {sss.user_id} - EXPIRY: {sss.expiry} - DATA: {current_app.session_interface.decrypt(sss.data)}" for sss in all_sessions
+    }
+    return render_template("admin/admin_kv_table.html", title="Sessions", kv=list(kv.items()))
 
 
 @main_routes.app_errorhandler(BadRequest)

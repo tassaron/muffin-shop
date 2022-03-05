@@ -124,6 +124,9 @@ class TassaronSessionInterface(SessionInterface):
             return None
         return signer.unsign(sid).decode()
 
+    def decrypt(self, val):
+        return self.serializer.loads(want_bytes(val))
+
     def open_session(self, app, request):
         """Original code from Flask-Session. Modified by tassaron"""
         sid = request.cookies.get(app.session_cookie_name)
@@ -152,7 +155,7 @@ class TassaronSessionInterface(SessionInterface):
         if saved_session:
             try:
                 val = saved_session.data
-                data = self.serializer.loads(want_bytes(val))
+                data = self.decrypt(val)
                 return ServerSideSession(data, sid=sid)
             except:
                 return ServerSideSession(sid=sid, permanent=self.permanent)
