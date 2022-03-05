@@ -1,6 +1,9 @@
 {% extends 'main/base.html' %}
 {% block title %}Upload Image{% endblock %}
 {% block content %}
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
 <nav><strong>Upload</strong> | <a href="{{ url_for('main.manage_images') }}">Manage</a></nav>
 
 <form action="" enctype="multipart/form-data" method="POST">

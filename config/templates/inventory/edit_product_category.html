@@ -3,6 +3,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
 <form action="" method="POST">
 	{{ form.hidden_tag() }}
 	<fieldset class="form-group">

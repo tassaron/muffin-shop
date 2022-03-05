@@ -6,6 +6,9 @@
         <h2 class="heading-section">Manage Product Categories</h2>
     </div>
 </div>
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
 <div class="row justify-content-center">
     <div class="col-md-6 text-center mb-2">
         <nav><a href="{{ url_for('inventory.create_product_category') }}">Create New Category</a></nav>
