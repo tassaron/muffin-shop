@@ -8,6 +8,7 @@ from flask.sessions import SessionMixin
 from itsdangerous import Signer, BadSignature, want_bytes
 from werkzeug.datastructures import CallbackDict
 from typing import Tuple, Optional
+from sqlalchemy.exc import IntegrityError
 
 
 class ServerSideSession(CallbackDict, SessionMixin):
@@ -148,18 +149,26 @@ class TassaronSessionInterface(SessionInterface):
         saved_session = self.sql_session_model.query.filter_by(
             session_id=store_id
         ).first()
-        if saved_session and saved_session.expiry <= datetime.utcnow():
-            # Delete expired session
-            self.db.session.delete(saved_session)
-            self.db.session.commit()
-            saved_session = None
         if saved_session:
             try:
-                val = saved_session.data
-                data = self.decrypt(val)
-                return ServerSideSession(data, sid=sid)
-            except:
-                return ServerSideSession(sid=sid, permanent=self.permanent)
+                data = self.decrypt(saved_session.data)
+                if saved_session.expiry >= datetime.utcnow():
+                    # Session is expired
+                    if saved_session.user_id is not None:
+                        # it belongs to a registered user, so un-expire it,
+                        # but empty their cart because it's likely out of date
+                        if "cart" in data:
+                            del data["cart"]
+                    return ServerSideSession(data, sid=sid)
+
+                # Delete expired session
+                self.db.session.delete(saved_session)
+                self.db.session.commit()
+
+            except IntegrityError:
+                self.app.logger.critical("Could not delete expired session %s", sid)
+            except Exception as e:
+                self.app.logger.error("Unknown error in session interface: %s", e)
         return ServerSideSession(sid=sid, permanent=self.permanent)
 
     def save_session(self, app, session, response):
