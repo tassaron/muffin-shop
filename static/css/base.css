@@ -302,3 +302,7 @@ span.cart-label {
 .arcade-text {
     font-family: var(--arcade-font);
 }
+
+.arcade-image {
+    min-height: 20rem;
+}
