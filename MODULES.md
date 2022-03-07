@@ -29,3 +29,5 @@
 4. arcade.arcade_index, arcade.game_page, arcade.token_leaderboard
 5. about.bio_page
 6. blog.blog_newest_posts
+7. about.resume_page
+8. about.contact_page

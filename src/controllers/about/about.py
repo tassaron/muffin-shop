@@ -17,3 +17,11 @@ def about_page():
 @blueprint.route("/bio")
 def bio_page():
     return render_template("about/bio.html", content=render_markdown("bio.md"))
+
+@blueprint.route("/resume")
+def resume_page():
+    return render_template("about/bio.html", content=render_markdown("bio.md"))
+
+@blueprint.route("/contact")
+def contact_page():
+    return render_template("about/bio.html", content=render_markdown("bio.md"))

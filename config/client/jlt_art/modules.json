@@ -1,0 +1,13 @@
+{
+    "main": {
+        "name": "Home",
+        "module": ".about",
+        "navigation": []
+    },
+    ".about": {
+        "name": "About",
+        "blueprints": ["about:blueprint"],
+        "root": "about",
+        "index": "about.about_page"
+    }
+}
