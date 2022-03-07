@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ProductSlideshowFromHtml from "./ProductSlideshowFromHtml";
+import GalleryFromHtml from "./GalleryFromHtml";
 import ProductPageButtons from "./ProductPageButtons";
 import CartPage from "./CartPage/CartPage";
 import { getChildOrError } from "../../static/js/util.js";
@@ -14,7 +14,7 @@ function renderIfExists(comp, elemId) {
 }
 
 // Render single components
-renderIfExists(<ProductSlideshowFromHtml />, "ProductPage-slideshow");
+renderIfExists(<GalleryFromHtml />, "ProductPage-slideshow");
 renderIfExists(<CartPage />, "CartPage-root");
 
 // Render a ProductPageButtons component for each product
