@@ -1,0 +1,13 @@
+:root {
+    --primary-font: 'Hubballi', serif;
+    --secondary-font: 'Hubballi', serif;
+    --cursive-font: 'Roboto Serif', serif;
+}
+
+body {
+    font-size: 18px;
+}
+
+.site-name-header span {
+    font-size: 1.5rem;
+}

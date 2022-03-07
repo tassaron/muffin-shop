@@ -69,8 +69,11 @@ footer a {
     text-decoration: none;
 }
 
-.site-name-header span {
+.site-name-header {
     font-family: var(--primary-font);
+}
+
+.site-name-header span {
     font-weight: 700;
 }
 
