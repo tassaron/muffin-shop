@@ -1,8 +1,14 @@
 {
     "main": {
         "name": "Home",
-        "module": ".about",
-        "navigation": []
+        "module": ".gallery",
+        "navigation": [".about"]
+    },
+    ".gallery": {
+        "name": "Gallery",
+        "blueprints": ["gallery:blueprint"],
+        "root": "gallery",
+        "index": "gallery.gallery_index"
     },
     ".about": {
         "name": "About",
