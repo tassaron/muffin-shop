@@ -27,6 +27,11 @@ footer a {
     text-decoration: none;
 }
 
+.image-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 .portrait-container {
     border-radius: 5rem;
     background: url("/static/client/the_rainbow_farm/img/brianna.jpg");
@@ -258,6 +263,11 @@ span.cart-label {
     position: absolute;
     width: 33%;
     height: 4rem;
+}
+
+.image-gallery-image {
+    height: calc(50vh);
+    object-fit: cover;
 }
 
 .center-cropped {

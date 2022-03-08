@@ -5,39 +5,34 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-12">
-    <div class="row justify-content-center">
+<div class="row">
+    <div class="col-lg-4 d-none d-lg-block image-container arcade-image"></div>
+    <div class="col col-lg-8 mb-md-4 pt-md-5 px-5 pb-3 fs-6 lh-lg">
+        <div class="d-lg-none d-block float-start me-4" style="height:9rem; width: calc(9rem + 5vw);">
+            <img src="/static/client/jlt_art/img/sisterhood--by-Jade-Thompson.webp" alt="Sisterhood, art piece by Jade Thompson">
+        </div>
         {{ header|safe }}
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4 d-none d-lg-block portrait-container">
-            
-        </div>
-        <div class="col col-lg-8 px-1 border-bottom floating-container">
-            <div id="ProductPage-row" class="row">
-                <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
-                <div id="ProductPage-slideshow"></div>
-                <span id="ProductPage-slides">
-                    {% for image_url in images %}
-                        {{ image_url }}{% if loop.index != images|length %},{% endif %}
-                    {% endfor %}
-                </span>
-            </div>
-            <div class="container map-bg text-center slogan-text">
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-6 col my-4 py-4"><p>Slogan Text Goes Here</p></div>
-                    <div class="col-lg-3"></div>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-12 px-1 border-bottom">
+        <div id="ProductPage-row" class="row">
+            <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
+            <div id="ProductPage-slideshow"></div>
+            <span id="ProductPage-slides">
+                {% for image_url in images %}
+                    {{ image_url }}{% if loop.index != images|length %},{% endif %}
+                {% endfor %}
+            </span>
         </div>
     </div>
 </div>
-<div class="container pt-2">
-    <div class="row justify-content-center">
+<div class="row justify-content-center mt-2">
+    <div class="col-md-6 col-12 taped">
         {{ footer|safe }}
+    </div>
+    <div class="col-md-6 col-12">
+        Blog goes here.
     </div>
 </div>
 {% endblock %}

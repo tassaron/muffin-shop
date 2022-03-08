@@ -1,0 +1,3 @@
+Jade Thompson is a queer, nonbinary artist from Akwesasne and Cornwall, Ontario, Canada. Their hand-printed linocut prints, paintings, and pyrography focus primarily in portraiture and semi-abstraction.
+
+Thompson, a St. Lawrence College graduate (2016), has taken part in art-related community events such as Cornwall Art Walk, Art Battle (Brockville, Kingston, Cornwall), The EO Garlic Festival, and Apples & Art (Cornwall, Kawenoke/Cornwall Island).
