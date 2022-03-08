@@ -34,13 +34,23 @@ def get_json_path(page_num):
 def blog_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
         posts = json.load(f)
-    last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages")) + 1
+    last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages"))
+
+    if last_page == 1 and len(posts) < 5:
+        # less than 1 page of posts
+        last_page = 0
+    else:
+        with open(get_json_path(last_page)) as f:
+            if not json.load(f):
+                last_page -= 1
+
     return render_template(
         "blog/blog_page.html",
         posts=reversed(posts),
-        page_range=reversed(range(max(last_page - 12, 1), last_page)),
+        # page_range is a range of 12 clamped by the total number of pages
+        page_range=[] if last_page == 0 else reversed(range(max(last_page - 11, 1), last_page + 1)),
+        # page_num is the current page which is currently irrelevant for the index
         page_num=last_page + 1,
-        last_page=0 if last_page == 2 and (len(posts) < 5 or not os.path.exists(get_json_path(1))) else last_page,
     )
 
 
@@ -65,10 +75,12 @@ def blog_page(page_num):
     elif end > last_page:
         start = max((start - abs(last_page - end)), 1)
         end = last_page
+    with open(get_json_path(end-1)) as f:
+        if not json.load(f):
+            end -= 1
     return render_template(
         "blog/blog_page.html",
         posts=reversed(posts),
         page_range=reversed(range(start, end)),
         page_num=page_num,
-        last_page=last_page,
     )

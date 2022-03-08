@@ -18,6 +18,7 @@ def nav_selected_bytes(route):
 @pytest.fixture
 def client():
     global app
+    os.environ["CONFIG_PATH"] = "config/client/the_rainbow_farm"
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path

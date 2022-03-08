@@ -1,0 +1,25 @@
+[
+    {
+        "created_at": "2022-03-01 19:46:34.934000+00:00",
+        "url": "https://tassaron.com/@brianna/107883003571521972",
+        "content": "<p>omg, emails were broken because my url didn&apos;t have &quot;/messages&quot; on the end.</p>",
+        "images": []
+    },
+    {
+        "created_at": "2022-03-02 20:05:22.009000+00:00",
+        "url": "",
+        "content": "<p>I found this image on my hard drive. I think the source is here: <a href=\"https://nbviewer.org/github/akittas/presentations/blob/master/pythess/meta_alltheway/meta_alltheway.ipynb\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">nbviewer.org/github/akittas/pr</span><span class=\"invisible\">esentations/blob/master/pythess/meta_alltheway/meta_alltheway.ipynb</span></a> </p><p>Metaclasses in Python are fun, especially if you&apos;re making a library... but if you can avoid using them, then you won&apos;t have to understand this diagram. Which is probably a good idea if you want to write maintainable code \ud83d\ude1b <a href=\"https://tassaron.com/tags/blog\" class=\"mention hashtag\" rel=\"tag\">#<span>blog</span></a></p>",
+        "images": [
+            [
+                "https://nyc3.digitaloceanspaces.com/tassres/media_attachments/files/107/888/671/955/931/123/original/44dee93d8b49cb9b.png",
+                "a flowchart explaining Python's class and instance creation flow"
+            ]
+        ]
+    },
+    {
+        "created_at": "2022-03-02 21:20:38.288000+00:00",
+        "url": "https://tassaron.com/@brianna/107889035724942293",
+        "content": "<p><a href=\"https://gist.github.com/tassaron/2e1c1bd5d67202d9daf191eec93b1f6a\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">gist.github.com/tassaron/2e1c1</span><span class=\"invisible\">bd5d67202d9daf191eec93b1f6a</span></a> Script to poll for my Mastodon statuses and turn them into JSON. It paginates them into groups of 5. Now I just have to make some HTML for it. Honestly that&apos;s the hardest part; I don&apos;t know where I want this newsfeed/blog or what I want it to look like :P</p>",
+        "images": []
+    }
+]
