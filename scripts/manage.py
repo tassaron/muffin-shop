@@ -10,7 +10,7 @@ from muffin_shop.controllers.main.routes import all_urls
 
 
 def print_all_urls(stream):
-    stream.write("\n".join(all_urls()))
+    stream.write("\n".join(all_urls()) + "\n")
 
 
 def main():
@@ -19,17 +19,13 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.description = "Management script for this Flask application"
-    parser.add_argument(
-        "action",
-        choices=["init", "urls"],
-        help=(
-            "init: start new project (generate env file)",
-            "urls: write all urls to output stream"
-        ),
-    )
+    actions = parser.add_mutually_exclusive_group()
+    actions.add_argument("action", help="init: start new project (generate env file)", nargs="?", metavar="init")
+    actions.add_argument("urls", help="urls: write all urls to stdout", nargs="?")
+
     parser.add_argument(
         "-o",
-        help="write to text file instead of stdout",
+        help="redirect stdout to text file",
         metavar="output filename",
         default=None,
     )
