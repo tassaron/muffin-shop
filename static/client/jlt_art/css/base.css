@@ -1,0 +1,37 @@
+.image-container {
+    background-image: url('/static/client/jlt_art/img/Jade-Thompson.webp');
+}
+
+.taped-container {
+    border: 0.2rem solid black;
+    padding: 1rem 2rem;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    margin: 20px auto 10px;
+    background: lightcyan;
+}
+  
+.taped-container::before,
+.taped-container::after {
+    background: rgba(255,255,235,.6);
+    box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    content: "";
+    display: block;
+    height: 30px;
+    position: absolute;
+    margin: auto;
+    width: 100px;
+}
+
+.taped-container::before {
+    left: -30px;
+    top: 0px;
+    transform: rotate(-35deg);
+}
+
+.taped-container::after {
+    right: -30px;
+    top: 0px;
+    transform: rotate(45deg);
+}

@@ -1,0 +1,13 @@
+{% set selected = 5 %}
+{% extends 'main/base.html' %}
+{% block title %}Biography - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 d-none d-lg-block image-container" style="min-height:20rem;"></div>
+    <div class="col col-lg-8 mb-md-4 px-5 pb-3 fs-6 lh-lg">
+        <div class="d-lg-none d-block float-start image-container me-4" style="height:12rem; width: 9rem;"></div>
+        {{ content|safe }}
+    </div>
+</div>
+{% endblock %}

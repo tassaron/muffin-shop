@@ -1,0 +1,28 @@
+{
+    "main": {
+        "name": "Home",
+        "module": ".gallery",
+        "navigation": [".about", ".blog"]
+    },
+    ".gallery": {
+        "name": "Gallery",
+        "blueprints": ["gallery:blueprint"],
+        "root": "gallery",
+        "index": "gallery.gallery_index",
+        "ignore": ["account.register"]
+    },
+    ".about": {
+        "name": "About",
+        "blueprints": ["about:blueprint"],
+        "root": "about",
+        "index": "about.about_page",
+        "ignore": "about_page"
+    },
+    ".blog": {
+        "name": "Blog",
+        "env": "BLOG_PATH",
+        "blueprints": ["blog:blueprint"],
+        "root": "blog",
+        "index": "blog.blog_index"
+    }
+}

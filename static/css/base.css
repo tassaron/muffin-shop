@@ -27,6 +27,12 @@ footer a {
     text-decoration: none;
 }
 
+.image-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
 .portrait-container {
     border-radius: 5rem;
     background: url("/static/client/the_rainbow_farm/img/brianna.jpg");
@@ -260,6 +266,11 @@ span.cart-label {
     height: 4rem;
 }
 
+.image-gallery-image {
+    height: calc(50vh);
+    object-fit: cover;
+}
+
 .center-cropped {
     object-fit: cover;
     object-position: center;
@@ -271,13 +282,6 @@ span.cart-label {
 
 .ellipsis::after {
     content: "…";
-}
-
-.blog-card {
-    background-image: url("/static/client/rainey_arcade/img/muffin.ico");
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    border-bottom-right-radius: 0;
 }
 
 .blog-content {

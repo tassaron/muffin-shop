@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ site_name }}
+{% endblock %}
+
+{% block content %}
+<div class="col-12">
+    <div class="row justify-content-center">
+        {{ header|safe }}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 d-none d-lg-block portrait-container">
+            
+        </div>
+        <div class="col col-lg-8 px-1 border-bottom floating-container">
+            <div id="ProductPage-row" class="row">
+                <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
+                <div id="ProductPage-slideshow"></div>
+                <span id="ProductPage-slides">
+                    {% for image_url in images %}
+                        {{ image_url }}{% if loop.index != images|length %},{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <div class="container map-bg text-center slogan-text">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6 col my-4 py-4"><p>Slogan Text Goes Here</p></div>
+                    <div class="col-lg-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container pt-2">
+    <div class="row justify-content-center">
+        {{ footer|safe }}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+{% endblock %}

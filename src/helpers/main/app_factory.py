@@ -101,6 +101,9 @@ def create_app():
             "checkout": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/checkout"
             ),
+            "gallery": FileSystemLoader(
+                f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/gallery"
+            ),
             "inventory": FileSystemLoader(
                 f"{os.getcwd()}/{app.config['CONFIG_PATH']}/templates/inventory"
             ),

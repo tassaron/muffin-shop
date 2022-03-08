@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ site_name }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 d-none d-lg-block image-container mb-2" style="min-height:20rem;"></div>
+    <div class="col col-lg-8 mb-md-4 pt-md-5 px-5 fs-6 lh-lg">
+        <div class="float-end ms-3" style="height:9rem; width: calc(9rem + 1vw);">
+            <img src="/static/client/jlt_art/img/sisterhood--by-Jade-Thompson.webp" alt="Sisterhood, art piece by Jade Thompson">
+        </div>
+        {{ header|safe }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 px-1 border-bottom">
+        <div id="ProductPage-row" class="row">
+            <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
+            <div id="ProductPage-slideshow"></div>
+            <span id="ProductPage-slides">
+                {% for image_url in images %}
+                    {{ image_url }}{% if loop.index != images|length %},{% endif %}
+                {% endfor %}
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center mt-2">
+    <div class="col-lg-4 col-md-6 col-10 taped-container">
+        {{ footer|safe }}
+    </div>
+    <div class="col-lg-8 col-md-6 col-12 px-5">
+        {% set post = {"url": "", "images": [], "created_at": "2022-03-02 20:05:22.009000+00:00", "content": "Generally giving everything about this site more attention. New show added in upcoming exhibitions"} %}
+        {% set key = 1 %}
+        {% include 'blog/blog_post.html' %}
+        {% set post = {"url": "", "images": [], "created_at": "2020-01-30 10:05:22.009000+00:00", "content": "Edited the site banner - in iOS mobile view some of the text overlapped. Updated artist bio and artist CV pages."} %}
+        {% set key = 2 %}
+        {% include 'blog/blog_post.html' %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+{% endblock %}

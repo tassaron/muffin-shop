@@ -1,0 +1,22 @@
+<article class="col-12 blog-card pb-4">
+    <div class="col-12 text-center">
+        <a class="product-title text-decoration-none" id="post{{ key }}" href="#post{{ key }}">
+            <time class="blog-detail" datetime="{{ post['created_at'] }}">
+                {{ post["created_at"]|pretty_date|safe }}
+                {{ post["created_at"]|pretty_time }}
+            </time>
+        </a>
+    </div>
+    {% if post["images"]|length > 0 %}
+        <div class="row pb-3">
+        {% for image_url, alt_text in post["images"] %}
+            <div class="col-4">    
+                <a href="{{ image_url }}"><img alt="{{ alt_text }}" src="{{ image_url }}" class="img-fluid rounded shadow-sm center-cropped"></a>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    <div class="row blog-content">
+        {{ post["content"]|safe }}
+    </div>
+</article>
