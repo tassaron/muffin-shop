@@ -1,7 +1,5 @@
 from flask import *
 from muffin_shop.blueprint import Blueprint
-from muffin_shop.helpers.main.plugins import db
-from muffin_shop.decorators import hidden_route
 from muffin_shop.models.shop.inventory_models import Product, ProductCategory
 import logging
 import time
