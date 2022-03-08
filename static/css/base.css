@@ -30,6 +30,7 @@ footer a {
 .image-container {
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: top center;
 }
 
 .portrait-container {
@@ -281,13 +282,6 @@ span.cart-label {
 
 .ellipsis::after {
     content: "…";
-}
-
-.blog-card {
-    background-image: url("/static/client/rainey_arcade/img/muffin.ico");
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    border-bottom-right-radius: 0;
 }
 
 .blog-content {

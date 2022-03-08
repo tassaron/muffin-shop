@@ -67,3 +67,10 @@ html {
 .product-title {
     font-variant: normal;
 }
+
+.blog-card {
+    background-image: url("/static/client/rainey_arcade/img/muffin.ico");
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    border-bottom-right-radius: 0;
+}
