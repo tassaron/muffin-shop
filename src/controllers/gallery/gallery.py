@@ -11,7 +11,7 @@ blueprint = Blueprint(
 
 
 @blueprint.index_route()
-def gallery_page():
+def gallery_index():
     return render_template(
         "gallery/gallery_index.html",
         images=[url_for('static', filename=f'uploads/images/{image}') for image in get_files()],
