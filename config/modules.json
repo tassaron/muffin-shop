@@ -25,5 +25,12 @@
         ],
         "root": "shop",
         "index": "shop.index"
+    },
+    ".blog": {
+        "name": "Blog",
+        "env": "BLOG_PATH",
+        "blueprints": ["blog:blueprint"],
+        "root": "blog",
+        "index": "blog.blog_index"
     }
 }

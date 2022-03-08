@@ -97,7 +97,7 @@ class Flask(flask.Flask):
         for module_name in data["main"]["navigation"]:
             if module_name not in data:
                 raise ConfigurationError(
-                    f"Non-existent '{module_name}' module in main module's 'navigation' entry"
+                    f"The '{module_name}' module listed in main module's 'navigation' entry does not have a corresponding configuration"
                 )
             import_python_modules(
                 parse_pkg(module_name), data[module_name]["blueprints"]
