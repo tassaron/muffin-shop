@@ -20,8 +20,9 @@
                 <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
                 <div id="ProductPage-slideshow"></div>
                 <span id="ProductPage-slides">
-                    {% for image_url in images %}
-                        {{ image_url }}{% if loop.index != images|length %},{% endif %}
+                    {% for image_title, image_url in images %}
+                        """{{ image_url }}""",
+                        """{{ image_title }}"""{% if loop.index != images|length %},{% endif %}
                     {% endfor %}
                 </span>
             </div>

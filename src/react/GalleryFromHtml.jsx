@@ -10,24 +10,42 @@ class GalleryFromHtml extends Component {
         super();
 
         // Get `productName`
-        const nameNode = getNodeOrError("ProductPage-name");
+        //const nameNode = getNodeOrError("ProductPage-name");
         // Get `slideImages`
         const slidesNode = getNodeOrError("ProductPage-slides");
-        const items = slidesNode.innerHTML.split(",");
+        let items = slidesNode.innerHTML.split("\"\"\",");
+        items = items.map((item) => item.trim().substring(3));
+        items[items.length-1] = items[items.length-1].substring(0, items[items.length-1].length - 3);
+        slidesNode.innerHTML = "";
+        const images = [];
+        const titles = [];
+        for (let i = 0; i < items.length; i++) {
+            if (i % 2 == 0) {
+                images.push(items[i]);
+            } else {
+                titles.push(items[i]);
+            }
+        }
+        this.fullScreen = false;
         this.node = React.createRef();
 
         // https://github.com/xiaolin/react-image-gallery#props
-        this.slideImages = items.map((item) => {
+        let slides = images.map((item) => {
             return {
                 original: item,
                 thumbnail: item,
-                originalAlt: nameNode.innerHTML,
-                thumbnailAlt: nameNode.innerHTML,
-                //description: nameNode.innerHTML,
             }
         });
-        slidesNode.innerHTML = "";
-        this.fullScreen = false;
+        for (let i = 0; i < images.length; i++) {
+            if (!titles[i]) continue;
+            slides[i] = {
+                ...slides[i],
+                originalAlt: titles[i],
+                thumbnailAlt: titles[i],
+                description: titles[i],
+            }
+        }
+        this.slideImages = slides;
     }
 
     getSlideElement(index) {
@@ -43,13 +61,13 @@ class GalleryFromHtml extends Component {
         if (fullscreen) {
             image.setAttribute("style", "height: 90vh");
         } else {
-            image.setAttribute("style", "height: auto");
+            image.setAttribute("style", "height: var(--gallery-image-height)");
         }
     }
 
     slideTo(index) {
         let image = this.getSlideElement(this.node.current.getCurrentIndex());
-        image.setAttribute("style", "height: auto");
+        image.setAttribute("style", "height: var(--gallery-image-height)");
         if (this.fullscreen) {
             image = this.getSlideElement(index);
             image.setAttribute("style", "height: 90vh")
