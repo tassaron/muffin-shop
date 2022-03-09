@@ -271,6 +271,13 @@ span.cart-label {
     object-fit: cover;
 }
 
+.image-gallery-description {
+    left: 50% !important;
+    top: 5% !important;
+    bottom: auto !important;
+    transform: translateX(-50%);
+}
+
 .center-cropped {
     object-fit: cover;
     object-position: center;
