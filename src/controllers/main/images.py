@@ -34,7 +34,7 @@ def upload_images():
 
 @main_routes.admin_route("/images")
 def manage_images():
-    files_list = get_files()
+    files_list = [("", Images.path(filename)) for filename in get_files()]
     return render_template("main/manage_images.html", files_list=files_list)
 
 
@@ -43,7 +43,7 @@ def view_image(filename):
     files_list = get_files()
     if filename not in files_list:
         abort(404)
-    file_path = Images.path(filename)
+    #file_path = Images.path(filename)
     return render_template(
         "main/view_image.html",
         file_url=url_for("static", filename=f"uploads/images/{filename}"),

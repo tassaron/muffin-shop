@@ -1,14 +1,33 @@
 {% extends 'main/base.html' %}
 {% block title %}Manage Images{% endblock %}
 {% block content %}
-<nav class="d-flex mb-2">
-    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
-</nav>
-<nav><a href="{{ url_for('main.upload_images') }}">Upload</a> | <strong>Manage</strong></nav>
 
-{% for image in files_list %}
-    - {{ image }}
-    <a href="{{ url_for('main.view_image', filename=image) }}">open</a>
-    <a href="{{ url_for('main.delete_image', filename=image) }}">delete</a><br>
-{% endfor %}
+<div class="row">
+    <nav class="d-flex mb-2 justify-content-between">
+        <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+        <a class="btn btn-primary" href="{{ url_for('main.upload_images') }}">Upload</a>
+    </nav>
+    {% for title, image in files_list %}
+        <div class="col-lg-4 col-md-6 col-10 mb-4">
+            <div tabindex="0" class="card product-card floating-product-card" style="min-width:15rem; border-radius: 0px;">
+                <a href="{{ url_for('main.view_image', filename=image|basename) }}">
+                    <img class="card-img-top center-cropped" style="height:10rem" src="/{{image}}" alt="">
+                </a>
+                <div class="card-body product-description" style="border-radius: 0px;">
+                    <h4 class="card-title product-title">
+                        {{title}}test
+                    </h4>
+                    <div class="row justify-content-between">
+                        <div class="col-6">
+                            <a class="w-100 btn btn-secondary" href="/{{image}}">download</a>
+                        </div>
+                        <div class="col-6">
+                            <a class="w-100 btn btn-danger" href="{{ url_for('main.delete_image', filename=image|basename) }}">delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

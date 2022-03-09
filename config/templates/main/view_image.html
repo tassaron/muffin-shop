@@ -1,11 +1,26 @@
 {% extends 'main/base.html' %}
 {% block title %}View Image{% endblock %}
 {% block content %}
-<nav class="d-flex mb-2">
-    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
-</nav>
-<nav><a href="{{ url_for('main.upload_images') }}">Upload</a> | <a href="{{ url_for('main.manage_images') }}">Manage</a></nav>
-
-<p>URL: {{ file_url }}</p>
-<img src="{{ file_url }}" style="width:100%; height: 100%">
+<div class="row justify-content-center">
+    <nav class="d-flex mb-2">
+        <a class="btn btn-secondary" href="{{ url_for('main.manage_images') }}">❮ Back</a>
+    </nav>
+    <p class="col-10">
+        <strong>URL to copy-paste:</strong><br>{{ url_for('static', filename='', _external=True) }}{{ file_url.split('/', 2)[2] }}
+    </p>
+    <div class="col-10">
+        <img src="{{ file_url }}" style="width:100%; height: 100%">
+    </div>
+    <div class="col-10 p-5">
+        <div class="row justify-content-between">
+            <div class="col-6">
+                <a class="w-100 btn btn-secondary" href="{{file_url}}">download</a>
+            </div>
+            <div class="col-6">
+                <a class="w-100 btn btn-danger" href="{{ url_for('main.delete_image', filename=file_url|basename) }}">delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}

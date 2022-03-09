@@ -55,6 +55,11 @@ def all_base_urls():
     ]
 
 
+@main_routes.app_template_filter("basename")
+def basename(path):
+    return os.path.basename(path)
+
+
 @main_routes.before_app_request
 def synchronize_server_side_sessions():
     # sync logged-in users across devices
