@@ -16,8 +16,8 @@
             <div class="col-10 shadow-sm bordered bg-light">
                 {% include 'blog/blog_post.html' %}
                 <div class="d-flex justify-content-center pb-5 border-bottom">
-                    <a class="btn btn-secondary me-4" href="#">edit</a>
-                    <a class="btn btn-danger" href="#">delete</a>
+                    <a class="btn btn-secondary me-4" href="{{ url_for('blog.blog_edit_post', post_id=loop.revindex0) }}">edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('blog.blog_delete_post', post_id=loop.revindex0) }}">delete</a>
                 </div>
             </div>
         {% endfor %}

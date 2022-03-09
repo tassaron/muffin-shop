@@ -1,9 +1,10 @@
 """
 Root blueprint of the blog module
 """
+from werkzeug.datastructures import MultiDict
 from flask import render_template, abort, flash, redirect, url_for
 from muffin_shop.blueprint import Blueprint
-from muffin_shop.helpers.main.json import get_json_archive_path, insert_to_json_archive
+from muffin_shop.helpers.main.json import get_json_archive_path, insert_to_json_archive, remove_from_json_archive
 from muffin_shop.forms.blog.post_forms import BlogPostForm
 import os
 import json
@@ -104,4 +105,35 @@ def blog_new_post():
         success = insert_to_json_archive(f"{os.environ['BLOG_PATH']}/posts.json", new_post)
         flash("Created new post! ✔️" if success else "Error", "success" if success else "danger")
         return redirect(url_for("main.admin_index"))
-    return render_template("blog/new_post.html", form=form)
+    return render_template("blog/edit_post.html", form=form)
+
+
+@blueprint.admin_route('/post/delete/<int:post_id>')
+def blog_delete_post(post_id):
+    if not remove_from_json_archive(f"{os.environ['BLOG_PATH']}/posts.json", post_id):
+        abort(404)
+    flash("Post deleted", "danger")
+    return redirect(url_for("blog.admin_blog_index"))
+
+
+@blueprint.admin_route('/post/edit/<int:post_id>', methods=["GET", "POST"])
+def blog_edit_post(post_id):
+    with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
+        posts = json.load(f)
+    form = BlogPostForm()
+    if form.validate_on_submit():
+        posts[post_id]["content"] = form.content.data
+        try:
+            with open(f"{os.environ['BLOG_PATH']}/posts.json", "w") as f:
+                json.dump(posts, f)
+            flash("Edited that post! ✔️", "success")
+        except Exception:
+            flash("Error", "danger")
+        return redirect(url_for("blog.admin_blog_index"))
+
+    filled_form = {
+        "content": posts[post_id]["content"]
+    }
+    form = BlogPostForm(formdata=MultiDict(filled_form))
+    return render_template("blog/edit_post.html", form=form)
+
