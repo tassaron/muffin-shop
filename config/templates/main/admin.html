@@ -2,10 +2,27 @@
 {% block title %}Admin for {{ site_name }}{% endblock %}
 
 {% block content %}
-These are example URLs for all the admin endpoints that are enabled on this website
-<ul>
-{% for endpoint in endpoints %}
-<li>{% if "delete" in endpoint %}{{ endpoint }}{% else %}<a href="{{ endpoint }}">{{ endpoint }}</a>{% endif %}</li>
-{% endfor %}
-</ul>
+<div class="row justify-content-center">
+    <h1 class="mt-1 mt-lg-5 mb-1 text-center p-1 fs-2">
+        Admin Panel - {{ site_name }}
+    </h1>
+</div>
+<div class="row justify-content-end">
+    <small class="col-5 mb-1 text-center p-1 fs-6">
+        welcome, {{ user_name }}
+    </small>
+</div>
+<div class="row">
+    {% for endpoint in endpoints %}
+    <div class="col-lg-4 col-md-6 col-12">
+        <span class="nav-link">
+            {% if "delete" in endpoint %}
+                {{ endpoint }}
+            {% else %}
+                <a class="btn btn-outline-dark m-2" href="{{ endpoint }}">{{ ' '.join(endpoint.split('/')[2:])|title }}</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

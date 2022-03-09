@@ -88,7 +88,7 @@ def admin_index():
         if url.startswith(current_app.config["ADMIN_URL"])
     ]
     endpoints.remove(current_app.config["ADMIN_URL"])
-    return render_template("main/admin.html", endpoints=endpoints)
+    return render_template("main/admin.html", endpoints=endpoints, user_name=flask_login.current_user.email)
 
 
 if os.environ.get("CLIENT_SESSIONS", "1") == "0":
