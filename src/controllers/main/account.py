@@ -62,7 +62,7 @@ def login():
                     current_app.session_interface.set_user_session(session.sid, user.id)
                 else:
                     restored_session_id, restored_session_data = restored_data
-                    if session["cart"] == {}:
+                    if "cart" in session and session["cart"] == {} and "cart" in restored_session_data:
                         # cart is empty so copy the other session that has a full cart
                         session["cart"] = restored_session_data["cart"]
                     if "arcade_tokens" in session and "arcade_tokens" in restored_session_data:
@@ -211,7 +211,8 @@ def logout():
         session.sid = current_app.session_interface._generate_sid()
 
     # empty things that the user would expect to become empty
-    session["cart"] = {}
+    if "cart" in session:
+        session["cart"] = {}
     if "arcade_tokens" in session:
         session["arcade_tokens"] = 0
     if "arcade_prizes" in session:
