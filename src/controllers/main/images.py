@@ -2,6 +2,7 @@ import os
 import uuid
 import json
 from flask import (
+    current_app,
     render_template,
     redirect,
     url_for,
@@ -28,6 +29,11 @@ def upload_images():
         except:
             abort(415)
         Images.save(form.image.data, name=f"{name}.")
+        with open(get_image_data_path("titles"), "r") as f:
+            files_titles = json.load(f)
+        files_titles[name] = form.title.data.strip()
+        with open(get_image_data_path("titles"), "w") as f:
+            json.dump(files_titles, f)
         flash("Upload successful!", "success")
         return redirect(url_for("main.manage_images"))
     return render_template("main/upload_images.html", form=form)
@@ -38,7 +44,7 @@ def manage_images():
     with open(get_image_data_path("titles"), "r") as f:
         files_titles = json.load(f)
     files_list = [
-        (files_titles.get(filename, filename), Images.path(filename))
+        (files_titles.get(os.path.splitext(filename)[0], filename), Images.path(filename))
         for filename in get_files()
     ]
     return render_template("main/manage_images.html", files_list=files_list)
@@ -49,10 +55,9 @@ def view_image(filename):
     files_list = get_files()
     if filename not in files_list:
         abort(404)
-    #file_path = Images.path(filename)
     return render_template(
         "main/view_image.html",
-        file_url=url_for("static", filename=f"uploads/images/{filename}"),
+        file_url=f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images/{filename}",
     )
 
 

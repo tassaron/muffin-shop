@@ -25,7 +25,12 @@ def get_files(asset="images"):
     path = f"{current_app.config['UPLOADS_DEFAULT_DEST']}/{asset}"
     if not os.path.exists(path):
         os.makedirs(path)
-    return os.listdir(path)
+    files_list = os.listdir(path)
+    try:
+        files_list.remove("data")
+    except ValueError:
+        pass
+    return files_list
 
 
 def get_image_data_path(value):
