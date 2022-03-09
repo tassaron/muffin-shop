@@ -84,6 +84,13 @@ def blog_page(page_num):
     )
 
 
+@blueprint.admin_route("")
+def admin_blog_index():
+    with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
+        posts = json.load(f)
+    return render_template("admin/admin_blog_index.html", posts=reversed(posts))
+
+
 @blueprint.admin_route('/post', methods=["GET", "POST"])
 def blog_new_post():
     form = BlogPostForm()
