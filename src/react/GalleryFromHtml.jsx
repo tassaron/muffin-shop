@@ -61,6 +61,7 @@ class GalleryFromHtml extends Component {
                     items={this.slideImages}
                     onScreenChange={(fullscreen) => this.toggleFullscreen(fullscreen)}
                     onBeforeSlide={(index) => this.slideTo(index)}
+                    showPlayButton={false}
                 />
             </div>
         );
