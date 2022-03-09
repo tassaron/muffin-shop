@@ -1,4 +1,4 @@
-from flask import render_template, flash, session, url_for, current_app, flash
+from flask import render_template, flash, session, url_for, current_app, flash, request
 import flask_login
 from itsdangerous import BadSignature
 from werkzeug.exceptions import (
