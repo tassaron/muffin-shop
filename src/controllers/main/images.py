@@ -1,5 +1,6 @@
 import os
 import uuid
+import json
 from flask import (
     render_template,
     redirect,
@@ -9,8 +10,8 @@ from flask import (
 )
 
 from muffin_shop.controllers.main.routes import main_routes
-from muffin_shop.forms.main.images import UploadForm
-from muffin_shop.helpers.main.images import Images, validate_image, get_files
+from muffin_shop.forms.main.image_forms import UploadForm
+from muffin_shop.helpers.main.images import Images, validate_image, get_files, get_image_data_path
 
 
 @main_routes.admin_route("/images/upload", methods=["GET", "POST"])
@@ -34,7 +35,12 @@ def upload_images():
 
 @main_routes.admin_route("/images")
 def manage_images():
-    files_list = [("", Images.path(filename)) for filename in get_files()]
+    with open(get_image_data_path("titles"), "r") as f:
+        files_titles = json.load(f)
+    files_list = [
+        (files_titles.get(filename, filename), Images.path(filename))
+        for filename in get_files()
+    ]
     return render_template("main/manage_images.html", files_list=files_list)
 
 

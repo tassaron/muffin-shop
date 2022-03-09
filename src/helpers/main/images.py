@@ -3,8 +3,8 @@ import flask_uploads
 import os
 import imghdr
 
-
-Images = flask_uploads.UploadSet("images", flask_uploads.IMAGES)
+images_str = "images"
+Images = flask_uploads.UploadSet(images_str, flask_uploads.IMAGES)
 
 
 def validate_image(stream):
@@ -26,3 +26,13 @@ def get_files(asset="images"):
     if not os.path.exists(path):
         os.makedirs(path)
     return os.listdir(path)
+
+
+def get_image_data_path(value):
+    _path = f"{current_app.config['UPLOADS_DEFAULT_DEST']}/{images_str}/data/{value}.json"
+    if not os.path.exists(_path):
+        if not os.path.exists(os.path.dirname(_path)):
+            os.makedirs(os.path.dirname(_path))
+        with open(_path, "w") as f:
+            f.write("{}")
+    return _path
