@@ -4,7 +4,8 @@
     --cursive-font: var(--primary-font);
     --arcade-font: var(--primary-font);
     --nav-hover-color: blue;
-    --gallery-image-height: clamp(20rem, 50vh, 50rem);
+    --gallery-image-height: auto;
+    --gallery-image-max-height: 20vh;
 }
 
 body {
@@ -268,6 +269,7 @@ span.cart-label {
 }
 
 .image-gallery-image {
+    max-height: var(--gallery-image-max-height);
     height: var(--gallery-image-height);
     object-fit: cover;
     object-position: top center;
