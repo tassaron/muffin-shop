@@ -6,52 +6,54 @@
 <nav class="d-flex mb-2">
     <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
 </nav>
-<form action="" method="POST">
-	{{ form.hidden_tag() }}
-	<fieldset class="form-group">
-		<legend class="border-top border-bottom mb-4">{{ title }}</legend>
-		<div class="form-group">
-			{{ form.name.label(class="form-control-label") }}
-			{% if form.name.errors %}
-			{{ form.name(class="form-control form-control-lg is-invalid") }}
-			<div class="invalid-feedback">
-				{% for error in form.name.errors %}
-				<span>{{ error }}</span>
-				{% endfor %}
+<div class="row justify-content-center">
+	<form class="col-lg-6 col-md-8 col-12" action="" method="POST">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend class="border-top border-bottom mb-4">{{ title }}</legend>
+			<div class="form-group">
+				{{ form.name.label(class="form-control-label") }}
+				{% if form.name.errors %}
+				{{ form.name(class="form-control form-control-lg is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.name.errors %}
+					<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+				{% else %}
+				{{ form.name(class="form-control form-control-lg") }}
+				{% endif %}
 			</div>
-			{% else %}
-			{{ form.name(class="form-control form-control-lg") }}
-			{% endif %}
-		</div>
-		<div class="form-group">
-			{{ form.image.label(class="form-control-label") }}
-			{% if form.image.errors %}
-			{{ form.image(class="form-control form-control-lg is-invalid") }}
-			<div class="invalid-feedback">
-				{% for error in form.image.errors %}
-				<span>{{ error }}</span>
-				{% endfor %}
+			<div class="form-group">
+				{{ form.image.label(class="form-control-label") }}
+				{% if form.image.errors %}
+				{{ form.image(class="form-control form-control-lg is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.image.errors %}
+					<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+				{% else %}
+				{{ form.image(class="form-control form-control-lg") }}
+				{% endif %}
 			</div>
-			{% else %}
-			{{ form.image(class="form-control form-control-lg") }}
-			{% endif %}
-		</div>
-		<div class="form-group">
-			{{ form.sorting_order.label(class="form-control-label") }}
-			{% if form.sorting_order.errors %}
-			{{ form.sorting_order(class="form-control form-control-lg is-invalid") }}
-			<div class="invalid-feedback">
-				{% for error in form.sorting_order.errors %}
-				<span>{{ error }}</span>
-				{% endfor %}
+			<div class="form-group">
+				{{ form.sorting_order.label(class="form-control-label") }}
+				{% if form.sorting_order.errors %}
+				{{ form.sorting_order(class="form-control form-control-lg is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.sorting_order.errors %}
+					<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+				{% else %}
+				{{ form.sorting_order(class="form-control form-control-lg") }}
+				{% endif %}
 			</div>
-			{% else %}
-			{{ form.sorting_order(class="form-control form-control-lg") }}
-			{% endif %}
+		</fieldset>
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info") }}
 		</div>
-	</fieldset>
-	<div class="form-group">
-		{{ form.submit(class="btn btn-outline-info") }}
-	</div>
-</form>
+	</form>
+</div>
 {% endblock %}
