@@ -267,8 +267,9 @@ span.cart-label {
 }
 
 .image-gallery-image {
-    height: calc(50vh);
+    height: clamp(20rem, 50vh, 50rem);
     object-fit: cover;
+    object-position: top center;
 }
 
 .image-gallery-description {
