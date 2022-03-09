@@ -10,5 +10,6 @@ build/
 *.log*
 *.egg-info
 static/uploads/*
+static/client/*/uploads/*
 static/js/dist/*
 node_modules/*

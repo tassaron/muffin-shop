@@ -20,6 +20,9 @@ def validate_image(stream):
     return "." + (format if format != "jpeg" else "jpg")
 
 
-def get_files():
+def get_files(asset="images"):
     """Returns list of files in the uploads/images directory"""
-    return os.listdir(f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images")
+    path = f"{current_app.config['UPLOADS_DEFAULT_DEST']}/{asset}"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return os.listdir(path)
