@@ -1,9 +1,9 @@
 """
 Root blueprint of the blog module
 """
-from flask import render_template, abort, flash
+from flask import render_template, abort, flash, redirect, url_for
 from muffin_shop.blueprint import Blueprint
-from muffin_shop.helpers.main.json import get_json_archive_path
+from muffin_shop.helpers.main.json import get_json_archive_path, insert_to_json_archive
 from muffin_shop.forms.blog.post_forms import BlogPostForm
 import os
 import json
@@ -94,5 +94,7 @@ def blog_new_post():
             "images": [],            
             "content": form.content.data,
         }
-        flash(str(new_post))
+        success = insert_to_json_archive(f"{os.environ['BLOG_PATH']}/posts.json", new_post)
+        flash("Created new post! ✔️" if success else "Error", "success" if success else "danger")
+        return redirect(url_for("main.admin_index"))
     return render_template("blog/new_post.html", form=form)
