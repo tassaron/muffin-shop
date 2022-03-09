@@ -1,5 +1,16 @@
 # Modules for Muffin Shop
 
+## List of Modules
+
+-   main (special-cased unremovable piece)
+-   about
+    - bio, resume, contact
+-   arcade
+-   blog
+-   shop
+    - cart_api, checkout, inventory
+-   gallery
+
 ## In JSON
 
 1. `blueprints`: A list of blueprints to be imported and registered on the Flask instance.

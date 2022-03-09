@@ -11,15 +11,18 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 ## Current Goal
 
 -   Make an instance for _The Rainbow Farm_ (shop module used for real products)
+-   Make an instance for Jade Thompson's art portfolio
 
 ## Long-Term Goal
 
 -   Allow different websites with similar functionality to share a codebase
--   Example: _Website A_ is an online shop with a blue theme and an extra gallery page.
--   Example: _Website B_ is an online shop with a red theme and an extra podcast (RSS feed) page.
+-   Example: _Website A_ is an online shop with a blue theme and a gallery to showcase images.
+-   Example: _Website B_ is an online shop with a red theme and a simple blog.
+-   Example: _Website C_ is a simple blog with a white theme and a gallery to showcase images.
 
 ## Dependencies
 
+1. Linux
 1. Python 3.8+
 1. uWSGI
 1. Flask
@@ -28,7 +31,7 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 1. WTForms
 1. Stripe
 1. Webpack
-1. ReactJS (only for the shop module)
+1. ReactJS (for the shop & gallery modules)
 1. See [setup.py](setup.py) and [package.json](src/muffin_shop/nodejs/package.json) for more detail
 
 ## Setup on Ubuntu Server 20.04
@@ -44,11 +47,15 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 1. OR use `python3 -m muffin_shop` for Flask's built-in development server.
 1. See the [readme inside `/install`](install/README.md) for help with setting up a production server.
 
-## Customizing
+## Customizing a New Instance
 
 1. A `.env` file will auto-generate after the first run. It holds secrets, so keep it safe.
-1. Replace `static/img/logo.png` with your logo. Edit your site name into `.env`.
-1. The `config/modules.json` file defines what modules are loaded and which is the main index.
+1. You can also generate the `.env` file by running `python3 scripts/manage.py init`
+1. Set `CONFIG_PATH` to the instance's config directory (copy `config/client/skel` for a template)
+1. **Note:** The skeleton config is a mixture of symlinks and copies to maximize my convenience.
+1. Example config path: `config/client/<instance_name>`
+1. Create `static/client/<instance_name>` and make `css`, `img`, `js` dirs as needed for static assets
+1. The `config/client/<instance_name>/modules.json` file defines what modules are loaded and which is the main index.
 
 ## Upgrading
 
