@@ -5,7 +5,8 @@
 {% block content %}
 {% include 'shop/js_required.html' %}
 <span id="ProductPage-slides">
-    {{ url_for('static', filename=product.image) }}
+    """{{ url_for('static', filename=product.image) }}""",
+    """"""
 </span>
 <div class="row">
     <h1 class="col-12 product-title mt-sm-0 text-center border-bottom">
