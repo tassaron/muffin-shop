@@ -23,7 +23,7 @@ class GalleryFromHtml extends Component {
                 thumbnail: item,
                 originalAlt: nameNode.innerHTML,
                 thumbnailAlt: nameNode.innerHTML,
-                description: nameNode.innerHTML,
+                //description: nameNode.innerHTML,
             }
         });
         slidesNode.innerHTML = "";
@@ -31,7 +31,10 @@ class GalleryFromHtml extends Component {
     }
 
     getSlideElement(index) {
-        return this.node.current.imageGallery.current.childNodes[0].childNodes[0].childNodes[2].childNodes[0].childNodes[index].childNodes[0];
+        if (this.slideImages.length > 1) {
+            return this.node.current.imageGallery.current.childNodes[0].childNodes[0].childNodes[2].childNodes[0].childNodes[index].childNodes[0];
+        }
+        return this.node.current.imageGallery.current.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[index];
     }
 
     toggleFullscreen(fullscreen) {
@@ -40,13 +43,13 @@ class GalleryFromHtml extends Component {
         if (fullscreen) {
             image.setAttribute("style", "height: 90vh");
         } else {
-            image.setAttribute("style", "height: calc(50vh)");
+            image.setAttribute("style", "height: auto");
         }
     }
 
     slideTo(index) {
         let image = this.getSlideElement(this.node.current.getCurrentIndex());
-        image.setAttribute("style", "height: calc(50vh)");
+        image.setAttribute("style", "height: auto");
         if (this.fullscreen) {
             image = this.getSlideElement(index);
             image.setAttribute("style", "height: 90vh")
@@ -56,13 +59,18 @@ class GalleryFromHtml extends Component {
     render() {
         return (
             <div>
-                <ImageGallery
-                    ref={this.node}
-                    items={this.slideImages}
-                    onScreenChange={(fullscreen) => this.toggleFullscreen(fullscreen)}
-                    onBeforeSlide={(index) => this.slideTo(index)}
-                    showPlayButton={false}
-                />
+            {this.slideImages.length > 1 ? (
+                    <ImageGallery
+                        ref={this.node}
+                        items={this.slideImages}
+                        onScreenChange={(fullscreen) => this.toggleFullscreen(fullscreen)}
+                        onBeforeSlide={(index) => this.slideTo(index)}
+                        showPlayButton={false}
+                    />
+                ) : (
+                    <img src={this.slideImages[0].original} alt={this.slideImages[0].originalAlt} className="center-cropped w-100" />
+                )
+            }
             </div>
         );
     }
