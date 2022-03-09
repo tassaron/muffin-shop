@@ -1,8 +1,10 @@
 """
 Root blueprint of the blog module
 """
-from flask import render_template, abort
+from flask import render_template, abort, flash
 from muffin_shop.blueprint import Blueprint
+from muffin_shop.helpers.main.json import get_json_archive_path
+from muffin_shop.forms.blog.post_forms import BlogPostForm
 import os
 import json
 import datetime
@@ -26,10 +28,6 @@ def pretty_date_formatter(timestamp):
     return timestamp.strftime("%b&nbsp;%-d %Y")
 
 
-def get_json_path(page_num):
-    return f"{os.environ['BLOG_PATH']}/pages/{'{:0>6d}'.format(page_num)}/posts.json"
-
-
 @blueprint.index_route()
 def blog_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
@@ -40,7 +38,7 @@ def blog_index():
         # less than 1 page of posts
         last_page = 0
     else:
-        with open(get_json_path(last_page)) as f:
+        with open(get_json_archive_path(os.environ['BLOG_PATH'], last_page)) as f:
             if not json.load(f):
                 last_page -= 1
 
@@ -57,7 +55,7 @@ def blog_index():
 @blueprint.route("/blog/<int:page_num>")
 def blog_page(page_num):
     try:
-        path = get_json_path(page_num)
+        path = get_json_archive_path(os.environ['BLOG_PATH'], page_num)
     except Exception as e:
         abort(400)
     if not os.path.exists(path):
@@ -75,7 +73,7 @@ def blog_page(page_num):
     elif end > last_page:
         start = max((start - abs(last_page - end)), 1)
         end = last_page
-    with open(get_json_path(end-1)) as f:
+    with open(get_json_archive_path(os.environ['BLOG_PATH'], end-1)) as f:
         if not json.load(f):
             end -= 1
     return render_template(
@@ -84,3 +82,17 @@ def blog_page(page_num):
         page_range=reversed(range(start, end)),
         page_num=page_num,
     )
+
+
+@blueprint.admin_route('/post', methods=["GET", "POST"])
+def blog_new_post():
+    form = BlogPostForm()
+    if form.validate_on_submit():
+        new_post = {
+            "url": "",
+            "created_at": f"{str(datetime.datetime.utcnow())}+00:00",
+            "images": [],            
+            "content": form.content.data,
+        }
+        flash(str(new_post))
+    return render_template("blog/new_post.html", form=form)

@@ -1,0 +1,33 @@
+{% set selected = 6 %}
+{% extends 'main/base.html' %}
+{% block title %}New Blog Post{% endblock %}
+
+{% block content %}
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
+<div class="row justify-content-center">
+	<form class="col-lg-6 col-md-8 col-12" action="" method="POST">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend class="border-top border-bottom mb-4">New Blog Post</legend>
+			<div class="form-group">
+				{{ form.content.label(class="form-control-label") }}
+				{% if form.content.errors %}
+				{{ form.content(class="form-control form-control-lg is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.content.errors %}
+					<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+				{% else %}
+				{{ form.content(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+		</fieldset>
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info") }}
+		</div>
+	</form>
+</div>
+{% endblock %}
