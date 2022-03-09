@@ -54,6 +54,14 @@
                         <p><a href="{{ url_for('account.reset_password') }}" class="btn btn-outline-primary">Reset Password</a></p>
                     </div>
                 </div>
+                <div class="row profile-row">
+                    <div class="col-md-6">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-6">
+                        <p><a href="{{ url_for('account.logout') }}" class="btn btn-outline-primary">Log Out</a></p>
+                    </div>
+                </div>
             </div>
             {% for section_id, section in profile_sections.items() %}
             <div class="tab-pane fade" id="{{ section_id }}" role="tabpanel" aria-labelledby="{{ section_id }}-tab">
