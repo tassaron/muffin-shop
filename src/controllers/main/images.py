@@ -4,8 +4,7 @@ from flask import (
     render_template,
     redirect,
     url_for,
-    request,
-    current_app,
+    flash,
     abort,
 )
 
@@ -28,10 +27,9 @@ def upload_images():
         except:
             abort(415)
         Images.save(form.image.data, name=f"{name}.")
-        success = True
-    else:
-        success = False
-    return render_template("main/upload_images.html", form=form, success=success)
+        flash("Upload successful!", "success")
+        return redirect(url_for("main.manage_images"))
+    return render_template("main/upload_images.html", form=form)
 
 
 @main_routes.admin_route("/images")
@@ -59,6 +57,7 @@ def delete_image(filename):
     file_path = Images.path(filename)
     try:
         os.remove(file_path)
+        flash("File deleted", "danger")
     except FileNotFoundError:
         abort(404)
     return redirect(url_for("main.manage_images"))
