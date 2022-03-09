@@ -15,7 +15,7 @@ import flask_login
 from sqlalchemy.exc import IntegrityError
 from is_safe_url import is_safe_url
 from muffin_shop.helpers.main.plugins import db, rate_limiter
-from muffin_shop.forms.main.forms import (
+from muffin_shop.forms.main.account_forms import (
     ShortRegistrationForm,
     LoginForm,
     RequestPasswordResetForm,
