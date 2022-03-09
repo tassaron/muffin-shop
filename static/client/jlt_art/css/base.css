@@ -1,5 +1,6 @@
 .image-container {
     background-image: url('/static/client/jlt_art/img/Jade-Thompson.webp');
+    background-position: top left;
 }
 
 .taped-container {
@@ -9,7 +10,13 @@
     text-align: center;
     display: inline-block;
     margin: 20px auto 10px;
-    background: lightcyan;
+    background: white;
+}
+
+@media (min-width: 768px) {
+    .next-to-taped-container {
+        margin-left: calc(3rem + 20px);
+    }
 }
   
 .taped-container::before,

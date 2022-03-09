@@ -19,16 +19,16 @@
 
 </head>
 
-<body style="background: transparent">
+<body style="background: transparent; overflow-x:hidden;">
     <!-- Navigation -->
     <nav>
-    <div class="container" style="background: linear-gradient(to bottom, rgba(255,255,255,0), whitesmoke);">
-        <header class="px-3">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+    <div class="container-fluid" style="background: white;">
+        <header class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <div class="d-flex flex-wrap justify-content-between py-3">
                     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                         {#<img src="{{ url_for('static', filename='img/logo.svg') }}" style="max-width: 4rem; max-height: 50%;" alt="Logo">#}
-                        <span class="px-2 fs-4 site-name-header">
+                        <span class="ps-lg-3 ps-4 fs-4 site-name-header">
                             <span>{{ site_name }}</span>
                         </span>
                     </a>
@@ -47,7 +47,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container pb-1" style="background-color: whitesmoke; min-height:100%;">
+    <div class="container-fluid pb-5 mb-5" style="background: linear-gradient(to bottom, white, whitesmoke); min-height: 100vh">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -57,14 +57,10 @@
         {% endwith %}
         {% block content %}{% endblock %}
     </div>
-    <!-- /.container -->
-
-    <div class="container" style="background: linear-gradient(to top, rgba(255,255,255,0) 75%, whitesmoke); height: 4em;">
-    </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <p class="row-sm-6 text-center">
+        <p class="row-6 text-center">
             &copy; {{site_name}} {{footer_year}} &nbsp;&bullet;&nbsp;
             <a href="https://rainey.tech">
                 Website made by Brianna Rainey

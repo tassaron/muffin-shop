@@ -5,17 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-4 d-none d-lg-block image-container mb-2" style="min-height:20rem;"></div>
-    <div class="col col-lg-8 mb-md-4 pt-md-5 px-5 fs-6 lh-lg">
+<div class="row justify-content-center">
+    <div class="col-lg-3 d-none d-lg-block image-container mb-2" style="min-height:20rem;"></div>
+    <div class="col-lg-7 col-md-10 mb-md-4 pt-md-5 ps-lg-4 ps-md-0 px-5 fs-6 lh-lg">
         <div class="float-end ms-3" style="height:9rem; width: calc(9rem + 1vw);">
             <img src="/static/client/jlt_art/img/sisterhood--by-Jade-Thompson.webp" alt="Sisterhood, art piece by Jade Thompson">
         </div>
         {{ header|safe }}
     </div>
 </div>
-<div class="row">
-    <div class="col-12 px-1 border-bottom">
+<div class="row justify-content-center">
+    <div class="col-10 px-1 border-bottom">
         <div id="ProductPage-row" class="row">
             <span id="ProductPage-name" style="display:none">{{ site_name }}</span>
             <div id="ProductPage-slideshow"></div>
@@ -28,16 +28,20 @@
     </div>
 </div>
 <div class="row justify-content-center mt-2">
-    <div class="col-lg-4 col-md-6 col-10 taped-container">
-        {{ footer|safe }}
+    <div class="col-lg-3 col-md-5 col-10">
+        <div class="row taped-container">
+            {{ footer|safe }}
+        </div>
     </div>
-    <div class="col-lg-8 col-md-6 col-12 px-5">
-        {% set post = {"url": "", "images": [], "created_at": "2022-03-02 20:05:22.009000+00:00", "content": "Generally giving everything about this site more attention. New show added in upcoming exhibitions"} %}
-        {% set key = 1 %}
-        {% include 'blog/blog_post.html' %}
-        {% set post = {"url": "", "images": [], "created_at": "2020-01-30 10:05:22.009000+00:00", "content": "Edited the site banner - in iOS mobile view some of the text overlapped. Updated artist bio and artist CV pages."} %}
-        {% set key = 2 %}
-        {% include 'blog/blog_post.html' %}
+    <div class="col-lg-6 col-md-5 col-10 next-to-taped-container">
+        <div class="row justify-content-center mb-3">
+        {% for post in posts %}
+            {% set key = 5 - loop.revindex0 %}
+            <div class="col-lg-8 col-12 shadow-sm bordered bg-light">
+                {% include 'blog/blog_post.html' %}
+            </div>
+        {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
