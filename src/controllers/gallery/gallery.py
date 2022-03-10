@@ -24,7 +24,7 @@ def gallery_index():
         titles = json.load(f)
     return render_template(
         "gallery/gallery_index.html",
-        images=[(titles.get(os.path.basename(os.path.splitext(image)[0]), ""), image) for image in get_files(fullpath=True)],
+        images=[(titles.get(os.path.basename(os.path.splitext(image)[0]), ""), image) for image in get_files(url=True)],
         header=render_markdown("gallery/header.md"),
         footer=render_markdown("gallery/footer.md"),
         posts=reversed(posts),
