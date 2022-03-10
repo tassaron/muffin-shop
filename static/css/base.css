@@ -12,6 +12,10 @@ body {
     font-family: var(--secondary-font);
 }
 
+textarea {
+    min-height: 33vh !important;
+}
+
 .bg-fixed {
     height: auto;
     background-size: cover;
