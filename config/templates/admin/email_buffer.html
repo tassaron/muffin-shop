@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% block title %}Email Buffer - {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center my-2">
+        <h2 class="heading-section">Email Buffer</h2>
+    </div>
+</div>
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
+<div class="row">
+    {% for email in emails %}
+        <div class="col-lg-3 col-md-6 col-10">
+            <div class="h-100">
+                <span class="fs-2">{{ email.subj }}</span>
+                <div class="bg-dark text-white p-4">
+                    {{ email.body }}
+                    <ul>
+                        <li>{{ email.contact }}</li>
+                        <li>{{ email.time|pretty_date }}</li>
+                        <li>{{ email.time|pretty_time }}</li>
+                    </ul>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-success me-4" href="{{ url_for('about.contact_page_send', index=loop.index0) }}">send</a>
+                        <a class="btn btn-danger" href="{{ url_for('about.contact_page_delete', index=loop.index0) }}">delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
