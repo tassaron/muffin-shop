@@ -1,5 +1,6 @@
 from flask import render_template_string, current_app
 from mistune import create_markdown
+import os
 
 
 md_to_unsafe_html = create_markdown(
@@ -8,8 +9,12 @@ md_to_unsafe_html = create_markdown(
 
 
 def render_markdown(filename):
+    path = f"{current_app.config['CONFIG_PATH']}/markdown/{filename}"
+    if not os.path.exists(path):
+        current_app.logger.error("Failed to render markdown at %s", path)
+        return ""
     try:
-        with open(f"{current_app.config['CONFIG_PATH']}/markdown/{filename}", "r") as f:
+        with open(path, "r") as f:
             string = f.read()
     except:
         if current_app.env == "production":
