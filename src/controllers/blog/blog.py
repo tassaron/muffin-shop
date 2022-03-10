@@ -105,7 +105,7 @@ def blog_new_post():
         success = insert_to_json_archive(f"{os.environ['BLOG_PATH']}/posts.json", new_post)
         flash("Created new post! ✔️" if success else "Error", "success" if success else "danger")
         return redirect(url_for("main.admin_index"))
-    return render_template("blog/edit_post.html", form=form)
+    return render_template("admin/edit_form.html", title="New Blog Post", form=form)
 
 
 @blueprint.admin_route('/post/delete/<int:post_id>')
@@ -135,5 +135,5 @@ def blog_edit_post(post_id):
         "content": posts[post_id]["content"]
     }
     form = BlogPostForm(formdata=MultiDict(filled_form))
-    return render_template("blog/edit_post.html", form=form)
+    return render_template("admin/edit_form.html", title="Edit Blog Post", form=form)
 

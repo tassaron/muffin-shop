@@ -1,6 +1,6 @@
 {% set selected = 6 %}
 {% extends 'main/base.html' %}
-{% block title %}New Blog Post{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 <nav class="d-flex mb-2">
@@ -10,7 +10,7 @@
 	<form class="col-lg-6 col-md-8 col-12" action="" method="POST">
 		{{ form.hidden_tag() }}
 		<fieldset class="form-group">
-			<legend class="border-top border-bottom mb-4">New Blog Post</legend>
+			<legend class="border-top border-bottom mb-4">{{ title }}</legend>
 			<div class="form-group">
 				{{ form.content.label(class="form-control-label") }}
 				{% if form.content.errors %}
