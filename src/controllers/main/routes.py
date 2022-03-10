@@ -88,13 +88,24 @@ def synchronize_server_side_sessions():
 
 @main_routes.admin_route("")
 def admin_index():
+    root_dir = os.environ.get('ROOT_DIR', '')
+    admin_url = f"{root_dir}{current_app.config['ADMIN_URL']}"
     endpoints = [
         url
         for url in all_base_urls()
-        if url.startswith(current_app.config["ADMIN_URL"])
+        if url.startswith(admin_url)
     ]
-    endpoints.remove(current_app.config["ADMIN_URL"])
-    return render_template("main/admin.html", endpoints=endpoints, user_name=flask_login.current_user.email)
+    endpoints.remove(admin_url)
+    endpoint_names = [
+        ' '.join(url[len(root_dir):].split('/')[2:]).title()
+        for url in all_base_urls()
+        if url.startswith(admin_url)
+    ]
+    return render_template(
+        "main/admin.html",
+        endpoints=zip(endpoints, endpoint_names),
+        user_name=flask_login.current_user.email
+    )
 
 
 if os.environ.get("CLIENT_SESSIONS", "1") == "0":

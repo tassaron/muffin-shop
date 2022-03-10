@@ -13,13 +13,13 @@
     </small>
 </div>
 <div class="row">
-    {% for endpoint in endpoints %}
+    {% for endpoint, endpoint_name in endpoints %}
     <div class="col-lg-4 col-md-6 col-12">
         <span class="nav-link">
             {% if "delete" in endpoint %}
-                {{ endpoint }}
+                <a class="btn btn-outline-dark disabled m-2">{{ endpoint_name }}</a>
             {% else %}
-                <a class="btn btn-outline-dark m-2" href="{{ endpoint }}">{{ ' '.join(endpoint.split('/')[2:])|title }}</a>
+                <a class="btn btn-outline-dark m-2" href="{{ endpoint }}">{{ endpoint_name }}</a>
             {% endif %}
         </span>
     </div>
