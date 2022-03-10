@@ -148,6 +148,10 @@ class Flask(flask.Flask):
             blueprint.before_request(abort_if_not_admin)
         super().register_blueprint(blueprint, **kwargs)
 
+    def add_url_rule(self, rule: str, *args, **kwargs) -> None:
+        rule = f"{os.environ.get('ROOT_DIR', '')}{rule}"
+        return super().add_url_rule(rule, *args, **kwargs)
+
 def parse_pkg(string) -> tuple:
     p: list = string.split(".", 1)
     if len(p) != 2:
