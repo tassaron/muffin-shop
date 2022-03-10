@@ -21,7 +21,7 @@ def upload_images():
     if form.validate_on_submit():
         name = uuid.uuid4().hex
         file_ext = os.path.splitext(form.image.data.filename)[1]
-        if file_ext.lower() not in (".png", ".jpg", ".gif"):
+        if file_ext.lower() not in (".png", ".jpg", ".gif", ".webp"):
             abort(415)
         try:
             if file_ext != validate_image(form.image.data.stream):
