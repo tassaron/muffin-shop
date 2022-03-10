@@ -1,6 +1,7 @@
 from flask import render_template
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.markdown import render_markdown
+from muffin_shop.forms.about.contact_forms import ContactForm
 
 
 blueprint = Blueprint(
@@ -18,10 +19,13 @@ def about_page():
 def bio_page():
     return render_template("about/bio.html", content=render_markdown("about/bio.md"))
 
+
 @blueprint.route("/resume")
 def resume_page():
-    return render_template("about/bio.html", content=render_markdown("about/resume.md"))
+    return render_template("about/resume.html", content=render_markdown("about/resume.md"))
 
-@blueprint.route("/contact")
+
+@blueprint.route("/contact", methods=["GET", "POST"])
 def contact_page():
-    return render_template("about/bio.html", content=render_markdown("about/contact.md"))
+    form = ContactForm()
+    return render_template("about/contact.html", content=render_markdown("about/contact.md"), form=form)

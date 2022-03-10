@@ -1,0 +1,14 @@
+{% set selected = 5 %}
+{% extends 'main/base.html' %}
+{% block title %}Contact {{ site_author }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 col-12">
+        {{ content|safe }}
+    </div>
+    <div class="col-md-6 col-12">
+        {% include 'about/contact_form.html' %}
+    </div>
+</div>
+{% endblock %}

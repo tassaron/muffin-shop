@@ -1,0 +1,48 @@
+<form class="col-lg-6 col-md-8 col-12" action="" method="POST">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-top border-bottom mb-4">Contact {{ site_author }}</legend>
+        <div class="form-group">
+            {{ form.mail_subject.label(class="form-control-label") }}
+            {% if form.mail_subject.errors %}
+            {{ form.mail_subject(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.mail_subject.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.mail_subject(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.mail_body.label(class="form-control-label") }}
+            {% if form.mail_body.errors %}
+            {{ form.mail_body(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.mail_body.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.mail_body(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.contact.label(class="form-control-label") }}
+            {% if form.contact.errors %}
+            {{ form.contact(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.contact.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.contact(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group d-flex justify-content-end py-2">
+        {{ form.submit(class="btn btn-secondary") }}
+    </div>
+</form>
