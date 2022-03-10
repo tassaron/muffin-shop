@@ -12,7 +12,7 @@ from flask import (
 
 from muffin_shop.controllers.main.routes import main_routes
 from muffin_shop.forms.main.image_forms import UploadForm
-from muffin_shop.helpers.main.images import Images, validate_image, get_files, get_image_data_path
+from muffin_shop.helpers.main.images import Images, validate_image, get_files, get_image_data_path, get_static_upload_url
 
 
 @main_routes.admin_route("/images/upload", methods=["GET", "POST"])
@@ -44,7 +44,7 @@ def manage_images():
     with open(get_image_data_path("titles"), "r") as f:
         files_titles = json.load(f)
     files_list = [
-        (files_titles.get(os.path.splitext(filename)[0], filename), Images.path(filename))
+        (files_titles.get(os.path.splitext(filename)[0], filename), get_static_upload_url(filename))
         for filename in get_files()
     ]
     return render_template("main/manage_images.html", files_list=files_list)
@@ -57,7 +57,7 @@ def view_image(filename):
         abort(404)
     return render_template(
         "main/view_image.html",
-        file_url=f"{current_app.config['UPLOADS_DEFAULT_DEST']}/images/{filename}",
+        file_url=get_static_upload_url(filename),
     )
 
 

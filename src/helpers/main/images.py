@@ -7,6 +7,10 @@ images_str = "images"
 Images = flask_uploads.UploadSet(images_str, flask_uploads.IMAGES)
 
 
+def get_static_upload_url(filename):
+    return f"{os.environ.get('ROOT_DIR', '')}/{current_app.config['UPLOADS_DEFAULT_DEST']}/{images_str}/{filename}"
+
+
 def validate_image(stream):
     """
     Useful function borrowed from blog.miguelgrinberg.com/post/handling-file-uploads-with-flask

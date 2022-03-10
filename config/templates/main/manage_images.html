@@ -11,7 +11,7 @@
         <div class="col-lg-4 col-md-6 col-10 mb-4">
             <div tabindex="0" class="card product-card floating-product-card" style="min-width:15rem; border-radius: 0px;">
                 <a href="{{ url_for('main.view_image', filename=image|basename) }}">
-                    <img class="card-img-top center-cropped" style="height:10rem" src="/{{image}}" alt="">
+                    <img class="card-img-top center-cropped" style="height:10rem" src="{{image}}" alt="">
                 </a>
                 <div class="card-body product-description" style="border-radius: 0px;">
                     <h4 class="card-title product-title">
@@ -19,7 +19,7 @@
                     </h4>
                     <div class="row justify-content-between">
                         <div class="col-6">
-                            <a class="w-100 btn btn-secondary" href="/{{image}}">download</a>
+                            <a class="w-100 btn btn-secondary" href="{{image}}">download</a>
                         </div>
                         <div class="col-6">
                             <a class="w-100 btn btn-danger" href="{{ url_for('main.delete_image', filename=image|basename) }}">delete</a>
