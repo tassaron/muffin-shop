@@ -52,6 +52,7 @@
             
                     <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                         <li class="nav-item"><a href="{{ url_for('about.bio_page') }}" class="nav-link{% if selected == 5 %} shadow-sm active" aria-current="page{% endif %}">About</a></li>
+                        <li class="nav-item"><a href="{{ url_for('about.contact_page') }}" class="nav-link{% if selected == 8 %} shadow-sm active" aria-current="page{% endif %}">Contact</a></li>
                         <li class="nav-item"><a href="{{ url_for('blog_index') }}" class="nav-link{% if selected == 6 %} shadow-sm active" aria-current="page{% endif %}">Blog</a></li>
                         <li class="nav-item"><a href="{{ url_for('arcade_index') }}" class="nav-link{% if selected == 4 %} shadow-sm active" aria-current="page{% endif %}">Games</a></li>
                         <li class="nav-item"><a href="{{ url_for('shop.all_products') }}" class="nav-link{% if selected == 2 %} shadow-sm active" aria-current="page{% endif %}">Prizes</a></li>

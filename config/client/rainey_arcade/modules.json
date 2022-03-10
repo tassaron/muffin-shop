@@ -9,7 +9,7 @@
         "blueprints": ["about:blueprint"],
         "root": "about",
         "index": "about.about_page",
-        "ignore": ["about.resume_page", "about.contact_page"]
+        "ignore": ["about.resume_page"]
     },
     ".arcade": {
         "name": "Arcade",
