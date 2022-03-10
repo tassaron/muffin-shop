@@ -37,4 +37,4 @@ def admin_edit_markdown(section, filename):
         "content": "".join(lines)
     }
     form = BlogPostForm(formdata=MultiDict(filled_form))
-    return render_template("admin/edit_form.html", form=form)
+    return render_template("admin/edit_form.html", title=f"Edit {section}/{filename}", form=form)
