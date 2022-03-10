@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% block title %}Admin for Markdown - {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center my-2">
+        <h2 class="heading-section">Markdown</h2>
+    </div>
+</div>
+<nav class="d-flex mb-2">
+    <a class="btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+</nav>
+<div class="row">
+    {% for section, pages in files %}
+        <div class="col-lg-3 col-md-6 col-10">
+            <ul>
+                <legend>{{section}}</legend>
+                {% for filename in pages %}
+                    <li>
+                        <a href="{{ url_for('main.admin_edit_markdown', section=section, filename=filename) }}">
+                            {{ filename }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

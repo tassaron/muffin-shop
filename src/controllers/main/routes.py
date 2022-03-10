@@ -23,8 +23,9 @@ import os
 main_routes = Blueprint("main", __name__)
 
 
-# import images at this point to ensure that all of main_routes is defined
-from muffin_shop.controllers.main.images import *
+# import the rest of the main blueprints
+import muffin_shop.controllers.main.images
+import muffin_shop.controllers.main.markdown
 
 
 def generic_url_for(rule):
