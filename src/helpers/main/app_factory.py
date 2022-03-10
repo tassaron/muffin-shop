@@ -170,6 +170,7 @@ def init_app(app, modules: Optional[dict] = None):
         import flask_login
 
         return {
+            "index_route": app.config["INDEX_ROUTE"],
             "logged_in": flask_login.current_user.is_authenticated,
             "site_name": app.config["SITE_NAME"],
             "site_author": os.environ.get("SITE_AUTHOR", app.config["SITE_NAME"]),

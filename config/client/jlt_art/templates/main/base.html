@@ -26,7 +26,7 @@
         <header class="row justify-content-center">
             <div class="col-lg-10 col-12">
                 <div class="d-flex flex-wrap justify-content-between py-3">
-                    <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                    <a href="{{ url_for(index_route) }}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                         {#<img src="{{ url_for('static', filename='img/logo.svg') }}" style="max-width: 4rem; max-height: 50%;" alt="Logo">#}
                         <span class="ps-lg-3 ps-4 fs-4 site-name-header">
                             <span>{{ site_name }}</span>
@@ -34,7 +34,7 @@
                     </a>
             
                     <ul class="nav nav-pills col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                        <li class="nav-item"><a href="/" class="nav-link{% if selected == 9 %} shadow-sm active" aria-current="page{% endif %}">home</a></li>
+                        <li class="nav-item"><a href="{{ url_for(index_route) }}" class="nav-link{% if selected == 9 %} shadow-sm active" aria-current="page{% endif %}">home</a></li>
                         <li class="nav-item"><a href="{{ url_for('about.bio_page') }}" class="nav-link{% if selected == 5 %} shadow-sm active" aria-current="page{% endif %}">artist bio</a></li>
                         {#<li class="nav-item"><a href="{{ url_for('') }}" class="nav-link{% if selected == 9 %} shadow-sm active" aria-current="page{% endif %}">recent work</a></li>#}
                         <li class="nav-item"><a href="{{ url_for('about.resume_page') }}" class="nav-link{% if selected == 7 %} shadow-sm active" aria-current="page{% endif %}">artist cv</a></li>

@@ -42,7 +42,7 @@
         <header class="px-3">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
-                    <a href="/" class="d-flex site-name-header align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                    <a href="{{ url_for(index_route) }}" class="d-flex site-name-header align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                         <img src="{{ url_for('static', filename='img/logo.svg') }}" style="max-width: 4rem; max-height: 50%" alt="Logo">
                         <span class="ms-md-1 ms-2 text-center fw-normal"><small>{{ site_author.split()[0] }}'s Portfolio</small><br></span>
                         <span class="px-2 fs-4 text-center">

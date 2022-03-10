@@ -62,3 +62,7 @@ class Blueprint(flask.Blueprint):
 
         app.admin_routes.extend(self.__admin_routes)
         super().register(app, options)
+
+    def add_url_rule(self, rule: str, *args, **kwargs) -> None:
+        rule = f"{os.environ.get('ROOT_DIR', '')}{rule}"
+        return super().add_url_rule(rule, *args, **kwargs)
