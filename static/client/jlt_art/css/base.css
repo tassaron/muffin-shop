@@ -1,3 +1,16 @@
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: var(--bs-secondary);
+}
+
+.nav-pills a {
+    color: black;
+}
+
+.nav-pills a:hover,
+.nav-pills a:focus {
+    color: var(--bs-secondary);
+}
+
 .image-container {
     background-image: url('/static/client/jlt_art/img/Jade-Thompson.webp');
     background-position: top left;
