@@ -7,11 +7,11 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 ## Live Instances
 
 -   **[Rainey Arcade](https://rainey.tech)** (shop module used for virtual products)
+-   **[Jade Thompson's art portfolio](https://rainey.tech/demo/jlt/)** (gallery module + blog)
 
 ## Current Goal
 
 -   Make an instance for _The Rainbow Farm_ (shop module used for real products)
--   Make an instance for Jade Thompson's art portfolio
 
 ## Long-Term Goal
 
