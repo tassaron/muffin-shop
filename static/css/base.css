@@ -4,8 +4,8 @@
     --cursive-font: var(--primary-font);
     --arcade-font: var(--primary-font);
     --nav-hover-color: blue;
-    --gallery-image-height: auto;
-    --gallery-image-max-height: 20vh;
+    --gallery-image-height: 33vh;
+    --gallery-image-max-height: 33vh;
 }
 
 body {
