@@ -19,6 +19,12 @@
         "root": "arcade",
         "index": "arcade.arcade_index",
         "games": {
+            "wild-eights": {
+                "title": "Wild Eights",
+                "blurb": "Two player game! Play cards against a friend. Click the ? in-game to see the rules.",
+                "style": "width: 900px; height: 900px;",
+                "multiplier": 0.0
+            },
             "rodents-revenge": {
                 "title": "Rodent's Revenge",
                 "blurb": "Push crates to trap the cats and collect cheese",
