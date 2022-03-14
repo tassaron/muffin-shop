@@ -3,14 +3,31 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6 text-center my-2">
-        <h2 class="heading-section">Email Buffer</h2>
+        <h2 class="heading-section">{{ title }}</h2>
     </div>
 </div>
 <nav class="d-flex justify-content-between mb-2">
-    <a class="h-100 btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
-    <div class="justify-content-end">
-        {% include 'admin/add_banned_word_form.html' %}
-    </div>
+    {% if form == None %}
+        {# Spam buffer #}
+        {% if "Specimens" in title %}
+            {% set buffer="specimens" %}
+            <a class="h-100 btn btn-secondary" href="{{ url_for('contact.admin_spam_buffer') }}">❮ Back</a>
+        {% else %}
+            {% set buffer="spam" %}
+            <a class="h-100 btn btn-secondary" href="{{ url_for('contact.admin_email_buffer') }}">❮ Back</a>
+            <a class="h-100 btn btn-secondary" href="{{ url_for('contact.admin_spam_buffer') }}">↻ Refresh</a>
+            <a class="h-100 btn btn-secondary" href="{{ url_for('contact.admin_spam_specimen_buffer') }}">Specimens</a>
+        {% endif %}
+    {% else %}
+        {# Email buffer #}
+        {% set buffer="email" %}
+        <a class="h-100 btn btn-secondary" href="{{ url_for('main.admin_index') }}">❮ Back</a>
+        <a class="h-100 btn btn-secondary" href="{{ url_for('contact.admin_email_buffer') }}">↻ Refresh</a>
+        <a class="h-100 btn btn-outline-dark" href="{{ url_for('contact.admin_spam_buffer') }}">Spam</a>
+        <div class="justify-content-end">
+            {% include 'admin/add_banned_word_form.html' %}
+        </div>
+    {% endif %}
 </nav>
 <div class="row">
     {% for email in emails %}
@@ -21,12 +38,15 @@
                     {{ email.body }}
                     <ul>
                         <li>{{ email.contact }}</li>
-                        <li>{{ email.time|pretty_date }}</li>
+                        <li>{{ email.time|pretty_date|safe }}</li>
                         <li>{{ email.time|pretty_time }}</li>
                     </ul>
                     <div class="d-flex flex-wrap justify-content-center">
-                        <a class="btn btn-success m-2" href="{{ url_for('about.contact_page_send', index=loop.index0) }}">send</a>
-                        <a class="btn btn-danger m-2" href="{{ url_for('about.contact_page_delete', index=loop.index0) }}">delete</a>
+                        <a class="btn btn-success m-2" href="{{ url_for('contact.contact_page_send', index=loop.index0, buffer=buffer) }}">send</a>
+                        {% if buffer == "email" %}
+                            <a class="btn btn-warning m-2" href="{{ url_for('contact.contact_page_markspam', index=loop.index0) }}">spam</a>
+                        {% endif %}
+                        <a class="btn btn-danger m-2" href="{{ url_for('contact.contact_page_delete', index=loop.index0, buffer=buffer) }}">delete</a>
                     </div>
                 </div>
             </div>
