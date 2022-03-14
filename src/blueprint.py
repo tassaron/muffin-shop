@@ -62,4 +62,3 @@ class Blueprint(flask.Blueprint):
 
         app.admin_routes.extend(self.__admin_routes)
         super().register(app, options)
-

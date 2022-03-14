@@ -30,19 +30,32 @@ def push_email_into_buffer(ip, subj, body, contact) -> bool:
         return False
 
     def ip_already_in_buffer(emails):
-        return bool(len(list(
-            filter(lambda email: email["ip"] == ip and datetime.datetime.strptime(email["time"], "%Y-%m-%d %H:%M:%S.%f") > datetime.datetime.utcnow(), emails)
-        )))
+        return bool(
+            len(
+                list(
+                    filter(
+                        lambda email: email["ip"] == ip
+                        and datetime.datetime.strptime(
+                            email["time"], "%Y-%m-%d %H:%M:%S.%f"
+                        )
+                        > datetime.datetime.utcnow(),
+                        emails,
+                    )
+                )
+            )
+        )
 
     def push(buffer):
         buffer.insert(
-            0, {
-            "time": str(datetime.datetime.utcnow() + datetime.timedelta(hours=12)),
-            "ip": ip,
-            "subj": subj,
-            "body": body,
-            "contact": contact,
-        })
+            0,
+            {
+                "time": str(datetime.datetime.utcnow() + datetime.timedelta(hours=12)),
+                "ip": ip,
+                "subj": subj,
+                "body": body,
+                "contact": contact,
+            },
+        )
 
     if seems_like_spam(body):
         spam = get_all_emails_from_buffer(spam_path)

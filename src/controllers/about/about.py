@@ -21,4 +21,6 @@ def bio_page():
 
 @blueprint.route("/resume")
 def resume_page():
-    return render_template("about/resume.html", content=render_markdown("about/resume.md"))
+    return render_template(
+        "about/resume.html", content=render_markdown("about/resume.md")
+    )

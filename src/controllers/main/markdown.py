@@ -9,7 +9,10 @@ import os
 
 @main_routes.admin_route("/markdown")
 def admin_list_markdown():
-    files = [(os.path.basename(dir_), file) for dir_, __, file in os.walk(f"{current_app.config['CONFIG_PATH']}/markdown")]
+    files = [
+        (os.path.basename(dir_), file)
+        for dir_, __, file in os.walk(f"{current_app.config['CONFIG_PATH']}/markdown")
+    ]
     files = files[1:]
     return render_template("admin/list_markdown.html", files=files)
 
@@ -19,7 +22,7 @@ def admin_edit_markdown(section, filename):
     path = f"{current_app.config['CONFIG_PATH']}/markdown/{section}/{filename}"
     if not os.path.exists(path):
         abort(404)
-    
+
     with open(path, "r") as f:
         lines = [line for line in f]
 
@@ -33,8 +36,8 @@ def admin_edit_markdown(section, filename):
             flash("Error", "danger")
         return redirect(url_for("main.admin_list_markdown"))
 
-    filled_form = {
-        "content": "".join(lines)
-    }
+    filled_form = {"content": "".join(lines)}
     form = BlogPostForm(formdata=MultiDict(filled_form))
-    return render_template("admin/edit_form.html", title=f"Edit {section}/{filename}", form=form)
+    return render_template(
+        "admin/edit_form.html", title=f"Edit {section}/{filename}", form=form
+    )

@@ -25,12 +25,16 @@ blueprint = Blueprint(
 @blueprint.admin_route("/transactions")
 def show_transactions():
     transactions = Transaction.query.all()
-    complete_transactions = [transaction for transaction in transactions if transaction.price is not None]
-    incomplete_transactions = [transaction for transaction in transactions if transaction.price is None]
+    complete_transactions = [
+        transaction for transaction in transactions if transaction.price is not None
+    ]
+    incomplete_transactions = [
+        transaction for transaction in transactions if transaction.price is None
+    ]
     return render_template(
         "checkout/transactions.html",
-        complete_transactions=complete_transactions, 
-        incomplete_transactions=incomplete_transactions
+        complete_transactions=complete_transactions,
+        incomplete_transactions=incomplete_transactions,
     )
 
 

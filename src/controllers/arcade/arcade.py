@@ -1,7 +1,15 @@
 """
 Root blueprint of the arcade module
 """
-from flask import session, render_template, abort, request, current_app, redirect, url_for
+from flask import (
+    session,
+    render_template,
+    abort,
+    request,
+    current_app,
+    redirect,
+    url_for,
+)
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.main.markdown import render_markdown
@@ -83,14 +91,19 @@ def token_submit():
 @blueprint.route("/token/leaderboard")
 def arcade_token_leaderboard():
     users = User.query.all()
-    server_side_sessions = [current_app.session_interface.get_user_session(user.id) for user in users]
+    server_side_sessions = [
+        current_app.session_interface.get_user_session(user.id) for user in users
+    ]
     try:
         server_side_sessions.remove(None)
     except ValueError:
         pass
     return render_template(
         "arcade/token_leaderboard.html",
-        users=[(obfuscate_number(int(sss[1]["_user_id"])), sss[1]["arcade_tokens"]) for sss in server_side_sessions]
+        users=[
+            (obfuscate_number(int(sss[1]["_user_id"])), sss[1]["arcade_tokens"])
+            for sss in server_side_sessions
+        ],
     )
 
 
@@ -116,9 +129,10 @@ def arcade_give_prize(uuid):
     except AttributeError as e:
         current_app.logger.error("No transaction?? %s", e)
     except IntegrityError:
-        current_app.logger.error("Error updating transaction record after giving prizes")
+        current_app.logger.error(
+            "Error updating transaction record after giving prizes"
+        )
         db.session.rollback()
-
 
     session["arcade_tokens"] -= total_price
     for prize, quantity in session["transaction_cart"].items():

@@ -53,22 +53,34 @@ def login():
                 # 2) ensure a full shopping cart carries over while logging in
                 # 3) combine arcade tokens/prizes from logged-out to logged-in sessions
 
-                restored_data = current_app.session_interface.get_user_session(
-                    user.id
-                )
+                restored_data = current_app.session_interface.get_user_session(user.id)
 
                 if restored_data is None:
                     # no existing data, so we can assign this session as the user's first
                     current_app.session_interface.set_user_session(session.sid, user.id)
                 else:
                     restored_session_id, restored_session_data = restored_data
-                    if "cart" in session and session["cart"] == {} and "cart" in restored_session_data:
+                    if (
+                        "cart" in session
+                        and session["cart"] == {}
+                        and "cart" in restored_session_data
+                    ):
                         # cart is empty so copy the other session that has a full cart
                         session["cart"] = restored_session_data["cart"]
-                    if "arcade_tokens" in session and "arcade_tokens" in restored_session_data:
-                        session["arcade_tokens"] += restored_session_data["arcade_tokens"]
-                    if "arcade_prizes" in session and "arcade_prizes" in restored_session_data:
-                        for prize, quantity in restored_session_data["arcade_prizes"].items():
+                    if (
+                        "arcade_tokens" in session
+                        and "arcade_tokens" in restored_session_data
+                    ):
+                        session["arcade_tokens"] += restored_session_data[
+                            "arcade_tokens"
+                        ]
+                    if (
+                        "arcade_prizes" in session
+                        and "arcade_prizes" in restored_session_data
+                    ):
+                        for prize, quantity in restored_session_data[
+                            "arcade_prizes"
+                        ].items():
                             if prize in session["arcade_prizes"]:
                                 session["arcade_prizes"][prize] += quantity
                             else:

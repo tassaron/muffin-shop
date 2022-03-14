@@ -135,7 +135,7 @@ class TassaronSessionInterface(SessionInterface):
         if not sid:
             sid = self._generate_sid()
             return ServerSideSession(sid=sid, permanent=self.permanent)
-        
+
         try:
             sid = self.unsign_sid(app, sid)
         except BadSignature:

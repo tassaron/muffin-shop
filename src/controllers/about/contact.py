@@ -4,7 +4,15 @@ from muffin_shop.helpers.main.markdown import render_markdown
 from muffin_shop.forms.about.contact_forms import ContactForm, AddBannedWordForm
 from muffin_shop.helpers.main.email import send_email
 from muffin_shop.models.main.models import User
-from muffin_shop.helpers.about.contact import push_email_into_buffer, get_all_emails_from_buffer, pop_email_from_buffer, add_banned_word, add_spam_specimen, spam_path, spam_specimen_path
+from muffin_shop.helpers.about.contact import (
+    push_email_into_buffer,
+    get_all_emails_from_buffer,
+    pop_email_from_buffer,
+    add_banned_word,
+    add_spam_specimen,
+    spam_path,
+    spam_specimen_path,
+)
 import os
 
 
@@ -25,10 +33,17 @@ def contact_page():
             form.contact.data,
         )
         if success:
-            flash(f"Thank you for contacting {os.environ.get('SITE_AUTHOR', 'me')}", "success")
+            flash(
+                f"Thank you for contacting {os.environ.get('SITE_AUTHOR', 'me')}",
+                "success",
+            )
         else:
-            flash(f"Your last email was sent recently. Please try again tomorrow", "info")
-    return render_template("about/contact.html", content=render_markdown("about/contact.md"), form=form)
+            flash(
+                f"Your last email was sent recently. Please try again tomorrow", "info"
+            )
+    return render_template(
+        "about/contact.html", content=render_markdown("about/contact.md"), form=form
+    )
 
 
 @blueprint.admin_route("", methods=["GET", "POST"])
@@ -38,20 +53,32 @@ def admin_email_buffer():
     if form.validate_on_submit():
         word = form.banned_word.data.strip()
         if add_banned_word(word):
-            flash(f"Banned \"{word}\"", "primary")
+            flash(f'Banned "{word}"', "primary")
         else:
             flash("Word is already banned", "info")
-    return render_template("admin/email_buffer.html", emails=emails, form=form, title="Email Buffer")
+    return render_template(
+        "admin/email_buffer.html", emails=emails, form=form, title="Email Buffer"
+    )
 
 
 @blueprint.admin_route("/spam")
 def admin_spam_buffer():
-    return render_template("admin/email_buffer.html", emails=get_all_emails_from_buffer(spam_path), form=None, title="Spam Buffer")
+    return render_template(
+        "admin/email_buffer.html",
+        emails=get_all_emails_from_buffer(spam_path),
+        form=None,
+        title="Spam Buffer",
+    )
 
 
 @blueprint.admin_route("/spam/specimens")
 def admin_spam_specimen_buffer():
-    return render_template("admin/email_buffer.html", emails=get_all_emails_from_buffer(spam_specimen_path), form=None, title="Spam Specimens")
+    return render_template(
+        "admin/email_buffer.html",
+        emails=get_all_emails_from_buffer(spam_specimen_path),
+        form=None,
+        title="Spam Specimens",
+    )
 
 
 @blueprint.admin_route("/send/<int:index>/<buffer>")

@@ -25,4 +25,8 @@ def task_overview():
     connection.close()
     values = [huey.serializer.deserialize(value[0]) for value in binary_values]
     keys = [key[0] for key in keys]
-    return render_template("admin/admin_kv_table.html", title="Huey Task Results", kv=list(zip(keys, values)))
+    return render_template(
+        "admin/admin_kv_table.html",
+        title="Huey Task Results",
+        kv=list(zip(keys, values)),
+    )

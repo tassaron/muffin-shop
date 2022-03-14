@@ -39,7 +39,9 @@ def create_app():
         SECRET_KEY=os.environ["SECRET_KEY"],
         SERVER_NAME=os.environ.get("SERVER_NAME", None),
         ADMIN_URL=os.environ.get("ADMIN_URL", "/admin"),
-        UPLOADS_DEFAULT_DEST=os.environ.get("UPLOADS_PATH", f"static/{f'client/{instance}/' if instance else ''}uploads"),
+        UPLOADS_DEFAULT_DEST=os.environ.get(
+            "UPLOADS_PATH", f"static/{f'client/{instance}/' if instance else ''}uploads"
+        ),
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
@@ -53,7 +55,9 @@ def create_app():
             "SITE_DESCRIPTION", "metadescription for your website"
         ),
         FOOTER_YEAR=os.environ.get("FOOTER_YEAR", str(datetime.datetime.now().year)),
-        CONFIG_PATH=os.environ.get("CONFIG_PATH", f"config{f'/client/{instance}' if instance else ''}"),
+        CONFIG_PATH=os.environ.get(
+            "CONFIG_PATH", f"config{f'/client/{instance}' if instance else ''}"
+        ),
         CLIENT_SESSIONS=boolean_from_env_var(app, "CLIENT_SESSIONS"),
     )
 

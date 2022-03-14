@@ -43,12 +43,14 @@ def send_email(subj, body, send_to, force=False):
             raise Unverified
     email_config = {"ENV": current_app.env}
     if current_app.env == "production":
-        email_config.update({
-            "API_URL": current_app.config["EMAIL_API_URL"],
-            "API_KEY": current_app.config["EMAIL_API_KEY"],
-            "SENDER_NAME": current_app.config["EMAIL_SENDER_NAME"],
-            "SENDER_ADDRESS": current_app.config["EMAIL_SENDER_ADDRESS"],
-        })
+        email_config.update(
+            {
+                "API_URL": current_app.config["EMAIL_API_URL"],
+                "API_KEY": current_app.config["EMAIL_API_KEY"],
+                "SENDER_NAME": current_app.config["EMAIL_SENDER_NAME"],
+                "SENDER_ADDRESS": current_app.config["EMAIL_SENDER_ADDRESS"],
+            }
+        )
     return huey_send_email(
         email_config,
         subj,

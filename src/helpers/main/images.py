@@ -42,7 +42,9 @@ def get_files(asset="images", url=False):
 
 
 def get_image_data_path(value):
-    _path = f"{current_app.config['UPLOADS_DEFAULT_DEST']}/{images_str}/data/{value}.json"
+    _path = (
+        f"{current_app.config['UPLOADS_DEFAULT_DEST']}/{images_str}/data/{value}.json"
+    )
     if not os.path.exists(_path):
         if not os.path.exists(os.path.dirname(_path)):
             os.makedirs(os.path.dirname(_path))

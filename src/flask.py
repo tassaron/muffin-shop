@@ -19,6 +19,7 @@ instance = os.environ.get("INSTANCE", "")
 env_file = f".env{'.' if instance else ''}{instance}"
 load_dotenv(env_file)
 
+
 def abort_if_not_admin():
     if not flask_login.current_user.is_admin_authenticated:
         flask.abort(404)
@@ -129,12 +130,14 @@ class Flask(flask.Flask):
         return (root_blueprint, blueprints)
 
     def remove_ignored_routes(app):
-        modules_with_ignored_routes = [module for module in app.modules.values() if 'ignore' in module]
+        modules_with_ignored_routes = [
+            module for module in app.modules.values() if "ignore" in module
+        ]
         if not modules_with_ignored_routes:
             return
         for module in modules_with_ignored_routes:
             for rule in app.url_map._rules[:]:
-                if rule.endpoint in module['ignore']:
+                if rule.endpoint in module["ignore"]:
                     app.url_map._rules.remove(rule)
                     del app.url_map._rules_by_endpoint[rule.endpoint]
                     del app.view_functions[rule.endpoint]
@@ -143,7 +146,7 @@ class Flask(flask.Flask):
     def register_blueprint(self, blueprint, **kwargs):
         if "url_prefix" in kwargs and kwargs["url_prefix"] == "/monitor":
             from muffin_shop.helpers.main.plugins import anti_csrf
-        
+
             blueprint = anti_csrf.exempt(blueprint)
             blueprint.before_request(abort_if_not_admin)
         super().register_blueprint(blueprint, **kwargs)
@@ -151,6 +154,7 @@ class Flask(flask.Flask):
     def add_url_rule(self, rule: str, *args, **kwargs) -> None:
         rule = f"{os.environ.get('ROOT_DIR', '')}{rule}"
         return super().add_url_rule(rule, *args, **kwargs)
+
 
 def parse_pkg(string) -> tuple:
     p: list = string.split(".", 1)

@@ -11,11 +11,11 @@ from json.decoder import JSONDecodeError
 def init_huey():
     huey_db_path = os.environ.get("HUEY_DB", "db/huey.db")
     try:
-        huey = SqliteHuey(
-            filename=huey_db_path, immediate_use_memory=False
-        )
+        huey = SqliteHuey(filename=huey_db_path, immediate_use_memory=False)
     except OperationalError as e:
-        raise FileNotFoundError(f"{e}: {huey_db_path} does not exist. Is the directory writable?") from OperationalError
+        raise FileNotFoundError(
+            f"{e}: {huey_db_path} does not exist. Is the directory writable?"
+        ) from OperationalError
     return huey
 
 

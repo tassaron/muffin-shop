@@ -1,10 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    TextAreaField,
-    StringField,
-    SubmitField
-)
+from wtforms import StringField, TextAreaField, StringField, SubmitField
 from wtforms.validators import Length, DataRequired, Email, Optional
 
 
@@ -16,5 +11,7 @@ class ContactForm(FlaskForm):
 
 
 class AddBannedWordForm(FlaskForm):
-    banned_word = StringField("Ban word/URL", validators=[DataRequired(), Length(min=7, max=5000)])
+    banned_word = StringField(
+        "Ban word/URL", validators=[DataRequired(), Length(min=7, max=5000)]
+    )
     submit = SubmitField("Ban")

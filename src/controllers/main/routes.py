@@ -64,19 +64,29 @@ def basename(path):
 @main_routes.before_app_request
 def synchronize_server_side_sessions():
     # sync logged-in users across devices
-    if not current_app.config["CLIENT_SESSIONS"] and flask_login.current_user.is_authenticated:
-        restored_data = current_app.session_interface.get_user_session(flask_login.current_user.id)
+    if (
+        not current_app.config["CLIENT_SESSIONS"]
+        and flask_login.current_user.is_authenticated
+    ):
+        restored_data = current_app.session_interface.get_user_session(
+            flask_login.current_user.id
+        )
         if restored_data:
             upstream_sid, upstream_data = restored_data
             try:
-                local_sid = current_app.session_interface.unsign_sid(current_app, request.cookies.get(current_app.session_cookie_name))
+                local_sid = current_app.session_interface.unsign_sid(
+                    current_app, request.cookies.get(current_app.session_cookie_name)
+                )
             except BadSignature:
                 local_sid = current_app.session_interface._generate_sid()
             if local_sid != upstream_sid:
                 # change session id when saving the session after the request
                 session["sync_local_to_upstream_sid"] = upstream_sid
                 if "transaction_id" in session:
-                    current_app.logger.warning("Deleting in-progress transaction from an orphaned session (%s)", local_sid)
+                    current_app.logger.warning(
+                        "Deleting in-progress transaction from an orphaned session (%s)",
+                        local_sid,
+                    )
                     del session["transaction_id"]
 
             if "arcade_tokens" in upstream_data:
@@ -88,36 +98,38 @@ def synchronize_server_side_sessions():
 
 @main_routes.admin_route("")
 def admin_index():
-    root_dir = os.environ.get('ROOT_DIR', '')
+    root_dir = os.environ.get("ROOT_DIR", "")
     admin_url = f"{root_dir}{current_app.config['ADMIN_URL']}"
-    endpoints = [
-        url
-        for url in all_base_urls()
-        if url.startswith(admin_url)
-    ]
+    endpoints = [url for url in all_base_urls() if url.startswith(admin_url)]
     endpoints.remove(admin_url)
     endpoint_names = [
-        ' '.join(url[len(root_dir):].split('/')[2:]).title()
+        " ".join(url[len(root_dir) :].split("/")[2:]).title()
         for url in all_base_urls()
         if url.startswith(admin_url)
     ]
     return render_template(
         "main/admin.html",
         endpoints=zip(endpoints, endpoint_names),
-        user_name=flask_login.current_user.email
+        user_name=flask_login.current_user.email,
     )
 
 
 if os.environ.get("CLIENT_SESSIONS", "1") == "0":
+
     @main_routes.admin_route("/sessions")
     def admin_sessions():
         all_sessions = current_app.session_interface.sql_session_model.query.all()
-        data = { sss.id: current_app.session_interface.decrypt(sss.data) for sss in all_sessions }
+        data = {
+            sss.id: current_app.session_interface.decrypt(sss.data)
+            for sss in all_sessions
+        }
         kv = {
-            sss.session_id: f"USER: {sss.user_id} - EXPIRY: {sss.expiry} - DATA: {data[sss.id]}" for sss in all_sessions
+            sss.session_id: f"USER: {sss.user_id} - EXPIRY: {sss.expiry} - DATA: {data[sss.id]}"
+            for sss in all_sessions
         }
         statuses = {
-            sss.session_id: f"{'expired' if sss.expiry <= datetime.utcnow() and sss.user_id is None else 'zombie' if '_user_id' in data[sss.id] and sss.user_id is None else 'deleted' if 'csrf_token' not in data[sss.id] else 'active' if ('arcade_tokens' in data[sss.id] and data[sss.id]['arcade_tokens'] > 0) or ('arcade_prizes' in data[sss.id] and data[sss.id]['arcade_prizes']) or ('cart' in data[sss.id] and data[sss.id]['cart']) else ''}" for sss in all_sessions
+            sss.session_id: f"{'expired' if sss.expiry <= datetime.utcnow() and sss.user_id is None else 'zombie' if '_user_id' in data[sss.id] and sss.user_id is None else 'deleted' if 'csrf_token' not in data[sss.id] else 'active' if ('arcade_tokens' in data[sss.id] and data[sss.id]['arcade_tokens'] > 0) or ('arcade_prizes' in data[sss.id] and data[sss.id]['arcade_prizes']) or ('cart' in data[sss.id] and data[sss.id]['cart']) else ''}"
+            for sss in all_sessions
         }
 
         empty_count = 0
@@ -133,10 +145,18 @@ if os.environ.get("CLIENT_SESSIONS", "1") == "0":
             elif statuses[sss.session_id] == "expired":
                 db.session.delete(sss)
                 expired_count += 1
-        if (sum([empty_count, zombie_count, expired_count]) > 0 ):
+        if sum([empty_count, zombie_count, expired_count]) > 0:
             db.session.commit()
-            flash(f"Deleted {empty_count} empty sessions, {zombie_count} zombies, {expired_count} expired", "primary")
-        return render_template("admin/admin_kv_table.html", title="Sessions", kv=list(kv.items()), statuses=statuses)
+            flash(
+                f"Deleted {empty_count} empty sessions, {zombie_count} zombies, {expired_count} expired",
+                "primary",
+            )
+        return render_template(
+            "admin/admin_kv_table.html",
+            title="Sessions",
+            kv=list(kv.items()),
+            statuses=statuses,
+        )
 
 
 @main_routes.app_errorhandler(BadRequest)
