@@ -36,7 +36,7 @@ def create_arcade_session():
         session["arcade_prizes"] = {}
 
 
-@blueprint.index_route()
+@blueprint.index_route(endpoint="arcade.arcade_index")
 def arcade_index():
     arcade_games = current_app.modules[".arcade"]["games"]
     return render_template(

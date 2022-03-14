@@ -6,7 +6,7 @@
     },
     ".about": {
         "name": "About",
-        "blueprints": ["about:blueprint"],
+        "blueprints": ["about:blueprint", "contact:blueprint"],
         "root": "about",
         "index": "about.about_page",
         "ignore": ["about.resume_page"]
@@ -71,7 +71,7 @@
             "checkout:blueprint"
         ],
         "root": "shop",
-        "index": "shop.index",
-        "ignore": ["index"]
+        "index": "shop.shop_index",
+        "ignore": ["shop.shop_index"]
     }
 }

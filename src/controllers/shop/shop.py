@@ -61,8 +61,8 @@ def int_cents_to_str_currency(cents):
     return "%.2f" % (cents / 100)
 
 
-@blueprint.index_route()
-def index():
+@blueprint.index_route(endpoint="shop.shop_index")
+def shop_index():
     return render_template(
         "shop/shop_index.html",
         product_categories=[

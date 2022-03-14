@@ -9,7 +9,7 @@
         "blueprints": ["about:blueprint"],
         "root": "about",
         "index": "about.about_page",
-        "ignore": ["about.bio_page", "about.resume_page", "about.contact_page"]
+        "ignore": ["about.bio_page", "about.resume_page"]
     },
     ".shop": {
         "name": "Shop",
@@ -24,7 +24,7 @@
             "checkout:blueprint"
         ],
         "root": "shop",
-        "index": "shop.index"
+        "index": "shop.shop_index"
     },
     ".blog": {
         "name": "Blog",

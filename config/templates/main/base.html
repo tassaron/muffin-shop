@@ -49,7 +49,7 @@
                         
                         {# Put nav links to this instance's pages here:
 
-                        <li class="nav-item"><a href="{{ url_for('about_page') }}" class="nav-link{% if selected == 1 %} shadow-sm active" aria-current="page{% endif %}">About</a></li>
+                        <li class="nav-item"><a href="{{ url_for('about.about_page') }}" class="nav-link{% if selected == 1 %} shadow-sm active" aria-current="page{% endif %}">About</a></li>
                         <li class="nav-item"><a href="{{ url_for('shop.all_products') }}" class="nav-link{% if selected == 2 %} shadow-sm active" aria-current="page{% endif %}">Shop</a></li>
                         {% if not logged_in %}
                         <li class="nav-item"><a href="{{ url_for('account.register') }}" class="nav-link{% if selected == 3 %} shadow-sm active" aria-current="page{% endif %}">Sign Up</a></li>

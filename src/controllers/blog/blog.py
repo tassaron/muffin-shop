@@ -29,7 +29,7 @@ def pretty_date_formatter(timestamp):
     return timestamp.strftime("%b&nbsp;%-d %Y")
 
 
-@blueprint.index_route()
+@blueprint.index_route(endpoint="blog.blog_index")
 def blog_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
         posts = json.load(f)

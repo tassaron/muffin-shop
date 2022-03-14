@@ -16,7 +16,7 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.index_route()
+@blueprint.index_route(endpoint="gallery.gallery_index")
 def gallery_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
         posts = json.load(f)

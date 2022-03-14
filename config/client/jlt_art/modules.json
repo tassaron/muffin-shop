@@ -13,10 +13,10 @@
     },
     ".about": {
         "name": "About",
-        "blueprints": ["about:blueprint"],
+        "blueprints": ["about:blueprint", "contact:blueprint"],
         "root": "about",
         "index": "about.about_page",
-        "ignore": "about_page"
+        "ignore": "about.about_page"
     },
     ".blog": {
         "name": "Blog",
