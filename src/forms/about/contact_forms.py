@@ -13,3 +13,8 @@ class ContactForm(FlaskForm):
     mail_body = TextAreaField("Message", validators=[DataRequired(), Length(min=5)])
     contact = StringField("Your Email Address", validators=[DataRequired(), Email()])
     submit = SubmitField("Send Message")
+
+
+class AddBannedWordForm(FlaskForm):
+    banned_word = StringField("Ban word/URL", validators=[DataRequired(), Length(min=7, max=5000)])
+    submit = SubmitField("Ban")

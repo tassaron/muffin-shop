@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.markdown import render_markdown
-from muffin_shop.helpers.about.contact import push_email_into_buffer, get_all_emails_from_buffer, pop_email_from_buffer
-from muffin_shop.forms.about.contact_forms import ContactForm
+from muffin_shop.helpers.about.contact import push_email_into_buffer, get_all_emails_from_buffer, pop_email_from_buffer, add_banned_word
+from muffin_shop.forms.about.contact_forms import ContactForm, AddBannedWordForm
 from muffin_shop.helpers.main.email import send_email
 from muffin_shop.models.main.models import User
 import os
@@ -46,10 +46,17 @@ def contact_page():
     return render_template("about/contact.html", content=render_markdown("about/contact.md"), form=form)
 
 
-@blueprint.admin_route("")
+@blueprint.admin_route("", methods=["GET", "POST"])
 def admin_email_buffer():
     emails = get_all_emails_from_buffer()
-    return render_template("admin/email_buffer.html", emails=emails)
+    form = AddBannedWordForm()
+    if form.validate_on_submit():
+        word = form.banned_word.data.strip()
+        if add_banned_word(word):
+            flash(f"Banned \"{word}\"")
+        else:
+            flash("Word is already banned", "info")
+    return render_template("admin/email_buffer.html", emails=emails, form=form)
 
 
 @blueprint.admin_route("/send/<int:index>")

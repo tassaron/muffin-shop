@@ -1,0 +1,22 @@
+<form class="col" action="" method="POST">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="d-none">Add banned word</legend>
+        <div class="form-group">
+            {{ form.banned_word.label(class="form-control-label") }}
+            {% if form.banned_word.errors %}
+            {{ form.banned_word(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.banned_word.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.banned_word(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group d-flex justify-content-end">
+        {{ form.submit(class="btn btn-secondary") }}
+    </div>
+</form>
