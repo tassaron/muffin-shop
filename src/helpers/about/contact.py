@@ -4,6 +4,7 @@ Utilities for managing the contact page email buffer which goes in a json file
 import os
 import json
 import datetime
+from difflib import SequenceMatcher
 
 
 contact_buffer_path = os.environ.get("CONTACT_BUFFER_PATH", "db")
@@ -115,4 +116,11 @@ def add_spam_specimen(email: dict):
 
 
 def seems_like_spam(string) -> bool:
+    specimens = get_all_emails_from_buffer(spam_specimen_path)
+    for specimen in specimens:
+        diff = SequenceMatcher(None, string, specimen["body"])
+        if diff.real_quick_ratio() > 0.6:
+            if diff.ratio() > 0.26:
+                return True
+
     return False
