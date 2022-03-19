@@ -90,7 +90,17 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 -   Unix line endings
 -   Absolute Python imports only
 
-## Project Structure
+## Terminology
+-  **route**: A URL fragment such as "/" or "/about". Used to create a [URL map](https://werkzeug.palletsprojects.com/en/2.0.x/routing/)
+-  **controller**: Function that responds to a user request, returning eiher a _template_ (HTML) or JSON
+   - in Flask terms: a function registered with the decorator `@blueprint.route` which becomes a value in the [`app.view_functions`](https://github.com/pallets/flask/blob/190dd4df86874495f56bb088fbd0cb1d9f0e77a0/src/flask/app.py#L1094) dictionary
+   - in Django terms: [a view function](https://docs.djangoproject.com/en/1.8/faq/general/#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names) (same idea, different boilerplate)
+- **template**: HTML file using Jinja templating engine to embed data injected by the controller
+- **model**: A class-based abstraction on top of database tables, using SQLAlchemy
+- **form**: A class-based abstraction on top of HTML forms which provides _validators_ for the user input, using WTForms
+- **helper**: Pure function that can be shared throughout the codebase
+
+## Directory Structure
 
 ### /static
 
@@ -113,7 +123,7 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 
 ### /src/controllers/`<module>`
 
--   URL endpoints (routes) which could return a view (template) or JSON
+-   Functions registered to routes (URL endpoints) which could return a template or JSON
 
 ### /src/models/`<module>`
 
