@@ -1,3 +1,7 @@
+from flask import url_for, current_app
+from werkzeug.routing import BuildError
+from functools import lru_cache
+
 def generic_url_for(rule):
     try:
         generic_url = url_for(

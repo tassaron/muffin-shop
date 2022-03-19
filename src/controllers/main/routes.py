@@ -1,4 +1,4 @@
-from flask import render_template, flash, session, url_for, current_app, flash, request
+from flask import render_template, flash, session, current_app, flash, request
 import flask_login
 from itsdangerous import BadSignature
 from werkzeug.exceptions import (
@@ -12,8 +12,6 @@ from werkzeug.exceptions import (
     InternalServerError,
     TooManyRequests,
 )
-from werkzeug.routing import BuildError
-from functools import lru_cache
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.main.util import all_base_urls
