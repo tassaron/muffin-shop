@@ -1,6 +1,7 @@
 from flask import *
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.models.shop.inventory_models import Product, ProductCategory
+from muffin_shop.helpers.shop.util import obfuscate_number, deobfuscate_number
 import logging
 import time
 
@@ -15,18 +16,8 @@ blueprint = Blueprint(
 
 
 @blueprint.app_template_filter("obfuscate")
-def obfuscate_number(x):
-    return int(
-        (x / 2) * 9038 if ((x / 7) * 7890 if x % 7 == 0 else x % 2) == 0 else x * 3770
-    )
-
-
-def deobfuscate_number(x):
-    return int(
-        (x / 9038) * 2
-        if ((x / 7890) * 7 if x % 7890 == 0 else x % 9038) == 0
-        else x / 3770
-    )
+def obfuscate_number_template_filter(x):
+    return obfuscate_number(x)
 
 
 @blueprint.app_context_processor

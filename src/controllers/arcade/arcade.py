@@ -16,7 +16,7 @@ from muffin_shop.helpers.main.markdown import render_markdown
 from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from muffin_shop.models.main.models import User
 from muffin_shop.models.shop.checkout_models import Transaction
-from muffin_shop.controllers.shop.shop import obfuscate_number
+from muffin_shop.helpers.shop.util import obfuscate_number
 from sqlalchemy.exc import IntegrityError
 
 

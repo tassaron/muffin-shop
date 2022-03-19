@@ -166,7 +166,7 @@ def init_app(app, modules: Optional[dict] = None):
     )
 
     from flask_uploads import configure_uploads
-    from muffin_shop.controllers.main.images import Images
+    from muffin_shop.helpers.main.images import Images
 
     configure_uploads(app, Images)
 

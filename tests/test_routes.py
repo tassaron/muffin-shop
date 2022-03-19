@@ -5,7 +5,7 @@ import flask_login
 from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import login_manager, db
 from muffin_shop.models.main.models import User
-from muffin_shop.controllers.main.routes import all_base_urls
+from muffin_shop.helpers.main.util import all_base_urls
 
 
 def nav_selected_bytes(route):

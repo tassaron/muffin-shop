@@ -4,7 +4,7 @@ import pytest
 from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import db, migrate, bcrypt, login_manager
 from muffin_shop.models.main.models import User
-from muffin_shop.controllers.main.routes import all_base_urls
+from muffin_shop.helpers.main.util import all_base_urls
 
 
 @pytest.fixture

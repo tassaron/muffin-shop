@@ -16,6 +16,7 @@ from werkzeug.routing import BuildError
 from functools import lru_cache
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
+from muffin_shop.helpers.main.util import all_base_urls
 from datetime import datetime
 import os
 
@@ -26,34 +27,6 @@ main_routes = Blueprint("main", __name__)
 # import the rest of the main blueprints
 import muffin_shop.controllers.main.images
 import muffin_shop.controllers.main.markdown
-
-
-def generic_url_for(rule):
-    try:
-        generic_url = url_for(
-            rule.endpoint, **{arg_name: 1 for arg_name in rule.arguments}
-        )
-    except BuildError:
-        generic_url = rule.endpoint
-    return generic_url
-
-
-@lru_cache
-def all_urls():
-    return [
-        generic_url_for(rule)
-        for rule in current_app.url_map.iter_rules()
-        if "static" not in rule.endpoint and "GET" in rule.methods
-    ]
-
-
-@lru_cache
-def all_base_urls():
-    return [
-        url_for(rule.endpoint)
-        for rule in current_app.url_map.iter_rules()
-        if len(rule.arguments) == 0 and "GET" in rule.methods
-    ]
 
 
 @main_routes.app_template_filter("basename")

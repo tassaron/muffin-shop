@@ -39,3 +39,17 @@ def verify_stock_before_checkout(products: List[dict]) -> dict:
         product["id"]: product["stock"]
         for product in filter(lambda prod: prod["stock"] < prod["quantity"], products)
     }
+
+
+def obfuscate_number(x):
+    return int(
+        (x / 2) * 9038 if ((x / 7) * 7890 if x % 7 == 0 else x % 2) == 0 else x * 3770
+    )
+
+
+def deobfuscate_number(x):
+    return int(
+        (x / 9038) * 2
+        if ((x / 7890) * 7 if x % 7890 == 0 else x % 9038) == 0
+        else x / 3770
+    )

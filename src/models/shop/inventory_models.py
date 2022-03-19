@@ -1,5 +1,5 @@
 from muffin_shop.helpers.main.plugins import db
-from muffin_shop.controllers.main.images import Images
+from muffin_shop.helpers.main.images import Images
 from werkzeug.utils import secure_filename
 
 

@@ -1,4 +1,4 @@
-from muffin_shop.controllers.shop.shop import obfuscate_number, deobfuscate_number
+from muffin_shop.helpers.shop.util import obfuscate_number, deobfuscate_number
 
 
 def test_obfuscation():
