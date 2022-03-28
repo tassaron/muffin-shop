@@ -122,7 +122,7 @@ class TassaronSessionInterface(SessionInterface):
     def unsign_sid(self, app, sid):
         """Could throw BadSignature if the sid is not valid"""
         signer = self._get_signer(app)
-        if signer is None:
+        if signer is None or sid is None:
             return None
         return signer.unsign(sid).decode()
 
