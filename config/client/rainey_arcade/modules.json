@@ -19,6 +19,12 @@
         "root": "arcade",
         "index": "arcade.arcade_index",
         "games": {
+            "pipe-puzzle": {
+                "title": "Pipe Puzzle",
+                "blurb": "Connect pipes to form a path for the water! Make a longer pipe for more points",
+                "style": "width: 804px; height: 604px;",
+                "multiplier": 0.001
+            },
             "wild-eights": {
                 "title": "Wild Eights",
                 "blurb": "Two player game! Play cards against a friend. Click the ? in-game to see the rules.",
