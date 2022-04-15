@@ -4,13 +4,13 @@
 {% block content %}
 <div id="score-alert-area"></div>
 {% include 'arcade/token_alert.html' %}
-<div class="ms-1 row" style="min-height: 25vh">
-    <div class="col-lg-4 col-md-6 col-12">
-        <h2 id="game_title" data-filename="jezzball" class="text-center product-title">Featured Game:</h2>
+<div class="ms-1 d-flex align-items-center" style="min-height: 25vh">
+    <div>
+        <h2 id="game_title" data-filename="jezzball" class="mt-1 text-center product-title">Featured Game:</h2>
         <div style="margin:auto; width: 360px; height: 320px;" id="game">
             <button id="send_score_button" class="hidden-arcade-btn" data-csrf-token="{{ csrf_token() }}">Send Score</button>
         </div>
-        <div class="mt-1 d-flex align-items-center justify-content-center">
+        <div class="mt-1 d-flex justify-content-center">
             <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
                 <button class="btn btn-next" type="button" id="pause_button">Pause</button><br>
                 <button class="mt-2 btn btn-default" id="swap_button" type="button">Swap Direction</button>
@@ -20,10 +20,11 @@
     </div>
     
     {% set statements = about.split("</p>")[:-1] %}
-    <div class="col-lg-8 col-md-6 col-6 my-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg">
+    <div class="me-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg mx-auto w-50">
         {{ statements[0]|safe }}</p>
     </div>
-
+</div>
+<div class="row">
     {% for statement in statements[1:] %}
     <div class="{% if loop.index+1 == statements|length %}col-md-6 col-12{% else %}col-6{% endif %} my-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg">
         {{ statement|safe }}</p>
