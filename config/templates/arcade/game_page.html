@@ -9,14 +9,14 @@
     <a class="btn btn-secondary" href="{{ url_for('arcade.arcade_index') }}">❮ Back</a>
 </div>
 <div class="row justify-content-center">
+    <div class="col-lg-8 col-12 my-2 mx-lg-0 mx-auto justify-content-center">
+        {{ description|safe }}
+    </div>
     <div class="col-md-6 text-center border-bottom mb-4">
         <h2 id="game_title" data-filename="{{ filename }}" class="heading-section">{{ title }}</h2>
     </div>
 </div>
 <div class="row">
-    <div class="w-md-50 my-2 mx-lg-0 mx-5 mx-auto justify-content-center">
-        {{ description|safe }}
-    </div>
     <div id="game" style="{{ style }}">
         <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
     </div>
