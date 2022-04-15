@@ -4,27 +4,35 @@
 {% block content %}
 <div id="score-alert-area"></div>
 {% include 'arcade/token_alert.html' %}
-<div class="ms-1 d-flex align-items-center" style="min-height: 25vh">
+<div class="d-flex flex-wrap justify-content-center align-items-center" style="min-height: 25vh">
     <div>
-        <h2 id="game_title" data-filename="jezzball" class="mt-1 text-center product-title">Featured Game:</h2>
-        <div style="margin:auto; width: 360px; height: 320px;" id="game">
+        <h2 id="game_title" data-filename="jezzball" class="text-center product-title">Featured Game:</h2>
+        <div style="width: 360px; height: 320px;" id="game">
             <button id="send_score_button" class="hidden-arcade-btn" data-csrf-token="{{ csrf_token() }}">Send Score</button>
         </div>
-        <div class="mt-1 d-flex justify-content-center">
-            <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
-                <button class="btn btn-next" type="button" id="pause_button">Pause</button><br>
-                <button class="mt-2 btn btn-default" id="swap_button" type="button">Swap Direction</button>
-                <button class="mt-2 btn border-dark" type="submit">Large Version</button>
-            </form>
-        </div>
+        <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
+            <button class="btn btn-next" type="button" id="pause_button">Pause</button><br>
+            <button class="mt-2 btn btn-default" id="swap_button" type="button">Swap Direction</button>
+            <button class="mt-2 btn border-dark" type="submit">Large Version</button>
+        </form>
     </div>
     
+    {# Split markdown by paragraph tag. Remove final (empty) element. #}
     {% set statements = about.split("</p>")[:-1] %}
-    <div class="me-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg mx-auto w-50">
+
+    {# Put first statement of markdown next to Featured Game if the viewport is large enough #}
+    <div class="fs-5 lh-lg w-50 d-md-block d-none">
         {{ statements[0]|safe }}</p>
     </div>
 </div>
+
 <div class="row">
+
+    {# Put first statement next to second statement if viewport is small #}
+    <div class="my-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg w-50 d-md-none">
+        {{ statements[0]|safe }}</p>
+    </div>
+
     {% for statement in statements[1:] %}
     <div class="{% if loop.index+1 == statements|length %}col-md-6 col-12{% else %}col-6{% endif %} my-4 p-lg-5 p-md-3 p-3 fs-5 lh-lg">
         {{ statement|safe }}</p>
