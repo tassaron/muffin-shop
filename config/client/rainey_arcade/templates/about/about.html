@@ -10,7 +10,7 @@
         <div style="width: 360px; height: 320px;" id="game">
             <button id="send_score_button" class="hidden-arcade-btn" data-csrf-token="{{ csrf_token() }}">Send Score</button>
         </div>
-        <form class="text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
+        <form class="pt-3 text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
             <button class="btn btn-next" type="button" id="pause_button">Pause</button><br>
             <button class="mt-2 btn btn-default" id="swap_button" type="button">Swap Direction</button>
             <button class="mt-2 btn border-dark" type="submit">Large Version</button>
@@ -21,7 +21,7 @@
     {% set statements = about.split("</p>")[:-1] %}
 
     {# Put first statement of markdown next to Featured Game if the viewport is large enough #}
-    <div class="fs-5 lh-lg w-50 d-md-block d-none">
+    <div class="p-5 fs-5 lh-lg w-50 d-md-block d-none">
         {{ statements[0]|safe }}</p>
     </div>
 </div>
