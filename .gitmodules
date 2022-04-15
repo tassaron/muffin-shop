@@ -6,10 +6,6 @@
 	path = static/client/rainey_arcade/js/jezzball
 	url = https://github.com/tassaron/jezzball
 	branch = main
-[submodule "static/client/rainey_arcade/js/jezzball-mini"]
-	path = static/client/rainey_arcade/js/jezzball-mini
-	url = https://github.com/tassaron/jezzball
-	branch = feb2022-mini
 [submodule "static/client/rainey_arcade/js/speed-limit"]
 	path = static/client/rainey_arcade/js/speed-limit
 	url = https://github.com/tassaron/speed-limit
