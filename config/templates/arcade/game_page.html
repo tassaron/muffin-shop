@@ -14,16 +14,29 @@
     </div>
 </div>
 <div class="row">
+    <div class="w-md-50 my-2 mx-lg-0 mx-5 mx-auto justify-content-center">
+        {{ description|safe }}
+    </div>
     <div id="game" style="{{ style }}">
         <button data-csrf-token="{{ csrf_token() }}" class="hidden-arcade-btn" id="send_score_button" type="button">Send Score</button>
     </div>
-    <div class="mt-2 d-flex align-items-center justify-content-center">
-        <button type="button" class="btn btn-next me-2" id="pause_button">Pause</button>
-        {{ extra_html|safe }}
+    <div class="mt-2 d-flex align-items-top justify-content-center p-2 row">
+        <div class="game-controls{% if tutorial != '' %} col-md-7 col-12{% endif %}">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-next me-2" id="pause_button">Pause</button>
+                {{ extra_html|safe }}
+            </div>
+            <div class="mt-md-5 py-5 text-center">
+                <a class="product-link" href="https://github.com/tassaron/{{ filename }}">click here to see source code</a>
+            </div>
+        </div>
+        {% if tutorial != "" %}
+        <div class="game-tutorial col-md-5 col-12 px-4">
+            <h4>How to Play</h4>
+            {{ tutorial|safe }}
+        </div>
+        {% endif %}
     </div>
-</div>
-<div class="p-4 text-center">
-    <a class="product-link" href="https://github.com/tassaron/{{ filename }}">click here to see source code</a>
 </div>
 {% endblock %}
 

@@ -60,14 +60,18 @@ def game_page(filename):
     arcade_games = current_app.modules[".arcade"]["games"]
     if filename not in arcade_games:
         abort(404)
+    arcade_game = arcade_games[filename];
+    description = "" if "description" not in arcade_game else f"<p>{arcade_game['description']}</p>"
     return render_template(
         "arcade/game_page.html",
-        title=arcade_games[filename]["title"],
+        title=arcade_game["title"],
+        description=f"<p>{arcade_game['blurb']}</p>{description}",
+        tutorial="" if "tutorial" not in arcade_game else arcade_game["tutorial"],
         filename=filename,
-        style=f"--bs-gutter-x: 0; border: 2px black solid; margin:auto; position: relative; {arcade_games[filename]['style']}",
+        style=f"--bs-gutter-x: 0; border: 2px black solid; margin:auto; position: relative; {arcade_game['style']}",
         extra_html=""
-        if "extra_html" not in arcade_games[filename]
-        else arcade_games[filename]["extra_html"],
+        if "extra_html" not in arcade_game
+        else arcade_game["extra_html"],
         mobile_friendly=False,
     )
 

@@ -21,19 +21,24 @@
         "games": {
             "pipe-puzzle": {
                 "title": "Pipe Puzzle",
-                "blurb": "Connect pipes to form a path for the water! Make a longer pipe for more points",
+                "blurb": "Connect pipes to form a path for the water! 🌊",
+                "description": "Created using <a href='https://pixijs.io/'>Pixi.JS</a> and my project <a href='https://github.com/tassaron/muffin-game'>Muffin Game Engine</a>.",
+                "tutorial": "<ul><li>Water starts flowing when the countdown reaches zero.</li><li>End the level by guiding water to the side of the grid indicated by the arrow.</li><li>You get more points if the game is in fast-forward speed.</li><li>You get bonus points if water goes through the same pipe twice.</li></ul>",
                 "style": "width: 804px; height: 604px;",
                 "multiplier": 0.001
             },
             "wild-eights": {
                 "title": "Wild Eights",
                 "blurb": "Two player game! Play cards against a friend. Click the ? in-game to see the rules.",
+                "description": "I started creating this game by forking my <a href='https://github.com/tassaron/canvas-game'>canvas game template</a> into a new <a href='https://github.com/tassaron/2p-canvas-game'>2-player canvas game template</a>. The server side of the game is a small Flask app.",
+                "tutorial": "Based on a popular 'shedding card game' called <a href='https://bicyclecards.com/how-to-play/crazy-eights/'>Crazy Eights</a>, but with only 1 round and no scoring. Exact rules can be found in-game by clicking the purple ? at the title screen.",
                 "style": "width: 900px; height: 900px;",
                 "multiplier": 0.0
             },
             "rodents-revenge": {
                 "title": "Rodent's Revenge",
-                "blurb": "Push crates to trap the cats and collect cheese",
+                "blurb": "Push crates to trap the cats and collect cheese.",
+                "description": "While creating this game, I made the <a href='https://github.com/tassaron/canvas-game'>HTML5 canvas game template</a>.",
                 "style": "background:purple; width: 912px; height: 1036px;",
                 "multiplier": 0.001
             },
@@ -53,6 +58,8 @@
             "breakout": {
                 "title": "Breakout",
                 "blurb": "Bounce the ball to destroy bricks. Collect powerups!",
+                "description": "This was my first JavaScript project. It started from a <a href='https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript'>tutorial on MDN</a> and I expanded it to add powerups and score-submission. I also made the ball bounce in a less predictable way, so the game is more interesting to play.",
+                "tutorial": "Powerup Legend:<ul style='color:#eee'><li><span style='line-height: 2; padding: 0.187rem; background:#008000;'>grow paddle</span></li><li><span style='line-height: 2; padding: 0.187rem; background:#BA0707;'>shrink paddle</span></li><li><span style='line-height: 2; padding: 0.187rem; background:#FFA500; color: #000;'>bouncier ball</span></li><li><span style='line-height: 2; padding: 0.187rem; background:#800080;'>less bouncy</span></li><li><span style='line-height: 2; padding: 0.187rem; background:#3E3E3E;'>multi-ball</span></li></ul>",
                 "style": "width: 640px; height: 480px;",
                 "multiplier": 0.055
             }
