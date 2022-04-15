@@ -1,0 +1,31 @@
+{% set selected = 2 %}
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ site_name }}
+{% endblock %}
+
+{% block content %}
+    <div class="ProductPage-alert-area"></div>
+    {% include 'shop/js_required.html' %}
+    <div class="row justify-content-center">
+        {% block shop_products %}
+        {% endblock %}
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    {% include 'shop/cart_button_script.js' %}
+    (function () {
+        {% for product in products %}
+        document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = (e) => { add_to_cart(e, {{ product.id }}); };
+        {% endfor %}
+    })();
+</script>
+
+<!-- ReactJS -->
+<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+{% endblock %}

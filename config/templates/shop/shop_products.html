@@ -1,22 +1,14 @@
-{% set selected = 2 %}
-{% extends 'main/base.html' %}
+{% extends 'shop/shop_category_index.html' %}
 
-{% block title %}
-{{ site_name }}
-{% endblock %}
-
-{% block content %}
-    <div class="ProductPage-alert-area"></div>
-    {% include 'shop/js_required.html' %}
-    <div class="row justify-content-center">
-        {% if products|length == 0 %}
+{% block shop_products %}
+    {% if products|length == 0 %}
         <div class="row justify-content-center" style="min-height: 33vh">
             <div class="my-4 text-center p-5 fs-5">
                 All products are currently out of stock.
             </div>
         </div>
-        {% endif %}
-        {% for product in products %}
+    {% endif %}
+    {% for product in products %}
         {% set product_url = url_for("shop.product_description", title=product.name|lower|replace(" ","")|urlencode, product_id=product.id|obfuscate) %}
         {% set quantity = product.cart_quantity %}
         <div class="col-lg-4 col-md-6 col-10 mb-4">
@@ -37,22 +29,5 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
-
-{% endblock %}
-
-
-{% block script %}
-<script>
-    {% include 'shop/cart_button_script.js' %}
-    (function () {
-        {% for product in products %}
-        document.getElementsByClassName('ProductPage-cart-btn-{{ product.id }}')[0].onclick = (e) => { add_to_cart(e, {{ product.id }}); };
-        {% endfor %}
-    })();
-</script>
-
-<!-- ReactJS -->
-<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
+    {% endfor %}
 {% endblock %}

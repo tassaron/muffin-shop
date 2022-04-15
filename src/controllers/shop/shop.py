@@ -76,7 +76,7 @@ def shop_category_index(title, category_id):
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
     return render_template(
-        "shop/shop_product_list.html",
+        "shop/shop_products.html",
         products=products,
     )
 
@@ -99,7 +99,7 @@ def all_products():
     for product in products:
         product.cart_quantity = session["cart"].get(product.id, 0)
     return render_template(
-        "shop/shop_product_list.html",
+        "shop/shop_products.html",
         products=products,
     )
 
