@@ -2,6 +2,17 @@ server {
     listen 80;
     server_name your_domain www.your_domain;
 
+    location ~* [a-zA-Z]+/\.[a-zA-Z]+/[a-zA-Z]+ {
+        # any path with component starting with . returns a 404
+        return 404;
+    }                        
+                                                                  
+    location ^~ /static/  {
+        include /etc/nginx/mime.types;
+        expires 30m;                                               
+        root /srv/website/;                                                                                                    
+    }         
+
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/srv/website/website.sock;
