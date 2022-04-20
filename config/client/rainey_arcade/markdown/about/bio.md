@@ -1,6 +1,8 @@
 # Who's Brianna Rainey?
 
-I'm a software developer from Ontario, Canada. I mostly enjoy making video games and websites. This site uses Python (Flask) for server-side rendering and for the backend API, plain JavaScript for all the [arcade games](/arcade), and a bit of React for the shopping cart system. It's hosted on a VPS running Ubuntu; I've used Linux since 2011 so I manage everything myself.
+I'm a software developer from Ontario, Canada. I mostly enjoy making websites and video games, but I've made some libraries and [desktop apps](https://www.youtube.com/watch?v=EVt2ckQs1Yg) as well. My favourite languages are Python and TypeScript.
+
+This site uses Python (Flask) for server-side rendering and for the backend API, plain JavaScript for all the [arcade games](/arcade), TypeScript for the games' shared engine, and a bit of React for the shopping cart system. It's hosted on a VPS running Ubuntu; I've used Linux since 2011 so I manage everything myself.
 
 
 ## Brianna's history with coding
