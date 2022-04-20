@@ -1,4 +1,4 @@
-# Muffin Shop ![](https://img.shields.io/badge/python-3.8-informational) ![](https://img.shields.io/github/license/tassaron/muffin-shop) ![](https://img.shields.io/github/last-commit/tassaron/muffin-shop) [![Follow @brianna on Mastodon](https://img.shields.io/mastodon/follow/1?domain=https%3A%2F%2Ftassaron.com&style=social)](https://tassaron.com/@brianna)
+# Muffin Shop ![](https://img.shields.io/badge/python-3.10-informational) ![](https://img.shields.io/github/license/tassaron/muffin-shop) ![](https://img.shields.io/github/last-commit/tassaron/muffin-shop) [![Follow @brianna on Mastodon](https://img.shields.io/mastodon/follow/1?domain=https%3A%2F%2Ftassaron.com&style=social)](https://tassaron.com/@brianna)
 
 A webapp for small ecommerce sites. Features include: shopping cart, inventory tracking, Stripe integration, basic admin, login system, and emails.
 
@@ -23,7 +23,7 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 ## Dependencies
 
 1. Linux
-1. Python 3.8+
+1. Python 3.10+
 1. uWSGI
 1. Flask
 1. [Huey](https://github.com/coleifer/huey) (a task queuer for sending email)
@@ -34,7 +34,7 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 1. ReactJS (for the shop & gallery modules)
 1. See [setup.py](setup.py) and [package.json](src/muffin_shop/nodejs/package.json) for more detail
 
-## Setup on Ubuntu Server 20.04
+## Setup on Ubuntu Server 22.04
 
 1. Install npm
 1. `npm install` in this directory.
