@@ -1,3 +1,4 @@
+from importlib import import_module
 from setuptools import setup, find_packages
 from os import path
 import re
@@ -15,6 +16,7 @@ except Exception:
 PACKAGE_NAME = 'muffin_shop'
 SOURCE_DIRECTORY = 'src'
 SOURCE_PACKAGE_REGEX = re.compile(rf'^{SOURCE_DIRECTORY}')
+muffin_shop = import_module(SOURCE_DIRECTORY)
 
 source_packages = find_packages(include=[SOURCE_DIRECTORY, f'{SOURCE_DIRECTORY}.*'])
 proj_packages = [SOURCE_PACKAGE_REGEX.sub(PACKAGE_NAME, name) for name in source_packages]
@@ -23,7 +25,7 @@ proj_packages = [SOURCE_PACKAGE_REGEX.sub(PACKAGE_NAME, name) for name in source
 setup(
     name=PACKAGE_NAME,
     author="tassaron",
-    version="0.0.0",
+    version=muffin_shop.__version__,
     packages=proj_packages,
     package_dir={PACKAGE_NAME: SOURCE_DIRECTORY},
     include_package_data=True,
