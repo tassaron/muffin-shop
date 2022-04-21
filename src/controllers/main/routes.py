@@ -12,6 +12,7 @@ from werkzeug.exceptions import (
     InternalServerError,
     TooManyRequests,
 )
+from muffin_shop import __version__
 from muffin_shop.blueprint import Blueprint
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.helpers.main.util import all_base_urls
@@ -81,7 +82,8 @@ def admin_index():
     return render_template(
         "main/admin.html",
         endpoints=zip(endpoints, endpoint_names),
-        user_name=flask_login.current_user.email,
+        user_name=flask_login.current_user.email.split("@", 1)[0],
+        version=__version__,
     )
 
 
