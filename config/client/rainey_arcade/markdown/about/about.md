@@ -2,4 +2,4 @@ Hi! I'm **Brianna Rainey**. I build software like websites, [APIs](https://githu
 
 [<picture><source srcset="/static/client/rainey_arcade/img/av.webp" type="image/webp"><img alt="photo of Brianna" src="/static/client/rainey_arcade/img/av.jpg" class="float-start pe-3 rounded center-cropped" style="height: 8rem;"></picture>](/blog) I&nbsp;love receiving feedback so please [send me a message](/contact)! I'm looking for work.
 
-Check out the <a href="/arcade" class="btn btn-secondary">ARCADE</a> and submit your score to collect _tokens!_ Exchange tokens for [prizes](/products)
+Check out the <a href="/arcade" class="btn arcade-text btn-secondary">ARCADE</a> and submit your score to collect _tokens!_ Exchange tokens for [prizes](/products)
