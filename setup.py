@@ -54,7 +54,9 @@ setup(
     description="a Flask app for small ecommerce sites",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords="flask uwsgi modular template shop",
+    keywords=[
+        "flask", "uwsgi", "shop",
+    ],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
