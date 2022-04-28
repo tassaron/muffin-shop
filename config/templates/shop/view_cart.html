@@ -1,8 +1,6 @@
-{% extends 'main/base.html' %}
-{% block title %}Your Shopping Cart{% endblock %}
+{% extends 'shop/cart_index.html' %}
 
-{% block content %}
-
+{% block view_cart %}
 {% if cart == [] %}
 <div class="row" style="min-height: 33vh">
     <div class="col-4"></div>
@@ -32,10 +30,4 @@
     {% endfor %}
 </div>
 {% endif %}
-
-{% endblock %}
-
-{% block script %}
-<!-- ReactJS -->
-<script src="{{ url_for('static', filename='js/dist/bundle.js') }}"></script>
 {% endblock %}
