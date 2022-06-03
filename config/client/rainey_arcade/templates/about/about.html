@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 25vh">
     <div>
         <h2 id="game_title" data-filename="jezzball" class="text-center product-title">Featured Game:</h2>
-        <div style="width: 360px; height: 320px;" id="game">
+        <div style="width: 360px; height: 312px;" id="game">
             <button id="send_score_button" class="hidden-arcade-btn" data-csrf-token="{{ csrf_token() }}">Send Score</button>
         </div>
         <form class="pt-3 text-center" action="{{ url_for('arcade.game_page', filename='jezzball') }}">
@@ -117,5 +117,5 @@
 {% endblock %}
 
 {% block script %}
-<script type="module" src="/static/client/rainey_arcade/js/jezzball-mini/bundle-2022-04-18.js"></script>
+<script type="module" src="/static/client/rainey_arcade/js/jezzball-mini/bundle-2022-06-03.js"></script>
 {% endblock %}

@@ -51,7 +51,7 @@
             "jezzball": {
                 "title": "Jezzball",
                 "blurb": "Place walls to entrap the balls and flood-fill the level",
-                "style": "width: 720px; height: 640px;",
+                "style": "width: 720px; height: 636px;",
                 "multiplier": 0.067,
                 "extra_html": "<button class='btn btn-default' style='width: 9rem; height: 3rem;' id='swap_button' type='button'>Swap Direction</button>"
             },
