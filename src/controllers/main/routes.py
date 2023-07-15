@@ -47,7 +47,7 @@ def synchronize_server_side_sessions():
             upstream_sid, upstream_data = restored_data
             try:
                 local_sid = current_app.session_interface.unsign_sid(
-                    current_app, request.cookies.get(current_app.session_cookie_name)
+                    current_app, request.cookies.get(current_app.config["SESSION_COOKIE_NAME"])
                 )
             except BadSignature:
                 local_sid = current_app.session_interface._generate_sid()

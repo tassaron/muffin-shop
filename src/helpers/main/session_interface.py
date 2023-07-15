@@ -131,7 +131,7 @@ class TassaronSessionInterface(SessionInterface):
 
     def open_session(self, app, request):
         """Original code from Flask-Session. Modified by tassaron"""
-        sid = request.cookies.get(app.session_cookie_name)
+        sid = request.cookies.get(app.config["SESSION_COOKIE_NAME"])
         if not sid:
             sid = self._generate_sid()
             return ServerSideSession(sid=sid, permanent=self.permanent)
@@ -185,7 +185,7 @@ class TassaronSessionInterface(SessionInterface):
                     self.db.session.delete(saved_session)
                     self.db.session.commit()
                 response.delete_cookie(
-                    app.session_cookie_name, domain=domain, path=path
+                    app.config["SESSION_COOKIE_NAME"], domain=domain, path=path
                 )
             return
 
@@ -208,7 +208,7 @@ class TassaronSessionInterface(SessionInterface):
         session_id = self.sign_sid(app, session.sid)
 
         response.set_cookie(
-            app.session_cookie_name,
+            app.config["SESSION_COOKIE_NAME"],
             session_id,
             expires=expires,
             httponly=httponly,
