@@ -2,8 +2,7 @@ import os
 import tempfile
 import pytest
 from muffin_shop.helpers.main.app_factory import create_app, init_app
-from muffin_shop.helpers.main.plugins import db, bcrypt, login_manager
-
+from muffin_shop.helpers.main.plugins import db
 
 def link_to_page(page_num):
     return bytes(
@@ -13,14 +12,22 @@ def link_to_page(page_num):
 
 
 @pytest.fixture
-def client():
-    global app, db, bcrypt, login_manager
+def app():
+    """Shadows the usual app fixture to add CONFIG_PATH=config"""
     os.environ["CONFIG_PATH"] = "config"
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
+    yield app
+    os.close(db_fd)
+    os.unlink(db_path)
+
+
+@pytest.fixture
+def client(app):
+    """Shadows the usual client fixture to add custom modules"""
     app = init_app(
         app,
         modules={
@@ -31,13 +38,10 @@ def client():
             }
         },
     )
-    client = app.test_client()
-    with app.app_context():
-        with client:
+    with app.test_client() as test_client:
+        with app.app_context():
             db.create_all()
-            yield client
-    os.close(db_fd)
-    os.unlink(db_path)
+            yield test_client
 
 
 def test_blog_0_pages_4_posts(client):

@@ -1,21 +1,12 @@
-from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.app_factory import init_app
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.shop.inventory_models import Product, ProductCategory
-import tempfile
-import os
-from flask import json, session
+from flask import json, current_app, session
 import pytest
 
 
 @pytest.fixture
-def client():
-    global app
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["SERVER_NAME"] = "0.0.0.0:5000"
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
+def client(app):
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -38,8 +29,6 @@ def client():
         db.session.commit()
         client = app.test_client()
         yield client
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
 def test_add_to_cart_api_success(client):
@@ -138,8 +127,7 @@ def test_remove_from_cart_api_baddata(client):
 
 
 def test_csrf_protection_cart_api(client):
-    global app
-    app.config["WTF_CSRF_ENABLED"] = True
+    current_app.config["WTF_CSRF_ENABLED"] = True
     try:
         resp = client.post(
             "/cart/add",

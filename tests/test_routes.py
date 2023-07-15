@@ -2,6 +2,7 @@ import os
 import tempfile
 import pytest
 import flask_login
+from flask import current_app
 from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import login_manager, db
 from muffin_shop.models.main.models import User
@@ -16,23 +17,29 @@ def nav_selected_bytes(route):
 
 
 @pytest.fixture
-def client():
-    global app
+def app():
+    """Shadows the usual app fixture to set CONFIG_PATH"""
     os.environ["CONFIG_PATH"] = "config/client/the_rainbow_farm"
+    os.environ["MONITOR_ENABLED"] = "0"
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["TESTING"] = True
-    os.environ["MONITOR_ENABLED"] = "0"
+    yield app
+    os.close(db_fd)
+    os.unlink(db_path)
+
+
+@pytest.fixture
+def client(app):
+    """necessary?"""
     app = init_app(app)
     client = app.test_client()
     with app.app_context():
         with client:
             db.create_all()
             yield client
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
 def test_shop_nav_link(client):
@@ -168,7 +175,7 @@ def test_user_privilege(client):
 def test_all_anonymous_user_routes(client):
     client.get("/")
     endpoints = [
-        url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])
+        url for url in all_base_urls() if not url.startswith(current_app.config["ADMIN_URL"])
     ]
     try:
         endpoints.remove("/view_shipping_address")
@@ -191,7 +198,7 @@ def test_all_logged_in_user_routes(client):
         follow_redirects=True,
     )
     endpoints = [
-        url for url in all_base_urls() if not url.startswith(app.config["ADMIN_URL"])
+        url for url in all_base_urls() if not url.startswith(current_app.config["ADMIN_URL"])
     ]
     try:
         endpoints.remove("/view_shipping_address")
@@ -207,7 +214,7 @@ def test_all_logged_in_user_routes(client):
         resp = client.get(endpoint)
         assert resp.status_code == 200
     endpoints = [
-        url for url in all_base_urls() if url.startswith(app.config["ADMIN_URL"])
+        url for url in all_base_urls() if url.startswith(current_app.config["ADMIN_URL"])
     ]
     for endpoint in endpoints:
         resp = client.get(endpoint)

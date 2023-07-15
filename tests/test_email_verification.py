@@ -1,19 +1,11 @@
-from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.app_factory import init_app
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.main.models import User
 from muffin_shop.helpers.main.email import *
 from huey.api import Result
-import tempfile
-import os
 
 
-def test_email_verification():
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
-    app.config["SERVER_NAME"] = "localhost:5000"
+def test_email_verification(app):
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -49,5 +41,3 @@ def test_email_verification():
         # updating the email will unverify it again
         user.update_email("")
         assert user.email_verified == False
-    os.close(db_fd)
-    os.unlink(db_path)

@@ -2,22 +2,14 @@
 Ensure that a user cannot receive a second email until they've taken action
 on the previous one, or until enough time has passed
 """
-from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.app_factory import init_app
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.main.models import User
 from muffin_shop.helpers.main.email import *
 from huey.api import Result
-import os
-import tempfile
 
 
-def test_email_outbox_for_reset_password():
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
-    app.config["SERVER_NAME"] = "localhost:5000"
+def test_email_outbox_for_reset_password(app):
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -54,17 +46,9 @@ def test_email_outbox_for_reset_password():
         # sending email should now succeed!
         result = send_password_reset_email(user)
         assert type(result) == Result
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
-def test_email_outbox_isolated_per_user():
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
-    app.config["SERVER_NAME"] = "localhost:5000"
+def test_email_outbox_isolated_per_user(app):
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -77,5 +61,3 @@ def test_email_outbox_isolated_per_user():
         # sending email to user2 should not be affected
         result = send_password_reset_email(user2)
         assert type(result) == Result
-    os.close(db_fd)
-    os.unlink(db_path)

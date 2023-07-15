@@ -1,7 +1,4 @@
-import os
-import tempfile
 import pytest
-import flask_login
 from flask import url_for
 from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import db, bcrypt, login_manager
@@ -9,13 +6,7 @@ from muffin_shop.models.main.models import User
 
 
 @pytest.fixture
-def client():
-    global app, db, bcrypt, login_manager
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
+def client(app):
     app = init_app(app)
     client = app.test_client()
     with app.app_context():
@@ -30,8 +21,6 @@ def client():
                 follow_redirects=True,
             )
             yield client
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
 def test_reset_password_button_exists_on_profile(client):

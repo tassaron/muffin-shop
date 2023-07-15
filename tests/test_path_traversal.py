@@ -1,16 +1,9 @@
-from muffin_shop.helpers.main.app_factory import create_app, init_app
+from muffin_shop.helpers.main.app_factory import init_app
 from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.shop.inventory_models import *
-import tempfile
-import os
 
 
-def test_product_image_safe_path():
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
+def test_product_image_safe_path(app):
     app = init_app(app)
     with app.app_context():
         db.create_all()
@@ -37,5 +30,3 @@ def test_product_image_safe_path():
             category_id=1,
         )
         assert product_with_path_traversal_image.image == normal_product.image
-    os.close(db_fd)
-    os.unlink(db_path)

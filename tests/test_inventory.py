@@ -1,20 +1,13 @@
-import tempfile
-import os
-from muffin_shop.helpers.main.app_factory import create_app, init_app
-from muffin_shop.helpers.main.plugins import db, migrate, bcrypt, login_manager
+from muffin_shop.helpers.main.app_factory import init_app
+from muffin_shop.helpers.main.plugins import db
 from muffin_shop.models.main.models import User
 from muffin_shop.models.shop.inventory_models import Product
+from flask import current_app
 import pytest
 
 
 @pytest.fixture
-def client():
-    global app, db, bcrypt, login_manager
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
+def client(app):
     app = init_app(app)
     client = app.test_client()
     with app.app_context():
@@ -29,13 +22,11 @@ def client():
                 follow_redirects=True,
             )
             yield client
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
 def test_inventory_create_product(client):
     resp = client.post(
-        f"{app.config['ADMIN_URL']}/inventory/create",
+        f"{current_app.config['ADMIN_URL']}/inventory/create",
         data={
             "name": "Spinach",
             "price": 1.0,
@@ -64,7 +55,7 @@ def test_inventory_edit_product(client):
     product = Product.query.get(1)
     assert product.payment_uuid is not None
     resp = client.post(
-        f"{app.config['ADMIN_URL']}/inventory/edit/1",
+        f"{current_app.config['ADMIN_URL']}/inventory/edit/1",
         data={
             "name": "Spinach",
             "price": 2.0,
