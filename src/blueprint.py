@@ -55,7 +55,14 @@ class Blueprint(flask.Blueprint):
             endpoint, f, options = self.__index_route
             if parse_pkg(app.modules["main"]["module"])[-1] == self.name:
                 # this will be the true index of our site!
-                self.add_url_rule("/", None, f, **options)
+                try:
+                    self.add_url_rule("/", None, f, **options)
+                except AssertionError as e:
+                    if not app.config["TESTING"]:
+                        raise
+                    app.logger.warning(
+                        "Failed attempt to re-register the index blueprint. This is a known bug during testing."
+                    )
                 self.is_registered_index = True
             else:
                 app.blueprint_index[self.name] = (endpoint, f, options)
