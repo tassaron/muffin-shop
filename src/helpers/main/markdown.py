@@ -17,7 +17,7 @@ def render_markdown(filename):
         with open(path, "r") as f:
             string = f.read()
     except:
-        if current_app.env == "production":
+        if not current_app.debug:
             current_app.logger.critical(
                 "Failed to render missing markdown file: %s", filename, exc_info=True
             )

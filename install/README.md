@@ -33,7 +33,7 @@
   1. The security of your `.env` file is very important. It should not be readable by anonymous Unix users nor be committed to source control
 1. Customize HTML inside `config/client/<instance_name>/templates` as needed.
 1. _Recommended_: `pip install pytest`. Run tests without hitting APIs: `pytest -k 'not payment and not email'`
-1. _Optional_: If `FLASK_ENV` iS `development` it is safe to run the email tests (API won't be used)
+1. _Optional_: If your `EMAIL_API_KEY` is missing or blank, it is safe to run the email tests (emails will be printed in the log instead of being sent)
 1. **Note:** payment tests must be excluded if you are not using a testing API key (seriously!)
 1. Initialize app with `python3 scripts/manage.py init` (optional; this creates a secret key but the app also creates one if it's missing)
 1. Make database: `python3 scripts/database.py new`. Copy the admin user's password (change it later using the website)

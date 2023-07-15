@@ -11,6 +11,7 @@ from typing import Optional
 from jinja2 import PrefixLoader, FileSystemLoader
 from muffin_shop.helpers.main.plugins import db, login_manager, migrate, init_plugins
 from muffin_shop.helpers.main.session_interface import TassaronSessionInterface
+from muffin_shop.helpers.main.tasks import huey
 from muffin_shop.models.main.models import User
 
 
@@ -44,7 +45,7 @@ def create_app():
         ),
         MAX_CONTENT_LENGTH=int(os.environ.get("FILESIZE_LIMIT_MB", 2)) * 1024 * 1024,
         SQLALCHEMY_DATABASE_URI=os.environ.get(
-            "DATABASE_URI", "sqlite+pysqlite:///db/database.db"
+            "DATABASE_URI", "sqlite:///db/database.db"
         ),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=boolean_from_env_var(app, "LOG_RAW_SQL"),
@@ -63,23 +64,25 @@ def create_app():
 
     app.unique_name = prettier_url_safe(website_name)
 
-    if app.env == "production":
-        # Enforce HTTPS and configure email
-        try:
-            app.config.update(
-                EMAIL_API_KEY=os.environ["EMAIL_API_KEY"],
-                EMAIL_API_URL=os.environ["EMAIL_API_URL"],
-                EMAIL_SENDER_NAME=os.environ["EMAIL_SENDER_NAME"],
-                EMAIL_SENDER_ADDRESS=os.environ["EMAIL_SENDER_ADDRESS"],
-                SESSION_COOKIE_SECURE=True,
-                REMEMBER_COOKIE_SECURE=True,
-                SESSION_COOKIE_HTTPONLY=True,
-                REMEMBER_COOKIE_HTTPONLY=True,
-            )
-        except KeyError as e:
-            raise KeyError(f"{e} is missing from .env")
-    else:
-        app.logger.warning("Email is disabled because FLASK_ENV != production")
+    # Enforce HTTPS and configure email
+    app.config.update(
+        EMAIL_API_KEY=os.environ.get("EMAIL_API_KEY", ""),
+        EMAIL_API_URL=os.environ.get("EMAIL_API_URL", ""),
+        EMAIL_SENDER_NAME=os.environ.get("EMAIL_SENDER_NAME", ""),
+        EMAIL_SENDER_ADDRESS=os.environ.get("EMAIL_SENDER_ADDRESS", ""),
+    )
+    if app.config["EMAIL_API_KEY"] == "":
+        # Don't queue tasks for emails, execute them immediately
+        huey.immediate = True
+
+    
+    if boolean_from_env_var(app, "HTTPS_ONLY", default=True):
+        app.config.update(
+            SESSION_COOKIE_SECURE=True,
+            REMEMBER_COOKIE_SECURE=True,
+            SESSION_COOKIE_HTTPONLY=True,
+            REMEMBER_COOKIE_HTTPONLY=True,
+        )
 
     # TODO: remove hardcoded paths
     app.jinja_loader = PrefixLoader(

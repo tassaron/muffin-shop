@@ -41,8 +41,8 @@ def send_email(subj, body, send_to, force=False):
                 "Could not send email to %s because the address isn't verified", send_to
             )
             raise Unverified
-    email_config = {"ENV": current_app.env}
-    if current_app.env == "production":
+    email_config = {"DEBUG": current_app.debug}
+    if not current_app.debug:
         email_config.update(
             {
                 "API_URL": current_app.config["EMAIL_API_URL"],

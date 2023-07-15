@@ -1,4 +1,4 @@
-# Run a development server
+# Run a development server (not in debug mode!)
 
 if [ -z "$1" ]; then
     port=5000

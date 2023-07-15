@@ -26,14 +26,14 @@ huey = init_huey()
 def huey_send_email(email_config, subject, body, send_to):
     """
     email_config = {
-        "ENV": current_app.env,
+        "DEBUG": current_app.debug,
         "API_URL": current_app.config["EMAIL_API_URL"],
         "API_KEY": current_app.config["EMAIL_API_KEY"],
         "SENDER_NAME": current_app.config['EMAIL_SENDER_NAME'],
         "SENDER_ADDRESS": current_app.config['EMAIL_SENDER_ADDRESS'],
     }
     """
-    if email_config["ENV"] != "production":
+    if email_config["DEBUG"] or email_config["API_KEY"] == "":
         return body
 
     response = requests.post(

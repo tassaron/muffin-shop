@@ -1,7 +1,6 @@
 """
 Home to Flask subclass
 """
-from muffin_shop.helpers.main.tasks import huey
 import flask
 import flask_login
 from dotenv import load_dotenv
@@ -45,8 +44,6 @@ class Flask(flask.Flask):
         app.admin_routes = []
         super().__init__(*args, **kwargs)
         app.logger.removeHandler(default_handler)
-        if app.env == "development":
-            huey.immediate = True
 
     def register_modules(app, modules):
         root_blueprint, other_blueprints = app.import_modules(modules)
@@ -109,10 +106,7 @@ class Flask(flask.Flask):
         # ensure env vars are set
         def ensure_env_var(token):
             if token not in os.environ:
-                if app.env == "production":
-                    raise ConfigurationError(f"Missing {token} from environment vars")
-                else:
-                    app.logger.warning(f"Missing {token} from environment vars")
+                raise ConfigurationError(f"Missing {token} from environment vars")
 
         for module in data.values():
             vars = module.get("env", [])
@@ -177,7 +171,6 @@ def create_env_file() -> bool:
     def create_ensure_env_var_func():
         default_values = {
             "FLASK_APP": "muffin_shop.run",
-            "FLASK_ENV": "development",
             "SECRET_KEY": os.urandom(24),
         }
         mutation = False
@@ -195,7 +188,6 @@ def create_env_file() -> bool:
 
     ensure_env_var = create_ensure_env_var_func()
     ensure_env_var("FLASK_APP")
-    ensure_env_var("FLASK_ENV")
     ensure_env_var("SECRET_KEY")
     load_dotenv(env_file)
     return mutated_env_file

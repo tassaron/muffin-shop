@@ -44,7 +44,7 @@ This is a work in progress. The functionality is somewhat modular; see [MODULES.
 1. Do `pip install .` in the root of this repo.
 1. Use `python3 scripts/database.py new` to create a new database.
 1. Use the `scripts/dev-backend.sh` shell script to run a development uWSGI server (`localhost:5000`).
-1. OR use `python3 -m muffin_shop` for Flask's built-in development server.
+1. OR use `python3 -m muffin_shop` for Flask's built-in development server (this will also put Flask in debug mode).
 1. See the [readme inside `/install`](install/README.md) for help with setting up a production server.
 
 ## Customizing a New Instance
