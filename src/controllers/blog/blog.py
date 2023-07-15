@@ -41,7 +41,10 @@ def pretty_date_formatter(timestamp):
 def blog_index():
     with open(f"{os.environ['BLOG_PATH']}/posts.json", "r") as f:
         posts = json.load(f)
-    last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages"))
+    try:
+        last_page = len(os.listdir(f"{os.environ['BLOG_PATH']}/pages"))
+    except FileNotFoundError:
+        last_page = 1
 
     if last_page == 1 and len(posts) < 5:
         # less than 1 page of posts
