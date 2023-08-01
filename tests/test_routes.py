@@ -1,9 +1,5 @@
-import os
-import tempfile
-import pytest
 import flask_login
 from flask import current_app
-from muffin_shop.helpers.main.app_factory import create_app, init_app
 from muffin_shop.helpers.main.plugins import login_manager, db
 from muffin_shop.models.main.models import User
 from muffin_shop.helpers.main.util import all_base_urls
@@ -16,54 +12,28 @@ def nav_selected_bytes(route):
     )
 
 
-@pytest.fixture
-def app():
-    """Shadows the usual app fixture to set CONFIG_PATH"""
-    os.environ["CONFIG_PATH"] = "config/client/the_rainbow_farm"
-    os.environ["MONITOR_ENABLED"] = "0"
-    app = create_app()
-    db_fd, db_path = tempfile.mkstemp()
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
-    app.config["WTF_CSRF_ENABLED"] = False
-    app.config["TESTING"] = True
-    yield app
-    os.close(db_fd)
-    os.unlink(db_path)
-
-
-@pytest.fixture
-def client(app):
-    """necessary?"""
-    app = init_app(app)
-    client = app.test_client()
-    with app.app_context():
-        with client:
-            db.create_all()
-            yield client
-
-
-def test_shop_nav_link(client):
-    resp = client.get("/products")
-    assert nav_selected_bytes("/products") in resp.data
+def test_shop_nav_link(markdown_index_client):
+    resp = markdown_index_client.get("/products")
     assert resp.status_code == 200
+    assert nav_selected_bytes("/products") in resp.data
 
 
-def test_about_page_nav_link(client):
-    resp = client.get("/about")
+def test_about_page_nav_link(shop_index_client):
+    resp = shop_index_client.get("/about")
+    assert resp.status_code == 200
     assert nav_selected_bytes("/about") in resp.data
 
 
-def test_404_page(client):
-    resp = client.get("/invalid")
+def test_404_page(markdown_index_client):
+    resp = markdown_index_client.get("/invalid")
     assert resp.status_code == 404
 
 
-def test_login_success(client):
-
+def test_login_success(markdown_index_client):
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
-    resp = client.post(
+    resp = markdown_index_client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
@@ -72,12 +42,11 @@ def test_login_success(client):
     assert flask_login.current_user == user
 
 
-def test_login_failure(client):
-
+def test_login_failure(markdown_index_client):
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
-    resp = client.post(
+    resp = markdown_index_client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "wordpass"},
         follow_redirects=True,
@@ -86,10 +55,9 @@ def test_login_failure(client):
     assert flask_login.current_user != user
 
 
-def test_registration_success(client):
-
+def test_registration_success(markdown_index_client):
     assert User.query.filter_by(email="test@example.com").first() is None
-    resp = client.post(
+    resp = markdown_index_client.post(
         "/account/register",
         data={
             "email": "test@example.com",
@@ -101,10 +69,9 @@ def test_registration_success(client):
     assert User.query.filter_by(email="test@example.com").first() is not None
 
 
-def test_registration_failure(client):
-
+def test_registration_failure(markdown_index_client):
     assert User.query.filter_by(email="test@example.com").first() is None
-    resp = client.post(
+    resp = markdown_index_client.post(
         "/account/register",
         data={
             "email": "test@example.com",
@@ -114,7 +81,7 @@ def test_registration_failure(client):
         follow_redirects=True,
     )
     assert User.query.filter_by(email="test@example.com").first() is None
-    resp = client.post(
+    resp = markdown_index_client.post(
         "/account/register",
         data={
             "email": "nodomainname",
@@ -126,8 +93,7 @@ def test_registration_failure(client):
     assert User.query.filter_by(email="nodomainname").first() is None
 
 
-def test_anonymous_user(client):
-
+def test_anonymous_user(markdown_index_client):
     anon1 = login_manager.anonymous_user()
     anon2 = login_manager.anonymous_user()
     db.session.add(anon1)
@@ -136,9 +102,9 @@ def test_anonymous_user(client):
     assert len(User.query.filter_by(email=None).all()) == 2
 
 
-def test_reregistration_failure(client):
-    test_registration_success(client)
-    resp = client.post(
+def test_reregistration_failure(markdown_index_client):
+    test_registration_success(markdown_index_client)
+    resp = markdown_index_client.post(
         "/account/register",
         data={
             "email": "test@example.com",
@@ -150,32 +116,33 @@ def test_reregistration_failure(client):
     assert len(User.query.filter_by(email="test@example.com").all()) == 1
 
 
-def test_user_privilege(client):
-
+def test_user_privilege(markdown_index_client):
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
-    resp = client.get("/account/profile")
+    resp = markdown_index_client.get("/account/profile")
     assert resp.status_code == 302
-    resp = client.get("/admin/images")
+    resp = markdown_index_client.get("/admin/images")
     assert resp.status_code == 404
-    client.post(
+    markdown_index_client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
     )
     assert flask_login.current_user == user
-    resp = client.get("/account/profile")
+    resp = markdown_index_client.get("/account/profile")
     assert resp.status_code == 200
     assert nav_selected_bytes("/about") not in resp.data
-    resp = client.get("/admin/images")
+    resp = markdown_index_client.get("/admin/images")
     assert resp.status_code == 404
 
 
-def test_all_anonymous_user_routes(client):
-    client.get("/")
+def test_all_anonymous_user_routes(markdown_index_client):
+    markdown_index_client.get("/")
     endpoints = [
-        url for url in all_base_urls() if not url.startswith(current_app.config["ADMIN_URL"])
+        url
+        for url in all_base_urls()
+        if not url.startswith(current_app.config["ADMIN_URL"])
     ]
     try:
         endpoints.remove("/view_shipping_address")
@@ -183,22 +150,23 @@ def test_all_anonymous_user_routes(client):
     except ValueError:
         pass
     for endpoint in endpoints:
-        resp = client.get(endpoint)
+        resp = markdown_index_client.get(endpoint)
         assert resp.status_code == 200 or resp.status_code == 302
 
 
-def test_all_logged_in_user_routes(client):
-
+def test_all_logged_in_user_routes(markdown_index_client):
     user = User(email="test@example.com", password="password", is_admin=False)
     db.session.add(user)
     db.session.commit()
-    client.post(
+    markdown_index_client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
     )
     endpoints = [
-        url for url in all_base_urls() if not url.startswith(current_app.config["ADMIN_URL"])
+        url
+        for url in all_base_urls()
+        if not url.startswith(current_app.config["ADMIN_URL"])
     ]
     try:
         endpoints.remove("/view_shipping_address")
@@ -211,17 +179,19 @@ def test_all_logged_in_user_routes(client):
     endpoints.remove("/account/reset_password")
     endpoints.remove("/account/verify_email")
     for endpoint in endpoints:
-        resp = client.get(endpoint)
+        resp = markdown_index_client.get(endpoint)
         assert resp.status_code == 200
     endpoints = [
-        url for url in all_base_urls() if url.startswith(current_app.config["ADMIN_URL"])
+        url
+        for url in all_base_urls()
+        if url.startswith(current_app.config["ADMIN_URL"])
     ]
     for endpoint in endpoints:
-        resp = client.get(endpoint)
+        resp = markdown_index_client.get(endpoint)
         assert resp.status_code == 404
 
 
-def test_static(client):
+def test_static(markdown_index_client):
     # Irrelevant when using Nginx in production, but still important
-    resp = client.get("/static/img/logo.svg")
+    resp = markdown_index_client.get("/static/img/logo.svg")
     assert resp.status_code == 200

@@ -6,17 +6,17 @@ from flask import current_app
 
 
 @pytest.fixture
-def admin_client(client):
-    db.create_all()
+def admin_client(markdown_index_client):
+    # db.create_all()
     user = User(email="test@example.com", password="password", is_admin=True)
     db.session.add(user)
     db.session.commit()
-    client.post(
+    markdown_index_client.post(
         "/account/login",
         data={"email": "test@example.com", "password": "password"},
         follow_redirects=True,
     )
-    yield client
+    yield markdown_index_client
 
 
 def test_admin_privilege(admin_client):
@@ -26,7 +26,9 @@ def test_admin_privilege(admin_client):
 
 def test_all_admin_routes(admin_client):
     endpoints = [
-        url for url in all_base_urls() if url.startswith(current_app.config["ADMIN_URL"])
+        url
+        for url in all_base_urls()
+        if url.startswith(current_app.config["ADMIN_URL"])
     ]
     endpoints.remove(current_app.config["ADMIN_URL"])
     assert len(endpoints) != 0

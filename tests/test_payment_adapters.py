@@ -4,9 +4,13 @@ from muffin_shop.helpers.shop.stripe_compat import StripeAdapter
 from muffin_shop.helpers.shop.util import convert_raw_cart_data_to_products
 from test_cart_api import client
 from flask import session, json, current_app
+import os
 
 
 def test_payment_adapter_stripe_payment_uuid(client):
+    if not os.getenv("STRIPE_API_KEY"):
+        return
+    
     with client:
         resp = client.post(
             "/cart/add",

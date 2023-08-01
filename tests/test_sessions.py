@@ -8,32 +8,26 @@ from flask import current_app, session
 
 
 @pytest.fixture
-def client(app):
-    app = init_app(app)
-    with app.test_client() as test_client:
-        with app.app_context():
-            db.create_all()
-            db.session.add(
-                User(email="test@example.com", password="password", is_admin=False)
-            )
-            db.session.add(
-                ProductCategory(
-                    name="Food",
-                    image="potato.jpg",
-                )
-            )
-            db.session.add(
-                Product(
-                    name="Potato",
-                    price=100,
-                    description="Tuber from the ground",
-                    image="potato.jpg",
-                    stock=1,
-                    category_id=1,
-                )
-            )
-            db.session.commit()
-            yield test_client
+def client(shop_index_client):
+    db.session.add(User(email="test@example.com", password="password", is_admin=False))
+    db.session.add(
+        ProductCategory(
+            name="Food",
+            image="potato.jpg",
+        )
+    )
+    db.session.add(
+        Product(
+            name="Potato",
+            price=100,
+            description="Tuber from the ground",
+            image="potato.jpg",
+            stock=1,
+            category_id=1,
+        )
+    )
+    db.session.commit()
+    yield shop_index_client
 
 
 def test_session_is_restored(client):

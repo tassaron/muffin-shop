@@ -5,39 +5,35 @@ from muffin_shop.helpers.main.email import *
 from huey.api import Result
 
 
-def test_email_verification(app):
-    app = init_app(app)
-    with app.app_context():
-        db.create_all()
-        user = User(email="test@example.com", password="password", is_admin=False)
-        db.session.add(user)
-        db.session.commit()
-        client = app.test_client()
-        client.post(
-            "/account/login",
-            data={"email": "test@example.com", "password": "password"},
-        )
-        # email_verified is false after initial registration
-        assert user.email_verified == False
+def test_email_verification(markdown_index_client):
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
+    db.session.commit()
+    markdown_index_client.post(
+        "/account/login",
+        data={"email": "test@example.com", "password": "password"},
+    )
+    # email_verified is false after initial registration
+    assert user.email_verified == False
 
-        # sending email to user should fail
-        try:
-            result = send_password_reset_email(user)
-        except Unverified:
-            pass
-        else:
-            assert "Didn't raise Unverified" == True
-
-        # verify email
-        result = send_email_verification_email(user)
-        client.get(f"/account/verify_email/{result().split('/')[-1]}")
-        assert user.email_verified == True
-
-        # sending email should now succeed!
-        # client.get("/account/logout", follow_redirects=True)
+    # sending email to user should fail
+    try:
         result = send_password_reset_email(user)
-        assert type(result) == Result
+    except Unverified:
+        pass
+    else:
+        assert "Didn't raise Unverified" == True
 
-        # updating the email will unverify it again
-        user.update_email("")
-        assert user.email_verified == False
+    # verify email
+    result = send_email_verification_email(user)
+    markdown_index_client.get(f"/account/verify_email/{result().split('/')[-1]}")
+    assert user.email_verified == True
+
+    # sending email should now succeed!
+    # client.get("/account/logout", follow_redirects=True)
+    result = send_password_reset_email(user)
+    assert type(result) == Result
+
+    # updating the email will unverify it again
+    user.update_email("")
+    assert user.email_verified == False

@@ -6,21 +6,16 @@ from muffin_shop.models.main.models import User
 
 
 @pytest.fixture
-def client(app):
-    app = init_app(app)
-    client = app.test_client()
-    with app.app_context():
-        with client:
-            db.create_all()
-            user = User(email="test@example.com", password="password", is_admin=False)
-            db.session.add(user)
-            db.session.commit()
-            client.post(
-                "/account/login",
-                data={"email": "test@example.com", "password": "password"},
-                follow_redirects=True,
-            )
-            yield client
+def client(shop_index_client):
+    user = User(email="test@example.com", password="password", is_admin=False)
+    db.session.add(user)
+    db.session.commit()
+    shop_index_client.post(
+        "/account/login",
+        data={"email": "test@example.com", "password": "password"},
+        follow_redirects=True,
+    )
+    yield shop_index_client
 
 
 def test_reset_password_button_exists_on_profile(client):

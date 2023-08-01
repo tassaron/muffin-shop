@@ -14,7 +14,7 @@ def link_to_page(page_num):
 @pytest.fixture
 def app():
     """Shadows the usual app fixture to add CONFIG_PATH=config"""
-    os.environ["CONFIG_PATH"] = "config"
+    os.environ["CONFIG_PATH"] = "config/client/rainey_arcade"
     app = create_app()
     db_fd, db_path = tempfile.mkstemp()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite+pysqlite:///" + db_path
@@ -30,13 +30,13 @@ def client(app):
     """Shadows the usual client fixture to add custom modules"""
     app = init_app(
         app,
-        modules={
-            "main": {
-                "name": "Home",
-                "module": ".about",
-                "navigation": [".blog"]
-            }
-        },
+        #modules={
+        #    "main": {
+        #        "name": "Home",
+        #        "module": ".about",
+        #        "navigation": [".blog"]
+        #    }
+        #},
     )
     with app.test_client() as test_client:
         with app.app_context():
