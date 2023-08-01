@@ -2,14 +2,22 @@
     "main": {
         "name": "Home",
         "module": ".shop",
-        "navigation": [".about"]
+        "navigation": [
+            ".about"
+        ]
     },
     ".about": {
         "name": "About",
-        "blueprints": ["about:blueprint"],
+        "blueprints": [
+            "about:blueprint",
+            "contact:blueprint"
+        ],
         "root": "about",
         "index": "about.about_page",
-        "ignore": ["about.bio_page", "about.resume_page"]
+        "ignore": [
+            "about.bio_page",
+            "about.resume_page"
+        ]
     },
     ".shop": {
         "name": "Shop",
@@ -29,8 +37,26 @@
     ".blog": {
         "name": "Blog",
         "env": "BLOG_PATH",
-        "blueprints": ["blog:blueprint"],
+        "blueprints": [
+            "blog:blueprint"
+        ],
         "root": "blog",
         "index": "blog.blog_index"
+    },
+    ".arcade": {
+        "name": "Arcade",
+        "blueprints": [
+            "arcade:blueprint"
+        ],
+        "root": "arcade",
+        "index": "arcade.arcade_index",
+        "games": {
+            "title": "Breakout",
+            "blurb": "Bounce the ball to destroy bricks",
+            "description": "https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript",
+            "tutorial": "Use mouse, touch, or keyboard to move the paddle",
+            "style": "width: 640px; height: 480px;",
+            "multiplier": 0.055
+        }
     }
 }
