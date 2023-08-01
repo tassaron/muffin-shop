@@ -61,7 +61,8 @@ class Blueprint(flask.Blueprint):
                     if not app.config["TESTING"]:
                         raise
                     app.logger.warning(
-                        "Failed attempt to re-register the index blueprint. This is a known bug during testing."
+                        "Failed attempt to re-register the index blueprint (%s). This is a known bug during testing.",
+                        self.name,
                     )
                 self.is_registered_index = True
             else:
