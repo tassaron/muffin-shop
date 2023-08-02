@@ -1,6 +1,12 @@
 server {
+    # Use certbot to transform this into https (port 443)
     listen 80;
     server_name your_domain www.your_domain;
+    
+    if ($host = www.your_domain) {
+        # Redirect www or IP address to root domain name
+        return 301 http://your_domain$request_uri
+    }
 
     location ~* [a-zA-Z]+/\.[a-zA-Z]+/[a-zA-Z]+ {
         # any path with component starting with . returns a 404
